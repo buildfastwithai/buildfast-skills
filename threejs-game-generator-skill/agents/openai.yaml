@@ -1,0 +1,4 @@
+interface:
+  display_name: "Three.js Game Generator"
+  short_description: "Build complete original 3D browser games"
+  default_prompt: "Use $threejs-game-generator-skill to turn my game brief into a small, complete, playable Three.js project."

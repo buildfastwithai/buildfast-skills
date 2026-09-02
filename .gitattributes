@@ -1,0 +1,5 @@
+# Classify scaffold templates by the language they render, not the .tmpl suffix.
+*.ts.tmpl linguist-language=TypeScript
+*.tsx.tmpl linguist-language=TypeScript
+*.css.tmpl linguist-language=CSS
+*.mjs.tmpl linguist-language=JavaScript
