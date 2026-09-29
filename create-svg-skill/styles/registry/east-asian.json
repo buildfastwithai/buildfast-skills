@@ -1,0 +1,72 @@
+[
+  {
+    "id": "sumi-e",
+    "name": "Japanese Ink / Sumi-e",
+    "family": "east-asian",
+    "aliases": ["sumi-e", "sumi e", "sumie", "japanese ink", "ink wash", "ink painting", "chinese ink", "brush painting", "zen ink", "enso", "shuimo", "suibokuga", "east asian ink", "japanese brush", "ink brush"],
+    "keywords": ["japanese", "japan", "ink wash", "brush stroke", "enso", "zen", "bamboo ink", "mountain mist", "calligraphic", "single stroke"],
+    "description": "Monochrome ink painting: a few decisive brush strokes with tonal wash, generous empty paper (ma), and suggestion over description; energy (qi) lives in the stroke itself.",
+    "visual_characteristics": [
+      "black ink in 4-5 tones (dry, grey, wash, wet-black) on warm rice paper",
+      "each stroke is a single gesture: thick-to-thin, dry-brush breaks, ink pooling",
+      "vast negative space; the subject occupies <= 40% and fades into mist",
+      "one red seal (hanko) and optionally a short calligraphic line as the only colour accent"
+    ],
+    "palette": {"guidance": "Paper #f3ecdc-ish, ink ramp from #111 to #d9d4c7 (4-5 tones), single vermilion seal #c1272d (<=1% of area). No other colours.", "swatches": ["#f4eddc", "#1a1a1a", "#4a4a48", "#8c8a84", "#c9c5b8", "#c1272d"]},
+    "geometry": "Organic brush-stroke shapes drawn as filled variable-width paths (not uniform strokes); bamboo nodes as short horizontal breaks; mountains as layered soft masses; asymmetric triangle balance.",
+    "stroke": "Brush = closed path with tapered ends and irregular width; dry-brush = the same shape masked with streaky texture; hair-thin lines for grass/needles using 0.6-1.2 unit strokes with round caps.",
+    "texture": "Rice-paper fibres (very faint feTurbulence), dry-brush bristle streaks (mask of thin horizontal lines with random gaps), wet-edge halo on washes (radial or blurred outer copy).",
+    "composition": "Asymmetric, high or low placement; diagonal from lower-left to upper-right; one main mass + 1-2 accents; empty area is 60%+; seal in the lower corner balancing the mass.",
+    "typography": "Brush calligraphy as shapes (or a single vertical line of Chinese/Japanese characters if the user supplies text); seal as a red square with knocked-out mark.",
+    "lighting_depth": "No cast light; depth by tone (dark near, pale far), overlap and mist bands (semi-transparent paper-coloured gradients).",
+    "svg_techniques": [
+      "washes: shapes with linearGradient/radialGradient in ink tones and one feGaussianBlur (stdDev 4-8) on a copy for the wet halo",
+      "dry brush: apply a <mask> containing a <pattern> of irregular thin lines to a stroke shape",
+      "mist = paper-coloured gradient bands with fill-opacity .5-.8 between layers",
+      "seal: <rect rx=2> vermilion + a knocked-out mark via evenodd or mask; slightly rotated"
+    ],
+    "avoid": ["colour palettes beyond ink + one seal", "uniform vector strokes", "crowded compositions", "symmetrical layouts", "drop shadows", "outlines around washes"],
+    "compatible_with": ["minimal-modern", "monochrome", "ukiyo-e", "manga", "organic-botanical", "hand-drawn-doodle", "fantasy"],
+    "conflicts_with": ["cyberpunk-neon", "y2k", "frutiger-aero", "glassmorphism", "pixel-art", "clay-soft-3d", "isometric", "low-poly"],
+    "best_for": ["illustration", "scene", "poster", "logo"],
+    "detail_level": "low",
+    "checks": {"max_colors": 9, "require_elements_any": ["filter", "linearGradient", "radialGradient", "mask"], "max_elements": 140, "light_base": true},
+    "reference": "east-asian.md#sumi-e"
+  },
+  {
+    "id": "ukiyo-e",
+    "name": "Ukiyo-e",
+    "family": "east-asian",
+    "aliases": ["ukiyoe", "ukiyo e", "japanese woodblock", "woodblock print", "japanese woodcut", "edo print", "hokusai style", "hiroshige style", "nishiki-e", "japanese print", "traditional japanese print", "great wave style"],
+    "keywords": ["japanese", "japan", "woodblock", "edo", "seigaiha", "kimono pattern", "wave pattern", "bokashi", "japanese traditional", "mount fuji"],
+    "description": "Japanese woodblock print language: flat colour regions separated by a confident key-block outline, limited pigment palette, bokashi gradations in skies, decorative patterning and traditional composition with cropped foregrounds.",
+    "visual_characteristics": [
+      "flat colour blocks, each printed as a separate 'block' with slight registration offsets",
+      "organic, calligraphic key-block outlines of varying weight (thicker on outer contours)",
+      "limited pigment palette: indigo/Prussian blue, vermilion, ochre, sap green, warm cream paper, sumi black",
+      "decorative patterning for water (seigaiha, wave curls), clothing (kimono motifs), clouds (stylised bands), and grain-like wood texture in large areas",
+      "bokashi (graded wash) only at horizons/skies; everything else flat"
+    ],
+    "palette": {"guidance": "Paper #efe3c8. Prussian blue #1f3c6e (dominant), pale indigo #6d8fb3, vermilion #c8372d, ochre #d9a441, muted green #6b8f5a, sumi #1c1a19. Colours are slightly desaturated and warm-toned; 8-12 colours total.", "swatches": ["#efe3c8", "#1f3c6e", "#6d8fb3", "#c8372d", "#d9a441", "#6b8f5a", "#1c1a19"]},
+    "geometry": "Flattened perspective (no vanishing point; stacked planes), stylised waves as curling claw-like crests, clouds as banded ribbons, figures simplified with elegant curved contours; strong diagonals and cropping by frame.",
+    "stroke": "Key-block outline in sumi: variable weight simulated by two stroke layers (3 units for exterior contour, 1-1.4 for interior detail); round caps, round joins; slight irregularity.",
+    "texture": "Wood-grain: faint horizontal streak pattern (feTurbulence stretched baseFrequency 0.002 0.2, opacity ~6%) over colour blocks; paper fibre; slight mis-registration offset (0.6-1.2 units) between colour and key-line.",
+    "composition": "Asymmetric traditional layout: large foreground element cropped at one edge (wave or branch), subject in the middle distance, Fuji/horizon high, decorative cartouche (title box) in a top corner with a red seal.",
+    "typography": "Vertical title cartouche: rectangle with light fill and dark border, with text as brush-like shapes (or a simple vertical text placeholder in a serif generic font); small red artist seal.",
+    "lighting_depth": "No cast shadows; depth by overlap, colour value (darker foreground), and bokashi mist bands.",
+    "svg_techniques": [
+      "colour blocks first (no outlines), then a separate <g id=\"key-block\"> of outline paths on top with slight translate(.8,.6) offset for mis-registration",
+      "seigaiha/wave pattern as a <pattern> of overlapping concentric arcs (3-4 rings) reused for water and sky bands",
+      "bokashi with a single vertical linearGradient limited to the sky region via clip-path",
+      "wood-grain overlay = one rect with feTurbulence stretched horizontally, low opacity, clipped to the picture area",
+      "seal = small vermilion rounded rect with knocked-out mark"
+    ],
+    "avoid": ["smooth painterly shading", "cast shadows or glows", "more than 12 colours", "neon / modern saturation", "vanishing-point perspective", "just recolouring a generic drawing with 'Japanese' colours"],
+    "compatible_with": ["sumi-e", "art-nouveau", "minimal-modern", "manga", "screen-print", "risograph", "organic-botanical", "fantasy", "monochrome", "cyberpunk-neon", "geometric", "vintage-poster"],
+    "conflicts_with": ["glassmorphism", "clay-soft-3d", "y2k", "frutiger-aero", "pixel-art", "isometric", "low-poly"],
+    "best_for": ["illustration", "scene", "poster", "character"],
+    "detail_level": "high",
+    "checks": {"max_colors": 14, "max_gradients": 3, "max_filters": 2, "require_stroke": true, "require_elements_any": ["pattern", "use"], "min_elements": 35, "light_base": true},
+    "reference": "east-asian.md#ukiyo-e"
+  }
+]

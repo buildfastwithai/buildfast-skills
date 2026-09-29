@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+ <title id="t">Fox Sticker</title>
+ <desc id="d">Sticker: thick white die-cut border with soft shadow, saturated flat fills, dark outlines, glossy highlight.</desc>
+ <defs>
+  <g id="cut">
+   <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z"/>
+   <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z"/>
+   <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z"/>
+   <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z"/>
+   <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z"/>
+  </g>
+  <filter id="lift" x="-10%" y="-10%" width="120%" height="125%">
+   <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#1c1c28" flood-opacity=".35"/>
+  </filter>
+ </defs>
+ <g id="border" filter="url(#lift)">
+  <use href="#cut" fill="#fff" stroke="#fff" stroke-width="64" stroke-linejoin="round"/>
+ </g>
+ <g id="art" stroke="#1c1c28" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z" fill="#ff6b35"/>
+  <path d="M872 486C940 560 962 676 926 742 922 680 900 600 850 540 858 522 866 504 872 486Z" fill="#fffaf0"/>
+  <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z" fill="#ff7f3f"/>
+  <path d="M600 640C680 640 750 700 752 780 752 816 736 840 700 840L580 840C560 800 556 700 600 640Z" fill="#ff5d73" stroke-width="6"/>
+  <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z" fill="#3b2230"/>
+  <path d="M410 545C440 562 472 570 490 600 470 650 458 700 458 770L426 770C412 700 396 610 410 545Z" fill="#fffaf0" stroke-width="6"/>
+  <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z" fill="#2b1a24"/>
+  <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#ff7f3f"/>
+  <path d="M490 520L536 516 510 548 468 562Z" fill="#fffaf0" stroke-width="6"/>
+  <path d="M232 486C262 462 292 438 318 430 340 440 372 470 420 492 452 508 480 516 488 528L468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#fffaf0" stroke-width="6"/>
+  <path d="M352 300L358 248 392 322Z" fill="#ff5d73" stroke-width="5"/>
+  <path d="M452 306L468 262 478 342Z" fill="#ff5d73" stroke-width="5"/>
+ </g>
+ <g id="face" fill="#1c1c28">
+  <ellipse cx="342" cy="452" rx="20" ry="14"/>
+  <circle cx="348" cy="447" r="5" fill="#fff"/>
+  <circle cx="238" cy="488" r="13"/>
+  <ellipse cx="385" cy="505" rx="22" ry="12" fill="#ff9fb0"/>
+ </g>
+ <g id="gloss" fill="#fff" opacity="0.55">
+  <path d="M470 540C560 520 640 560 700 630 690 640 676 644 664 640 620 590 560 564 488 566 478 560 470 552 470 540Z"/>
+  <circle cx="716" cy="668" r="9"/>
+  <path d="M372 280L384 250 396 292Z"/>
+ </g>
+ <g id="badge" transform="rotate(-10 820 250)">
+  <circle cx="820" cy="250" r="92" fill="#ffc857" stroke="#fff" stroke-width="18"/>
+  <circle cx="820" cy="250" r="92" fill="none" stroke="#1c1c28" stroke-width="7"/>
+  <path d="M761.1 278V214.4H773.8V237.1H779.8V214.4H792.4V278H779.8V249.2H773.8V278ZM800.1 278V214.4H825.5V226.7H813V239.1H825V251H813V265.6H826.3V278ZM840.2 278V257.1L830.1 214.4H842.7L846.2 235.9 849.8 214.4H862.3L852.2 257.1V278ZM869.2 260.7L866.7 214.4H879.7L877.1 260.7ZM866.7 278V267.2H879.7V278Z" fill="#1c1c28"/>
+ </g>
+</svg>

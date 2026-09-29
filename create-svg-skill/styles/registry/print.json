@@ -1,0 +1,104 @@
+[
+  {
+    "id": "screen-print",
+    "name": "Screen Print",
+    "family": "print",
+    "aliases": ["screenprint", "screen printed", "silkscreen", "serigraph", "gig poster", "serigraphy", "screen print poster", "spot colour print", "spot color print", "limited ink print"],
+    "keywords": ["overprint", "ink layers", "gig poster", "registration", "spot color", "flat inks", "print texture"],
+    "description": "Layered spot-colour printing: 2-6 flat inks that overprint into new colours, bold shapes, halftone tone areas and characteristic mis-registration and ink texture.",
+    "visual_characteristics": [
+      "a strict ink budget (2-6 spot colours) with visible overprint intersections",
+      "bold, high-contrast graphic shapes with knock-outs",
+      "halftone or line-screen for tone",
+      "slight mis-registration, ink speckle and paper showing through"
+    ],
+    "palette": {"guidance": "Choose 3-5 inks (e.g. tomato red, cobalt, mustard, black) on cream/kraft paper. Overprint areas (multiply) are pre-computed as darker mixed fills. No gradients.", "swatches": ["#f1e7d3", "#e8432e", "#2a4dab", "#f2b134", "#141414", "#5e2a54"]},
+    "geometry": "Simplified poster shapes, thick contours or knock-outs, strong silhouettes; geometric reduction; text and image built from the same blocky shapes.",
+    "stroke": "Prefer shape-based; if lines are used they are thick and blunt (butt/round) and belong to one ink layer.",
+    "texture": "Halftone dots (<pattern>), speckled ink dropout (single feTurbulence mask on one ink layer), slight paper grain.",
+    "composition": "Poster: dominant central image, bold title; asymmetric balance; margins consistent; overprint moments used deliberately at overlaps.",
+    "typography": "Bold display type, often integrated with the image; each letter in a single ink or knocked out of a shape.",
+    "lighting_depth": "Graphic light through ink values and overprints; no gradients; depth by layered opacity multiplication simulated with explicit mixed colours.",
+    "svg_techniques": [
+      "one <g id=\"ink-red\"> etc. per ink layer; layer offsets of 0.5-1.5 units for mis-registration",
+      "explicit overprint shapes: duplicate the overlap area via clip-path and fill with the mixed colour (or use mix-blend-mode: multiply with a fallback)",
+      "halftone patterns via <pattern> sized to the print screen; different dot radii in different areas",
+      "speckle mask via feTurbulence thresholded by feComponentTransfer (only on one layer)"
+    ],
+    "avoid": ["gradients", "more than 6 inks", "photographic shading", "perfect alignment everywhere", "blur/glow"],
+    "compatible_with": ["risograph", "vintage-poster", "comic-book", "editorial-illustration", "minimal-modern", "geometric", "bauhaus", "brutalist", "monochrome", "graffiti-street-art", "ukiyo-e", "paper-cutout", "art-deco"],
+    "conflicts_with": ["glassmorphism", "clay-soft-3d", "frutiger-aero", "y2k", "scientific-illustration"],
+    "best_for": ["poster", "illustration", "logo", "scene"],
+    "detail_level": "medium",
+    "checks": {"max_colors": 9, "max_gradients": 0, "max_filters": 2, "min_groups": 3},
+    "reference": "print.md#screen-print"
+  },
+  {
+    "id": "risograph",
+    "name": "Risograph",
+    "family": "print",
+    "aliases": ["riso", "riso print", "risograph print", "riso style", "risograph style", "duplicator print", "riso texture", "zine print", "two color riso"],
+    "keywords": ["fluorescent pink", "riso blue", "grainy ink", "zine", "halftone grain", "misregistered"],
+    "description": "Grainy two-to-three-ink duplicator prints: fluorescent inks with overprint, coarse halftone/grain shading, gentle mis-registration and matte uncoated paper.",
+    "visual_characteristics": [
+      "2-3 vivid inks (fluorescent pink, riso blue, sunflower yellow, teal) overprinting",
+      "coarse grain and dot gradients instead of smooth gradients",
+      "off-register layers with visible overlap colours",
+      "matte cream paper; slightly soft, imperfect edges"
+    ],
+    "palette": {"guidance": "Riso inks: fluorescent pink #ff48b0, blue #0078bf, yellow #ffe800, teal #00a95c, orange #ff6c2f, purple #765ba7; paper #f4efe4. Use 2-3 inks; overprint = multiply mix.", "swatches": ["#f4efe4", "#ff48b0", "#0078bf", "#ffe800", "#00a95c", "#765ba7"]},
+    "geometry": "Bold simple shapes, rounded and slightly irregular; grain fills; chunky lettering; strong silhouettes; layout often playful and off-grid.",
+    "stroke": "Few strokes; where used, thick and round in one ink layer.",
+    "texture": "Grain gradients: shapes filled with a dot/noise pattern whose density varies (via feTurbulence thresholded with feComponentTransfer, or a <pattern> at two densities); paper fibre.",
+    "composition": "Layered overlapping shapes; strong colour blocking; offset duplicates for misregistration; abundant paper margin; playful asymmetry.",
+    "typography": "Chunky friendly display type; overprinted letters offset by 2-3 units in the second ink.",
+    "lighting_depth": "Depth via overprint colour mixing and grain density; no smooth gradients.",
+    "svg_techniques": [
+      "one <g> per ink with mix-blend-mode: multiply (SVG2/CSS) AND a fallback of explicit overlap fill; offset each ink group by (1..3,1..2)",
+      "grain gradient: define filter grain (feTurbulence type=fractalNoise baseFrequency .9 -> feColorMatrix to alpha -> feComposite in SourceGraphic) applied to selected shapes only",
+      "halftone <pattern> with 2 dot sizes for graded areas",
+      "paper background off-white; no pure white"
+    ],
+    "avoid": ["smooth digital gradients", "more than 3-4 inks", "glossy highlights", "perfect registration", "dark black-dominant palettes"],
+    "compatible_with": ["screen-print", "editorial-illustration", "flat-design", "paper-cutout", "hand-drawn-doodle", "childrens-illustration", "geometric", "vintage-poster", "bauhaus", "organic-botanical", "comic-book"],
+    "conflicts_with": ["glassmorphism", "cyberpunk-neon", "clay-soft-3d", "frutiger-aero", "scientific-illustration"],
+    "best_for": ["poster", "illustration", "pattern", "scene"],
+    "detail_level": "medium",
+    "checks": {"max_colors": 9, "max_gradients": 0, "require_elements_any": ["pattern", "filter"], "min_groups": 2},
+    "reference": "print.md#risograph"
+  },
+  {
+    "id": "graffiti-street-art",
+    "name": "Graffiti / Street Art",
+    "family": "print",
+    "aliases": ["graffiti", "street art", "graffiti style", "spray paint", "spray-paint", "urban art", "wildstyle", "tag art", "stencil art", "banksy style", "mural street art", "bubble letters"],
+    "keywords": ["spray", "drips", "tag", "stencil", "bubble letters", "wall mural", "brick wall", "wildstyle"],
+    "description": "Urban wall art: bold outlined lettering or characters, spray gradients and drips, stencil cutouts, arrows, stars and layered tags on textured brick or concrete.",
+    "visual_characteristics": [
+      "chunky outlined lettering (bubble/wildstyle) with 3D drop-extrusions and highlights",
+      "spray-paint softness: fades, halos, drips and overspray",
+      "stencil layering: hard-edged shapes with bridges",
+      "gritty wall textures: brick, concrete, posters and tags"
+    ],
+    "palette": {"guidance": "High-saturation spray colours (hot pink, cyan, acid yellow, orange) with black and white outlines; wall in warm concrete/brick tones. Fills often have a light-to-dark fade.", "swatches": ["#2b2b30", "#7a6a5e", "#ff2e93", "#00d1ff", "#ffe600", "#ff7a00", "#ffffff"]},
+    "geometry": "Rounded, inflated letterforms with overlapping strokes; arrows and crowns; stencil bridges; dynamic diagonals; extrusion shapes.",
+    "stroke": "Layered outlines: inner white highlight line, thick black outline (6-10 units), outer offset shadow; round joins. Drips = tapered vertical paths.",
+    "texture": "Brick or concrete via <pattern>; spray via blurred gradient dots and speckle; grime overlay at low opacity.",
+    "composition": "Piece dominates the wall; slight tilt; supporting tags/characters around; some elements overlapping the frame; energetic and asymmetrical.",
+    "typography": "Draw letters as custom paths (bubbly, overlapping); avoid live text. Small tag signatures in a scrawl.",
+    "lighting_depth": "Fake 3D extrusion behind letters; highlight streaks on top-left; overspray glow around edges.",
+    "svg_techniques": [
+      "letters as stacked paths: extrusion (offset copy in darker tone), fill with linearGradient, black outline stroke, white inner highlight",
+      "drips as thin tapered paths with circular end blobs",
+      "spray fade via radialGradient with soft opacity stops; a single blur filter on overspray layer only",
+      "brick wall as <pattern> with mortar lines; slight colour variation via 3 brick fills"
+    ],
+    "avoid": ["clean corporate typography", "thin lines", "flat white backgrounds", "over-polished geometry", "copying real artists' works or signatures"],
+    "compatible_with": ["comic-book", "sticker", "brutalist", "screen-print", "cyberpunk-neon", "hand-drawn-doodle", "y2k", "pixel-art", "risograph"],
+    "conflicts_with": ["luxury-premium", "art-nouveau", "minimal-modern", "scientific-illustration", "medieval-manuscript", "childrens-illustration"],
+    "best_for": ["poster", "illustration", "sticker", "character"],
+    "detail_level": "high",
+    "checks": {"require_stroke": true, "min_stroke_widths": 2, "min_elements": 25, "min_gradients": 1},
+    "reference": "print.md#graffiti-street-art"
+  }
+]

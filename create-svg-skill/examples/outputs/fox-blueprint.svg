@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+ <title id="t">Fox Drawing Sheet</title>
+ <desc id="d">Blueprint: white linework on cyan-blue grid paper, construction circles, centre lines, dimensions and a title block.</desc>
+ <defs>
+  <pattern id="grid-s" width="16" height="16" patternUnits="userSpaceOnUse">
+   <path d="M16 0H0V16" fill="none" stroke="#5f9be0" stroke-width="1" opacity="0.35"/>
+  </pattern>
+  <pattern id="grid-l" width="80" height="80" patternUnits="userSpaceOnUse">
+   <path d="M80 0H0V80" fill="none" stroke="#7fb4ee" stroke-width="1.5" opacity="0.5"/>
+  </pattern>
+  <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+   <path d="M0 0V10" stroke="#e8f1ff" stroke-width="1.2" opacity="0.55"/>
+  </pattern>
+  <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+   <path d="M0 1L10 5 0 9z" fill="#e8f1ff"/>
+  </marker>
+ </defs>
+ <rect id="paper" width="1024" height="1024" fill="#0f3a6d"/>
+ <rect width="1024" height="1024" fill="url(#grid-s)"/>
+ <rect width="1024" height="1024" fill="url(#grid-l)"/>
+ <rect id="border" x="30" y="30" width="964" height="964" fill="none" stroke="#e8f1ff" stroke-width="4"/>
+ <g id="construction" fill="none" stroke="#9cc8ff" stroke-width="1.5" stroke-dasharray="14 6 3 6">
+  <path d="M370 150V620M180 400H600"/>
+  <circle cx="370" cy="400" r="180"/>
+  <circle cx="370" cy="400" r="120"/>
+  <path d="M60 840H990"/>
+  <path d="M700 640L980 640"/>
+ </g>
+ <g id="fox" fill="none" stroke="#e8f1ff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z" stroke-width="4"/>
+  <path d="M872 486C940 560 962 676 926 742 922 680 900 600 850 540 858 522 866 504 872 486Z" fill="url(#hatch)"/>
+  <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z" stroke-width="4"/>
+  <path d="M600 640C680 640 750 700 752 780 752 816 736 840 700 840L580 840C560 800 556 700 600 640Z"/>
+  <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z" fill="url(#hatch)"/>
+  <path d="M410 545C440 562 472 570 490 600 470 650 458 700 458 770L426 770C412 700 396 610 410 545Z"/>
+  <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z" fill="url(#hatch)"/>
+  <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" stroke-width="4"/>
+  <path d="M490 520L536 516 510 548 468 562Z"/>
+  <path d="M232 486C262 462 292 438 318 430 340 440 372 470 420 492 452 508 480 516 488 528L468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z"/>
+  <path d="M352 300L358 248 392 322Z" fill="url(#hatch)"/>
+  <path d="M452 306L468 262 478 342Z" fill="url(#hatch)"/>
+  <path d="M318 452Q338 436 362 448 340 462 318 452Z"/>
+  <circle cx="236" cy="488" r="10" fill="#e8f1ff"/>
+ </g>
+ <g id="dimensions" fill="none" stroke="#e8f1ff" stroke-width="1.5" font-family="'Courier New',monospace" font-size="20">
+  <path d="M232 130V236M984 470V500M232 180H352M352 180H492"/>
+  <path d="M232 180H492" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <path d="M60 222V840" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <path d="M60 222H340M60 840H300" stroke-dasharray="5 4"/>
+  <path d="M232 880H962" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <path d="M232 850V890M962 850V890"/>
+  <path d="M440 100L400 150"/>
+  <text x="446" y="98" fill="#e8f1ff" stroke="none">A: EAR TIP</text>
+  <text x="264" y="170" fill="#e8f1ff" stroke="none">260</text>
+  <text x="70" y="540" fill="#e8f1ff" stroke="none" transform="rotate(-90 70 540)">618</text>
+  <text x="560" y="912" fill="#e8f1ff" stroke="none">730</text>
+  <path d="M760 400H930L904 476"/>
+  <text x="760" y="390" fill="#e8f1ff" stroke="none">B: BRUSH TIP</text>
+ </g>
+ <g id="title-block" fill="none" stroke="#e8f1ff" stroke-width="2">
+  <rect x="560" y="920" width="410" height="54"/>
+  <path d="M770 920V974"/>
+  <text x="572" y="944" fill="#e8f1ff" stroke="none" font-family="'Courier New',monospace" font-size="18">VULPES VULPES</text>
+  <text x="572" y="965" fill="#e8f1ff" stroke="none" font-family="'Courier New',monospace" font-size="14">SHEET 1/1  SCALE 1:8</text>
+  <text x="784" y="944" fill="#e8f1ff" stroke="none" font-family="'Courier New',monospace" font-size="14">DWG NO. FX-001</text>
+  <text x="784" y="965" fill="#e8f1ff" stroke="none" font-family="'Courier New',monospace" font-size="14">REV A</text>
+ </g>
+</svg>

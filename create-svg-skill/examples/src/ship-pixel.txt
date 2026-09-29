@@ -1,0 +1,37 @@
+; Pixel spaceship (mirrored). Build:
+;   python3 scripts/pixel_grid.py examples/src/ship-pixel.txt --mirror -o OUT --outline "#0b0b1a" --pad 4 --bg "#141433"
+@w=#f2f2f2
+@l=#9bd0ff
+@b=#3a7bd5
+@d=#1f3f8f
+@r=#ff4d6d
+@o=#ffb703
+@y=#ffe66d
+@g=#6c757d
+@k=#2b2d42
+...............w
+..............ww
+..............ll
+.............lll
+.............lbl
+............wlbl
+............wlbl
+...........wwbbd
+...........wbbbd
+...........wbbbd
+..........wwbbbd
+.....r....wbbbdd
+.....r...wwbbbdd
+....rr...wbbbddw
+....rr..wwbbddww
+...rrr.wwgbbdwww
+...rrrwwggbddwwg
+..rrrrwggkbdwwgg
+..rrrwwgkkbwwggg
+.rrrrwggkkwwgggg
+.rrrwwggkkggggkk
+rrrrwgggkkggkkk.
+rrr..ggkk..kk...
+rr....oo....o...
+......yo....y...
+......y.........

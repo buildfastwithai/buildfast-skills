@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+ <title id="t">Paper Fox</title>
+ <desc id="d">Paper cut-out: stacked flat sheets, no outlines, soft cast shadow under every layer, a little fibre texture.</desc>
+ <defs>
+  <filter id="sh" x="-10%" y="-10%" width="125%" height="125%">
+   <feDropShadow dx="5" dy="9" stdDeviation="6" flood-color="#3b2a1a" flood-opacity=".38"/>
+  </filter>
+  <filter id="shs" x="-10%" y="-10%" width="125%" height="125%">
+   <feDropShadow dx="3" dy="4" stdDeviation="3" flood-color="#3b2a1a" flood-opacity=".35"/>
+  </filter>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#f7d9a0"/>
+   <stop offset="1" stop-color="#f3efe2"/>
+  </linearGradient>
+ </defs>
+ <rect id="sheet" width="1024" height="1024" fill="url(#dusk)"/>
+ <g id="sun" filter="url(#shs)">
+  <circle cx="780" cy="270" r="120" fill="#f4a259"/>
+  <circle cx="780" cy="270" r="78" fill="#f7c873"/>
+ </g>
+ <g id="clouds" fill="#fffaf0" filter="url(#shs)">
+  <path d="M80 250h190a34 34 0 0 0-22-60 50 50 0 0 0-92-10 40 40 0 0 0-76 70z"/>
+  <path d="M420 150h140a26 26 0 0 0-16-46 38 38 0 0 0-70-8 30 30 0 0 0-54 54z"/>
+ </g>
+ <g id="hills">
+  <path d="M0 610C160 540 300 580 440 640S760 700 1024 600V1024H0Z" fill="#7fb59a" filter="url(#sh)"/>
+  <path d="M0 730C180 690 330 720 500 770S820 800 1024 730V1024H0Z" fill="#4e8f7a" filter="url(#sh)"/>
+  <path d="M0 840C220 810 420 830 600 850S880 850 1024 830V1024H0Z" fill="#2f6b62" filter="url(#sh)"/>
+ </g>
+ <g id="trees" fill="#2f6b62" filter="url(#shs)">
+  <path d="M90 640l46-120 46 120z"/>
+  <path d="M104 590l32-90 32 90z" fill="#3f8272"/>
+  <path d="M930 660l40-104 40 104z"/>
+ </g>
+ <g id="fox" filter="url(#sh)">
+  <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z" fill="#e0662c"/>
+  <path d="M872 486C940 560 962 676 926 742 922 680 900 600 850 540 858 522 866 504 872 486Z" fill="#fff4e0"/>
+  <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z" fill="#f07a35"/>
+  <path d="M600 640C680 640 750 700 752 780 752 816 736 840 700 840L580 840C560 800 556 700 600 640Z" fill="#e0662c" filter="url(#shs)"/>
+  <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z" fill="#5a3324"/>
+  <path d="M410 545C440 562 472 570 490 600 470 650 458 700 458 770L426 770C412 700 396 610 410 545Z" fill="#fff4e0" filter="url(#shs)"/>
+  <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z" fill="#3a2019"/>
+  <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#f07a35"/>
+  <path d="M490 520L536 516 510 548 468 562Z" fill="#fff4e0"/>
+  <path d="M232 486C262 462 292 438 318 430 340 440 372 470 420 492 452 508 480 516 488 528L468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#fff4e0" filter="url(#shs)"/>
+  <path d="M352 300L358 248 392 322Z" fill="#3a2019"/>
+  <path d="M452 306L468 262 478 342Z" fill="#3a2019"/>
+  <path d="M318 452Q338 436 362 448 340 462 318 452Z" fill="#2b1a14"/>
+  <circle cx="236" cy="488" r="10" fill="#2b1a14"/>
+ </g>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+ <title id="t">Night Fox</title>
+ <desc id="d">Horror: near-black forest, cold moon, layered fog, roughened silhouette revealing only red eyes, vignette.</desc>
+ <defs>
+  <radialGradient id="moon-g" cx="0.5" cy="0.5" r="0.5">
+   <stop offset="0" stop-color="#dfe8e2"/>
+   <stop offset="0.6" stop-color="#b9c7bf"/>
+   <stop offset="1" stop-color="#8fa39a"/>
+  </radialGradient>
+  <radialGradient id="moonglow" cx="0.5" cy="0.5" r="0.5">
+   <stop offset="0" stop-color="#8fa39a" stop-opacity="0.45"/>
+   <stop offset="1" stop-color="#8fa39a" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fog-g" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#4a5b52" stop-opacity="0"/>
+   <stop offset="0.5" stop-color="#4a5b52"/>
+   <stop offset="1" stop-color="#4a5b52" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="vig" cx="0.45" cy="0.45" r="0.75">
+   <stop offset="0.55" stop-color="#050706" stop-opacity="0"/>
+   <stop offset="1" stop-color="#050706" stop-opacity="0.95"/>
+  </radialGradient>
+  <radialGradient id="eyeglow" cx="0.5" cy="0.5" r="0.5">
+   <stop offset="0" stop-color="#ff2a1a" stop-opacity="0.9"/>
+   <stop offset="1" stop-color="#ff2a1a" stop-opacity="0"/>
+  </radialGradient>
+  <clipPath id="canvas">
+   <rect width="1024" height="1024"/>
+  </clipPath>
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+   <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" seed="7"/>
+   <feDisplacementMap in="SourceGraphic" scale="9"/>
+  </filter>
+ </defs>
+ <rect id="night" width="1024" height="1024" fill="#0b120f"/>
+ <circle id="moon-halo" cx="470" cy="430" r="470" fill="url(#moonglow)" clip-path="url(#canvas)"/>
+ <circle id="moon" cx="470" cy="430" r="290" fill="url(#moon-g)"/>
+ <g id="craters" fill="#8fa39a" opacity="0.35">
+  <circle cx="600" cy="300" r="46"/>
+  <circle cx="330" cy="620" r="30"/>
+  <circle cx="640" cy="560" r="22"/>
+  <circle cx="360" cy="260" r="18"/>
+ </g>
+ <g id="far-trees" fill="#16211c" filter="url(#rough)" clip-path="url(#canvas)">
+  <path d="M34 900L52 0 67 0 86 900ZM60 512L-25 457 60 502ZM60 342L198 280 60 332ZM60 569L163 489 60 559ZM60 583L146 514 60 573ZM60 265L-90 203 60 255ZM60 571L-93 480 60 561ZM60 468L192 380 60 458Z"/>
+  <path d="M154 900L165 140 174 140 186 900ZM170 198L100 157 170 188ZM170 556L255 513 170 546ZM170 617L10 502 170 607ZM170 267L284 196 170 257ZM170 511L22 426 170 501ZM170 209L272 122 170 199ZM170 558L86 524 170 548Z"/>
+  <path d="M910 900L931-20 949-20 970 900ZM940 446L843 378 940 436ZM940 232L819 129 940 222ZM940 318L860 258 940 308ZM940 279L1039 196 940 269ZM940 449L793 352 940 439ZM940 168L864 102 940 158ZM940 554L797 478 940 544Z"/>
+  <path d="M846 900L855 200 864 200 874 900ZM860 555L727 471 860 545ZM860 617L759 531 860 607ZM860 318L777 263 860 308ZM860 538L717 463 860 528ZM860 258L717 144 860 248ZM860 318L783 277 860 308ZM860 290L928 242 860 280Z"/>
+  <path d="M610 900L617 280 623 280 630 900ZM620 451L759 329 620 441ZM620 407L475 294 620 397ZM620 590L469 521 620 580ZM620 508L521 464 620 498ZM620 590L519 540 620 580ZM620 360L695 299 620 350ZM620 631L692 602 620 621Z"/>
+ </g>
+ <path id="ground" d="M0 846C200 830 420 850 600 842S900 830 1024 846V1024H0Z" fill="#070a09"/>
+ <g id="fox" fill="#050706" filter="url(#rough)">
+  <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z"/>
+  <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z"/>
+  <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z"/>
+  <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z"/>
+  <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z"/>
+ </g>
+ <g id="rim" fill="none" stroke="#8fa39a" stroke-width="3" opacity="0.55" filter="url(#rough)">
+  <path d="M468 240L492 362C510 392 514 430 512 462L536 516"/>
+  <path d="M530 492C610 500 650 540 690 580 750 640 780 720 760 800"/>
+  <path d="M872 486C940 560 962 676 924 752"/>
+ </g>
+ <g id="eyes">
+  <circle cx="340" cy="449" r="40" fill="url(#eyeglow)"/>
+  <path d="M318 452Q338 438 362 446 342 460 318 452Z" fill="#ff2a1a"/>
+  <circle cx="346" cy="449" r="3" fill="#ffd1c9"/>
+ </g>
+ <g id="fog" fill="url(#fog-g)">
+  <rect y="620" width="1024" height="120" opacity="0.25"/>
+  <rect y="760" width="1024" height="140" opacity="0.35"/>
+  <rect y="830" width="1024" height="194" opacity="0.5"/>
+ </g>
+ <rect id="vignette" width="1024" height="1024" fill="url(#vig)"/>
+</svg>

@@ -1,0 +1,138 @@
+[
+  {
+    "id": "blueprint",
+    "name": "Blueprint",
+    "family": "technical",
+    "aliases": ["technical schematic", "blueprints", "blueprint style", "technical blueprint", "cyanotype plan", "engineering drawing", "schematic", "architectural plan", "construction drawing", "draft drawing", "cad drawing", "technical drawing", "engineering schematic"],
+    "keywords": ["schematic", "dimensions", "grid paper", "callouts", "plan view", "measurements", "construction lines", "annotation"],
+    "description": "White/cyan linework on cyanotype blue: a technical grid, precise construction geometry, dimension lines, callouts and a title block, organised like an engineering sheet.",
+    "visual_characteristics": [
+      "deep blue base (#0b3d91-#104a9c) with a two-level grid (minor and major lines)",
+      "line hierarchy: thick object outline, medium hidden/section lines, hairline construction/dimension lines",
+      "dimension arrows, leader lines, numbered callouts, centre lines (dash-dot), section marks",
+      "title block with drawing number, scale, notes; small revision table"
+    ],
+    "palette": {"guidance": "Base cyanotype blue (#0d3b8c) with a slightly lighter grid (#2a5cb5 at 40-60% opacity), linework in white (#f2f7ff) and pale cyan (#9fd4ff). No other hues; accent only for a highlighted dimension (pale yellow) if needed.", "swatches": ["#0d3b8c", "#164a9f", "#2a5cb5", "#9fd4ff", "#dbeaff", "#f7fbff"]},
+    "geometry": "Orthographic views (top/front/side) or plan; exact circles, arcs and tangents; centre marks; constructions drawn (bisectors, arcs) faintly; everything aligned to the grid.",
+    "stroke": "Line hierarchy: 2.5 (outline), 1.5 (edges), 1 (hidden dashed 6 3), 0.6 (dimension/construction), 0.4 (grid). Butt caps, miter joins. Dash-dot (12 3 2 3) for centre lines.",
+    "texture": "Paper grid only; optional faint fold creases; no shading.",
+    "composition": "Sheet layout: outer border, inner drawing area, title block bottom-right, main view centred, secondary views arranged around it; notes in small caps at left; scale bar.",
+    "typography": "Monospace or single-stroke technical lettering (uppercase), 3 sizes; dimension text centred on dimension lines with a gap.",
+    "lighting_depth": "None. Depth by projection lines between views and line hierarchy.",
+    "svg_techniques": [
+      "grid = two <pattern>s (10 and 50 unit) filled into a rect",
+      "dimension line as reusable <marker> arrowheads + <line> + <text> group defined via <symbol>",
+      "dashed styles through stroke-dasharray classes (hidden, centre)",
+      "title block as a table of <rect>/<line>/<text>; keep text as <text> monospace with generic fallback"
+    ],
+    "avoid": ["shading and gradients", "colour beyond blue/white/cyan", "organic decoration", "misaligned annotations", "inconsistent line weights", "drop shadows"],
+    "compatible_with": ["technical-illustration", "sci-fi", "retro-futurism", "cyberpunk-neon", "minimal-modern", "monochrome", "isometric", "geometric", "infographic"],
+    "conflicts_with": ["hand-drawn-doodle", "childrens-illustration", "frutiger-aero", "clay-soft-3d", "art-nouveau", "graffiti-street-art"],
+    "best_for": ["illustration", "infographic", "poster", "icon"],
+    "detail_level": "high",
+    "checks": {"dark_base": true, "require_stroke": true, "min_stroke_widths": 3, "require_elements_any": ["pattern"], "require_text": true, "max_gradients": 0, "max_filters": 0},
+    "reference": "technical.md#blueprint"
+  },
+  {
+    "id": "technical-illustration",
+    "name": "Technical Illustration",
+    "family": "technical",
+    "aliases": ["technical illustration", "technical schematic", "tech illustration", "exploded view", "cutaway", "cutaway diagram", "instruction manual art", "ikea style", "patent drawing", "manual illustration", "line drawing technical", "engineering illustration", "technical diagram"],
+    "keywords": ["exploded", "cross-section", "cutaway", "assembly", "patent", "manual", "parts diagram", "callout numbers"],
+    "description": "Clear, explanatory line-and-tone drawings: precise linework with consistent weight hierarchy, cutaways/exploded views, numbered callouts and restrained tone to explain how something works.",
+    "visual_characteristics": [
+      "accurate proportions and parallel/axonometric views",
+      "clean contour + interior line hierarchy; hidden edges dashed when needed",
+      "light spot tones (greys or 1-2 colours) to separate parts; sparse shading",
+      "callout numbers with leader lines; arrows for motion/assembly; exploded parts aligned on axes"
+    ],
+    "palette": {"guidance": "White paper, near-black linework, a mid/light grey tone for parts, and 1-2 signal colours (safety orange, blue) to highlight moving or key parts. Low saturation elsewhere.", "swatches": ["#ffffff", "#1a1a1a", "#c8ccd0", "#8a9199", "#ff6a1f", "#1f6fff"]},
+    "geometry": "Isometric/axonometric or orthographic; exact circles as ellipses in projection; consistent draft angles; parts separated along exploded axes with dashed alignment lines.",
+    "stroke": "Weights: 2 (silhouette), 1.2 (feature edges), 0.6 (detail/hatching), dashed 0.8 (hidden/alignment). Round joins for organic parts, miter for machined parts. Consistent across the sheet.",
+    "texture": "Cross-hatching and fine line shading on curved parts; stipple for cast metal; parallel section hatch at 45 degrees in cutaways.",
+    "composition": "Hero assembly centred, exploded parts fan along an axis, numbered callouts placed radially outside the drawing; legend or parts list at side.",
+    "typography": "Single-stroke sans, small; callout numbers in circles; consistent size.",
+    "lighting_depth": "Minimal: tone by direction to a single light (top-left), no cast shadows except a faint ground shadow; depth by overlap and line weight.",
+    "svg_techniques": [
+      "define reusable part symbols and <use> them in the exploded layout",
+      "dashed alignment lines via stroke-dasharray class; arrows via <marker>",
+      "section hatch as <pattern rotate(45)> clipped to cut faces",
+      "callouts as a group: circle + text + leader line, reused via <symbol>"
+    ],
+    "avoid": ["decorative gradients", "wobbly lines", "inconsistent line weights", "unlabelled arrows", "colour overload", "glows/blurs"],
+    "compatible_with": ["blueprint", "scientific-illustration", "isometric", "minimal-modern", "monochrome", "infographic", "sci-fi", "retro-futurism", "flat-design"],
+    "conflicts_with": ["hand-drawn-doodle", "graffiti-street-art", "art-nouveau", "cyberpunk-neon", "y2k", "childrens-illustration"],
+    "best_for": ["illustration", "infographic", "icon"],
+    "detail_level": "high",
+    "checks": {"require_stroke": true, "min_stroke_widths": 2, "require_text": true, "max_filters": 0, "max_gradients": 2, "light_base": true},
+    "reference": "technical.md#technical-illustration"
+  },
+  {
+    "id": "scientific-illustration",
+    "name": "Scientific Illustration",
+    "family": "technical",
+    "aliases": ["scientific", "scientific drawing", "natural history illustration", "naturalist illustration", "field guide", "field guide illustration", "anatomical illustration", "anatomy drawing", "specimen plate", "biological illustration", "zoological plate", "encyclopedia plate", "audubon style"],
+    "keywords": ["specimen", "plate", "labels", "latin name", "anatomy", "field guide", "cross section", "taxonomy"],
+    "description": "Accurate, information-rich natural-history plates: naturalistic form with subtle tonal modelling, fine linework, labelled parts, scale bars and a calm specimen-plate layout.",
+    "visual_characteristics": [
+      "naturalistic proportions and careful anatomy",
+      "fine contour + hatching/stipple/soft washes for form",
+      "multiple views (whole, detail, cross-section) arranged on a plate",
+      "labels with leader lines, Latin names, scale bar; cream plate background"
+    ],
+    "palette": {"guidance": "Cream plate (#f5efe0), sepia/brown-black ink (#3a2a1e), naturalistic muted washes for specimens (olive, ochre, umber, slate), one careful accent for the key feature.", "swatches": ["#f5efe0", "#3a2a1e", "#8a6d3b", "#6d7f4f", "#a86b4a", "#5f7a8a", "#d9c9a0"]},
+    "geometry": "Organic forms with accurate structure, symmetric where the species is symmetric; overlapping scales/feathers/leaves as repeated units with variation; plate border rule.",
+    "stroke": "Thin (0.5-1.2) ink contours with varied weight; cross-hatch and stipple for tone; leader lines 0.5; round caps.",
+    "texture": "Stipple (small circles via <pattern>), hatching for shadows, watercolour wash gradients within contours, faint paper tone.",
+    "composition": "Plate layout: main specimen large and slightly off-centre, detail insets, caption block at bottom, inset scale bar, thin double border.",
+    "typography": "Italic serif for Latin names, small caps for headings, tiny sans for callouts.",
+    "lighting_depth": "Soft single light, gentle form shadows through hatch/wash; no cast shadows; delicate highlight left as paper.",
+    "svg_techniques": [
+      "washes via gradient fills inside contour shapes with 0.6-0.9 opacity; do not blur",
+      "hatching by clipped <pattern> of fine lines or explicit line groups following form",
+      "repeated units (scales, feathers) via <use> with per-instance transform and tone variation",
+      "labels as <text> with leader <path>s"
+    ],
+    "avoid": ["cartoon proportions", "heavy outlines", "saturated colours", "flat clip-art fills", "unlabelled plates", "inaccurate anatomy"],
+    "compatible_with": ["organic-botanical", "technical-illustration", "medieval-manuscript", "monochrome", "infographic", "vintage-poster", "art-nouveau"],
+    "conflicts_with": ["cyberpunk-neon", "pixel-art", "y2k", "flat-design", "glassmorphism", "comic-book", "clay-soft-3d", "low-poly"],
+    "best_for": ["illustration", "infographic", "poster"],
+    "detail_level": "high",
+    "checks": {"require_stroke": true, "require_text": true, "min_elements": 30, "light_base": true, "max_filters": 1},
+    "reference": "technical.md#scientific-illustration"
+  },
+  {
+    "id": "infographic",
+    "name": "Infographic",
+    "family": "technical",
+    "aliases": ["infographics", "info graphic", "data visualization", "data viz", "dataviz", "explainer graphic", "statistics graphic", "process diagram", "timeline graphic", "information design", "visual explainer", "chart graphic"],
+    "keywords": ["chart", "data", "statistics", "timeline", "steps", "comparison", "process", "flow", "kpi"],
+    "description": "Information design first: a strict hierarchy, consistent icon and chart grammar, aligned modules, and colour used to encode meaning rather than decorate.",
+    "visual_characteristics": [
+      "clear reading order: title -> key number/insight -> supporting modules -> source/footer",
+      "consistent icon style and chart styling (one stroke weight, one corner radius)",
+      "colour encodes categories or emphasis; neutral greys for context",
+      "generous alignment, spacing and grouping (proximity, containers, dividers)"
+    ],
+    "palette": {"guidance": "Neutral base (white/off-white/dark), 1 primary accent + 3-4 categorical colours that are distinguishable (also by lightness for colour-blind safety), grey for secondary data.", "swatches": ["#ffffff", "#111827", "#2563eb", "#f59e0b", "#10b981", "#ef4444", "#9ca3af"]},
+    "geometry": "Grid-locked modules; bars, lines, rings, dots as data marks with exact proportions; rounded rects for cards; consistent icon grid (e.g. 24 units with 2 unit stroke).",
+    "stroke": "Uniform 2 unit stroke for icons and chart axes (round caps/joins); hairline 1 for gridlines; no other weights.",
+    "texture": "None. Subtle background tints for grouping.",
+    "composition": "12-column mental grid; strong left-aligned or centred axis; hero stat large; charts scaled to data (compute bar lengths, angles from real numbers); footer with source.",
+    "typography": "Two sizes ratio 1:1.6+ (title/labels), one family (sans), tabular-friendly numerals; hero numbers 3-4x body; keep labels short and legible at intended size (>= 12 units at 1000 wide).",
+    "lighting_depth": "Flat. Optional 1-level card shadow at very low opacity; avoid 3D charts.",
+    "svg_techniques": [
+      "compute all geometry from data in code (Python/JS) instead of eyeballing; emit <rect>/<path> with exact values",
+      "icons as <symbol> in defs with a consistent 24 grid; <use> for each",
+      "text as <text> with text-anchor for alignment; add <title> for accessibility",
+      "group per module: id=\"header\", \"chart-1\", \"legend\", \"footer\""
+    ],
+    "avoid": ["chartjunk", "3D pie/bar charts", "decorative gradients", "unaligned labels", "more than ~6 colours", "illegible small text", "invented data presented as real"],
+    "compatible_with": ["flat-design", "minimal-modern", "blueprint", "technical-illustration", "isometric", "editorial-illustration", "monochrome", "geometric", "bauhaus", "brutalist"],
+    "conflicts_with": ["horror", "gothic", "medieval-manuscript", "graffiti-street-art", "sumi-e", "art-nouveau"],
+    "best_for": ["infographic", "poster", "illustration"],
+    "detail_level": "medium",
+    "checks": {"require_text": true, "min_groups": 3, "max_filters": 0, "max_gradients": 2, "max_colors": 12},
+    "reference": "technical.md#infographic"
+  }
+]

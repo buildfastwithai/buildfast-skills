@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+ <title id="t">Isometric Island</title>
+ <desc id="d">Isometric: 30-degree axonometric island town, three-tone faces from a single top-left light, no perspective.</desc>
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#bfe3f2"/>
+   <stop offset="1" stop-color="#f6f1e7"/>
+  </linearGradient>
+ </defs>
+ <rect id="sky-bg" width="1600" height="900" fill="url(#sky)"/>
+ <g id="clouds" fill="#fff" opacity="0.9">
+  <ellipse cx="300" cy="170" rx="120" ry="34"/>
+  <ellipse cx="350" cy="148" rx="70" ry="40"/>
+  <ellipse cx="1280" cy="220" rx="140" ry="36"/>
+  <ellipse cx="1240" cy="196" rx="70" ry="40"/>
+ </g>
+ <ellipse id="shadow" cx="800" cy="790" rx="470" ry="66" fill="#1d3557" opacity="0.12"/>
+ <g id="island">
+  <polygon points="800,200 1236.5,452 800,704 363.5,452" fill="#8bd17c"/>
+  <polygon points="363.5,495.2 800,747.2 800,704 363.5,452" fill="#5f9e56"/>
+  <polygon points="1236.5,495.2 800,747.2 800,704 1236.5,452" fill="#4c8446"/>
+  <polygon points="800,243.2 1236.5,495.2 800,747.2 363.5,495.2" fill="#c9a26b"/>
+  <polygon points="363.5,574.4 800,826.4 800,747.2 363.5,495.2" fill="#a57d4d"/>
+  <polygon points="1236.5,574.4 800,826.4 800,747.2 1236.5,495.2" fill="#8a663c"/>
+  <polygon points="581.8,378.2 924.7,576.2 862.4,612.2 519.4,414.2" fill="#d8d2c4"/>
+  <polygon points="519.4,416 862.4,614 862.4,612.2 519.4,414.2" fill="#bdb5a3"/>
+  <polygon points="924.7,578 862.4,614 862.4,612.2 924.7,576.2" fill="#aaa190"/>
+  <polygon points="1018.2,378.2 1080.6,414.2 862.4,540.2 800,504.2" fill="#d8d2c4"/>
+  <polygon points="800,506 862.4,542 862.4,540.2 800,504.2" fill="#bdb5a3"/>
+  <polygon points="1080.6,416 862.4,542 862.4,540.2 1080.6,414.2" fill="#aaa190"/>
+  <polygon points="800,92 924.7,164 800,236 675.3,164" fill="#f2f0ea"/>
+  <polygon points="675.3,344 800,416 800,236 675.3,164" fill="#d9d4c9"/>
+  <polygon points="924.7,344 800,416 800,236 924.7,164" fill="#bdb6a8"/>
+  <polygon points="684.6,317 697.1,324.2 697.1,304.4 684.6,297.2" fill="#4a90c2"/>
+  <polygon points="715.8,335 728.3,342.2 728.3,322.4 715.8,315.2" fill="#4a90c2"/>
+  <polygon points="747,353 759.5,360.2 759.5,340.4 747,333.2" fill="#4a90c2"/>
+  <polygon points="778.2,371 790.6,378.2 790.6,358.4 778.2,351.2" fill="#4a90c2"/>
+  <polygon points="684.6,281 697.1,288.2 697.1,268.4 684.6,261.2" fill="#4a90c2"/>
+  <polygon points="715.8,299 728.3,306.2 728.3,286.4 715.8,279.2" fill="#4a90c2"/>
+  <polygon points="747,317 759.5,324.2 759.5,304.4 747,297.2" fill="#4a90c2"/>
+  <polygon points="778.2,335 790.6,342.2 790.6,322.4 778.2,315.2" fill="#4a90c2"/>
+  <polygon points="684.6,245 697.1,252.2 697.1,232.4 684.6,225.2" fill="#4a90c2"/>
+  <polygon points="715.8,263 728.3,270.2 728.3,250.4 715.8,243.2" fill="#4a90c2"/>
+  <polygon points="747,281 759.5,288.2 759.5,268.4 747,261.2" fill="#4a90c2"/>
+  <polygon points="778.2,299 790.6,306.2 790.6,286.4 778.2,279.2" fill="#4a90c2"/>
+  <polygon points="684.6,209 697.1,216.2 697.1,196.4 684.6,189.2" fill="#4a90c2"/>
+  <polygon points="715.8,227 728.3,234.2 728.3,214.4 715.8,207.2" fill="#4a90c2"/>
+  <polygon points="747,245 759.5,252.2 759.5,232.4 747,225.2" fill="#4a90c2"/>
+  <polygon points="778.2,263 790.6,270.2 790.6,250.4 778.2,243.2" fill="#4a90c2"/>
+  <polygon points="800,59.6 949.6,146 800,232.4 650.4,146" fill="#e76f51"/>
+  <polygon points="650.4,164 800,250.4 800,232.4 650.4,146" fill="#c65a3f"/>
+  <polygon points="949.6,164 800,250.4 800,232.4 949.6,146" fill="#a84a33"/>
+  <polygon points="1080.6,362 1174.1,416 1080.6,470 987.1,416" fill="#f4d58d"/>
+  <polygon points="987.1,488 1080.6,542 1080.6,470 987.1,416" fill="#d9b56a"/>
+  <polygon points="1174.1,488 1080.6,542 1080.6,470 1174.1,416" fill="#bf9a52"/>
+  <polygon points="996.4,461 1008.9,468.2 1008.9,448.4 996.4,441.2" fill="#6b4b33"/>
+  <polygon points="1027.6,479 1040.1,486.2 1040.1,466.4 1027.6,459.2" fill="#6b4b33"/>
+  <polygon points="1058.8,497 1071.2,504.2 1071.2,484.4 1058.8,477.2" fill="#6b4b33"/>
+  <polygon points="1080.6,362 1174.1,416 1127.3,392.6 1033.8,338.6" fill="#c65a3f"/>
+  <polygon points="1033.8,338.6 1127.3,392.6 1080.6,470 987.1,416" fill="#e76f51"/>
+  <polygon points="1174.1,416 1080.6,470 1127.3,392.6" fill="#c65a3f"/>
+  <polygon points="519.4,362 612.9,416 535,461 441.5,407" fill="#a8dadc"/>
+  <polygon points="441.5,479 535,533 535,461 441.5,407" fill="#86b9bc"/>
+  <polygon points="612.9,488 535,533 535,461 612.9,416" fill="#6e9fa2"/>
+  <polygon points="450.8,452 463.3,459.2 463.3,439.4 450.8,432.2" fill="#1d3557"/>
+  <polygon points="482,470 494.5,477.2 494.5,457.4 482,450.2" fill="#1d3557"/>
+  <polygon points="513.2,488 525.7,495.2 525.7,475.4 513.2,468.2" fill="#1d3557"/>
+  <polygon points="519.4,362 612.9,416 574,395.3 480.4,341.3" fill="#35627e"/>
+  <polygon points="480.4,341.3 574,395.3 535,461 441.5,407" fill="#457b9d"/>
+  <polygon points="612.9,416 535,461 574,395.3" fill="#35627e"/>
+  <polygon points="800,470 877.9,515 800,560 722.1,515" fill="#ffb4a2"/>
+  <polygon points="722.1,641 800,686 800,560 722.1,515" fill="#e5989b"/>
+  <polygon points="877.9,641 800,686 800,560 877.9,515" fill="#c9797d"/>
+  <polygon points="731.4,614 743.9,621.2 743.9,601.4 731.4,594.2" fill="#6d597a"/>
+  <polygon points="762.6,632 775.1,639.2 775.1,619.4 762.6,612.2" fill="#6d597a"/>
+  <polygon points="731.4,578 743.9,585.2 743.9,565.4 731.4,558.2" fill="#6d597a"/>
+  <polygon points="762.6,596 775.1,603.2 775.1,583.4 762.6,576.2" fill="#6d597a"/>
+  <polygon points="800,448.4 890.4,500.6 800,552.8 709.6,500.6" fill="#6d597a"/>
+  <polygon points="709.6,515 800,567.2 800,552.8 709.6,500.6" fill="#574766"/>
+  <polygon points="890.4,515 800,567.2 800,552.8 890.4,500.6" fill="#433652"/>
+ </g>
+ <g id="trees">
+  <g transform="translate(955.9 290)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(899.8 365.6)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(1024.5 509.6)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(588 311.6)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(603.6 511.4)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(959 551)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+  <g transform="translate(781.3 340.4)">
+   <rect x="-4" y="-26" width="8" height="26" fill="#6b4b33"/>
+   <circle cy="-48" r="26" fill="#3f8f5a"/>
+   <circle cx="-8" cy="-56" r="14" fill="#62b27a"/>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "pixel-art",
+    "name": "Pixel Art",
+    "family": "pixel-retro",
+    "aliases": ["pixel", "pixelart", "pixelated", "pixel style", "sprite", "sprite art", "pixel sprite", "low res pixel", "bitmap sprite"],
+    "keywords": ["pixels", "sprite sheet", "tile map", "low resolution", "low res"],
+    "description": "Artwork drawn on a strict integer grid with hard edges, deliberate colour clusters and no anti-aliasing. Every pixel is a decision; form comes from clusters, dithering and readable silhouettes.",
+    "visual_characteristics": [
+      "single square grid (e.g. 16x16, 32x32, 64x64); every shape is an integer-aligned block",
+      "limited palette (typically 8-24 colours) organised in hue-shifted ramps",
+      "1-pixel dark outline or selective outlining; clean staircase lines (2:1 or 1:1 slopes)",
+      "clusters instead of noise; dithering only where it adds form"
+    ],
+    "palette": {"guidance": "Hue-shifted ramps of 3-5 colours per material: shadows shift toward cool/purple, highlights toward warm/yellow. Keep a shared dark outline colour that is NOT pure black. 8-24 colours total.", "swatches": ["#1a1423", "#3d2c54", "#6b4a8e", "#e8702a", "#f7b267", "#fdf0d5", "#3e7cb1", "#7ec8a4"]},
+    "geometry": "Rectangles on integer coordinates only. Diagonals as clean 1:1 or 2:1 staircases; circles as classic pixel-circle arrangements. No curves, no sub-pixel offsets, no rotation except multiples of 90 degrees.",
+    "stroke": "No SVG strokes. Outlines are pixels (cells) of an outline colour. Selective outlining: darker tone of the fill on the lit side.",
+    "texture": "Ordered (Bayer 2x2/4x4) or hand-placed dithering for gradients and material texture, kept on the grid.",
+    "composition": "Design at the target grid size first (e.g. 32x32), strong silhouette, 1-2 px padding. Even pixel size everywhere (no mixed-resolution pixels).",
+    "typography": "Bitmap-style letters built from the same grid (5x7 or 3x5 cells). Do not use <text> with smooth fonts.",
+    "lighting_depth": "Two-to-three-step cel shading with a fixed light direction (top-left). Ground shadow as a dithered or flat ellipse of cells.",
+    "svg_techniques": [
+      "set shape-rendering=\"crispEdges\" on the root <svg>",
+      "author sprites as ASCII with scripts/pixel_grid.py -> one merged <path> per colour, integer coordinates",
+      "viewBox equals the grid size (e.g. 0 0 32 32) so it scales by integer factors",
+      "group per material (id=\"fur\", \"outline\", \"eyes\") for editability"
+    ],
+    "avoid": ["<circle>/<ellipse>/curves", "gradients, blur or filters", "anti-aliased diagonals", "mixed pixel sizes", "sub-pixel positions", "pure black outlines on everything", "more than ~24 colours"],
+    "compatible_with": ["retro-8bit", "retro-16bit", "horror", "sci-fi", "fantasy", "cyberpunk-neon", "monochrome", "isometric", "retro-futurism", "childrens-illustration"],
+    "conflicts_with": ["glassmorphism", "frutiger-aero", "clay-soft-3d", "scientific-illustration", "sumi-e", "art-nouveau"],
+    "best_for": ["icon", "character", "scene", "illustration"],
+    "detail_level": "medium",
+    "checks": {
+      "forbid_elements": ["circle", "ellipse", "filter", "linearGradient", "radialGradient", "mask"],
+      "forbid_path_curves": true, "integer_coords": true, "require_shape_rendering": "crispEdges",
+      "max_colors": 28, "max_filters": 0, "forbid_stroke": true
+    },
+    "reference": "pixel-retro.md#pixel-art"
+  },
+  {
+    "id": "retro-8bit",
+    "name": "Retro 8-bit",
+    "family": "pixel-retro",
+    "extends": "pixel-art",
+    "aliases": ["8 bit", "8-bit", "8bit", "nes style", "nes", "famicom", "gameboy", "game boy", "atari", "commodore 64", "c64", "early console", "arcade 8-bit", "chiptune visual"],
+    "keywords": ["nes palette", "sprite 16x16", "four colors per sprite", "8-bit game"],
+    "description": "The NES / Game Boy / C64 era: tiny grids, tight colour budgets per sprite, chunky silhouettes and a fixed hardware-style palette.",
+    "visual_characteristics": [
+      "grid 16x16 or 32x32 sprites; scenes on 8x8 tiles up to 256x240 logical resolution",
+      "max 3 colours + transparent per sprite; <= 16 colours in the whole scene",
+      "flat cel shading, almost no dithering; bold 1px outlines",
+      "HUD-like framing: score bars, borders and blocky lettering"
+    ],
+    "palette": {"guidance": "Pick ONE hardware palette and stay inside it: NES-like (saturated reds, blues, greens, olive, cream) or Game Boy 4-green ramp or C64 muted tones. Never invent gradient colours.", "swatches": ["#000000", "#fcfcfc", "#bcbcbc", "#f83800", "#0058f8", "#00a800", "#fca044", "#503000"]},
+    "geometry": "8x8 tile logic: shapes snap to multiples of a base cell. Chunky, symmetrical sprites; very simple readable silhouettes; hard-coded tile repetition for backgrounds (brick, grass, water).",
+    "stroke": "Pixel outlines only. 1-cell outline in the darkest palette colour.",
+    "texture": "None or two-tone checker tiles (brick/water) repeated on the tile grid.",
+    "composition": "Side-view or top-down with flat horizontal ground band; sprite large relative to the screen; sky as a flat colour or two-tone band; HUD strip at top.",
+    "typography": "8x8 bitmap font drawn from cells (uppercase, no anti-aliasing), e.g. 'SCORE 000100'.",
+    "lighting_depth": "No lighting model; depth via parallax bands (2-3 flat layers) and overlap.",
+    "svg_techniques": [
+      "everything from pixel_grid.py paths; scene tiles built with <pattern> of an integer-sized tile",
+      "root shape-rendering=\"crispEdges\"; viewBox equal to logical resolution (e.g. 0 0 128 112)",
+      "keep the palette in one comment and reuse only those hexes"
+    ],
+    "avoid": ["more than 16 colours", "smooth gradients", "16-bit style shading and dithering", "anti-aliased text", "curved SVG primitives"],
+    "compatible_with": ["pixel-art", "horror", "fantasy", "sci-fi", "childrens-illustration", "monochrome"],
+    "conflicts_with": ["retro-16bit", "glassmorphism", "frutiger-aero", "clay-soft-3d"],
+    "best_for": ["character", "scene", "icon", "poster"],
+    "detail_level": "low",
+    "checks": {
+      "forbid_elements": ["circle", "ellipse", "filter", "linearGradient", "radialGradient", "mask"],
+      "forbid_path_curves": true, "integer_coords": true, "require_shape_rendering": "crispEdges",
+      "max_colors": 16, "max_filters": 0, "forbid_stroke": true
+    },
+    "reference": "pixel-retro.md#retro-8bit"
+  },
+  {
+    "id": "retro-16bit",
+    "name": "Retro 16-bit",
+    "family": "pixel-retro",
+    "extends": "pixel-art",
+    "aliases": ["16 bit", "16-bit", "16bit", "snes style", "snes", "super nintendo", "sega genesis", "mega drive", "genesis style", "16-bit rpg", "jrpg sprite", "16 bit era"],
+    "keywords": ["parallax background", "16-bit game", "rpg battle", "sprite shading", "dithered sky"],
+    "description": "The SNES / Mega Drive era: richer palettes, multi-step shading, dithered skies, detailed sprites on 32-64px grids and layered parallax backgrounds.",
+    "visual_characteristics": [
+      "sprites 32x32 to 64x64 with 3-5 step shading ramps and selective outlining",
+      "palettes of 16-32 colours per scene with carefully hue-shifted ramps",
+      "dithered gradients for skies, glows and shadows",
+      "layered parallax backgrounds (far mountains, mid trees, near foreground)"
+    ],
+    "palette": {"guidance": "Ramp-based: each material has 4-5 steps with hue shift (cool shadows, warm highlights). Scene is unified by an atmospheric tint on distant layers. 16-32 colours total.", "swatches": ["#1b1035", "#3b2a6b", "#6e4fa5", "#c266d3", "#ff9d5c", "#ffe9a8", "#2b6a8f", "#5fd0a0", "#e04a4a"]},
+    "geometry": "Integer cells, staircase curves (anti-aliased-looking edges are made with intermediate-tone pixels only if the tone is a real palette colour), pixel circles, chunky proportions but more anatomy than 8-bit.",
+    "stroke": "Pixel outlines, coloured (selective) rather than black; interior lines in darker fill tone.",
+    "texture": "Bayer/hand dithering for skies, water and stone; specular pixel highlights on metal and eyes.",
+    "composition": "Cinematic side-on or 3/4 top-down; foreground / mid / background parallax planes; strong horizon; focal character in the lower third with glow behind.",
+    "typography": "Pixel font with 1px drop shadow, 8x8 or 8x12; menu frames with double borders and corner ornaments.",
+    "lighting_depth": "Single light direction plus rim light; atmospheric perspective by recolouring far layers toward the sky colour; glow through concentric hard-edged rings.",
+    "svg_techniques": [
+      "pixel_grid.py for sprites; backgrounds as one <path> per colour per layer",
+      "dither as <pattern> tiles of 2x2 or 4x4 integer size",
+      "crispEdges on root; keep layers as <g id=\"far\"> <g id=\"mid\"> <g id=\"near\">",
+      "emulate glow with stepped concentric pixel rings, never blur"
+    ],
+    "avoid": ["true gradients or blur", "more than ~32 colours", "curves and circles as SVG primitives", "mixed pixel sizes", "modern flat UI look"],
+    "compatible_with": ["pixel-art", "fantasy", "sci-fi", "horror", "cyberpunk-neon", "retro-futurism", "isometric"],
+    "conflicts_with": ["retro-8bit", "glassmorphism", "frutiger-aero", "minimal-modern"],
+    "best_for": ["scene", "character", "poster", "illustration"],
+    "detail_level": "high",
+    "checks": {
+      "forbid_elements": ["circle", "ellipse", "filter", "linearGradient", "radialGradient", "mask"],
+      "forbid_path_curves": true, "integer_coords": true, "require_shape_rendering": "crispEdges",
+      "max_colors": 36, "max_filters": 0, "forbid_stroke": true
+    },
+    "reference": "pixel-retro.md#retro-16bit"
+  }
+]

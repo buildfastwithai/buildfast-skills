@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+ <title id="t">Fox at Dusk</title>
+ <desc id="d">Ukiyo-e style: flat colour blocks, black key-block outlines, bokashi sky, kasumi mist, seigaiha waves, red cartouche.</desc>
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#9fc0c4"/>
+   <stop offset="1" stop-color="#efe3c4"/>
+  </linearGradient>
+  <pattern id="seigaiha" width="80" height="40" patternUnits="userSpaceOnUse">
+   <rect width="80" height="40" fill="#2b4a6b"/>
+   <g fill="none" stroke="#e9dfc4" stroke-width="3">
+    <path id="wv" d="M0 40a40 40 0 0 1 80 0M14 40a26 26 0 0 1 52 0M28 40a12 12 0 0 1 24 0"/>
+    <use href="#wv" x="-40" y="-20"/>
+    <use href="#wv" x="40" y="-20"/>
+   </g>
+  </pattern>
+ </defs>
+ <rect id="paper" width="1024" height="1024" fill="#efe3c4"/>
+ <rect id="sky-band" width="1024" height="640" fill="url(#sky)"/>
+ <circle id="sun" cx="760" cy="290" r="116" fill="#c9412c"/>
+ <g id="kasumi" fill="#f5ecd2">
+  <path d="M0 610C120 580 230 640 350 610S560 580 640 620 860 640 1024 600V690C900 720 780 670 660 700S420 730 300 690 90 700 0 680Z"/>
+  <path d="M420 470C520 450 600 490 700 470S860 450 1024 480V520C900 540 800 510 700 530S520 520 420 510Z" fill="#e6dab9"/>
+ </g>
+ <g id="cartouche">
+  <rect x="70" y="70" width="86" height="270" fill="#c9412c" stroke="#1c1a1a" stroke-width="5"/>
+  <rect x="82" y="82" width="62" height="246" fill="#f5ecd2"/>
+  <g fill="none" stroke="#1c1a1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+   <path d="M96 118h34M113 104v44M96 150q17-14 34 0"/>
+   <path d="M96 200h34M96 232h34M113 190v70M98 260l30 26"/>
+  </g>
+  <rect x="94" y="300" width="26" height="20" fill="#c9412c"/>
+ </g>
+ <g id="water">
+  <rect y="840" width="1024" height="184" fill="url(#seigaiha)"/>
+  <rect y="837" width="1024" height="6" fill="#1c1a1a"/>
+ </g>
+ <g id="grass" fill="none" stroke="#1c1a1a" stroke-width="5" stroke-linecap="round">
+  <path d="M140 840q4-30-6-46M150 840q2-22-3-30"/>
+  <path d="M300 840q4-30 8-46M310 840q2-22 4-30"/>
+  <path d="M560 840q4-30-8-46M570 840q2-22-4-30"/>
+  <path d="M620 840q4-30 8-46M630 840q2-22 4-30"/>
+  <path d="M980 840q4-30-6-46M990 840q2-22-3-30"/>
+  <path d="M90 840q4-30 6-46M100 840q2-22 3-30"/>
+ </g>
+ <g id="fox" stroke="#1c1a1a" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+  <g id="tail">
+   <path d="M700 800C770 846 880 838 924 752 962 676 940 560 872 486 866 566 842 628 790 664 758 686 730 694 700 694Z" fill="#d8642c"/>
+   <path d="M872 486C940 560 962 676 926 742 922 680 900 600 850 540 858 522 866 504 872 486Z" fill="#f5ecd2"/>
+   <g fill="none" stroke-width="4">
+    <path d="M800 560l34-30"/>
+    <path d="M830 600l36-34"/>
+    <path d="M790 620l40-30"/>
+    <path d="M830 660l40-30"/>
+    <path d="M800 700l38-24"/>
+    <path d="M860 720l30-30"/>
+    <path d="M760 740l34-20"/>
+    <path d="M840 770l30-22"/>
+    <path d="M890 690l22-30"/>
+    <path d="M880 610l26-30"/>
+   </g>
+  </g>
+  <g id="body">
+   <path d="M430 500C520 470 610 500 690 580 750 640 780 720 760 800 752 828 736 840 700 840L470 840C450 840 446 822 452 806L436 700C422 640 404 590 410 540Z" fill="#e9712f"/>
+   <path d="M600 640C680 640 750 700 752 780 752 816 736 840 700 840L580 840C560 800 556 700 600 640Z" fill="#d8642c"/>
+   <path d="M500 760L540 752 548 826C550 838 544 844 532 844L484 844C486 830 494 822 498 800Z" fill="#3a2019"/>
+   <path d="M410 545C440 562 472 570 490 600 470 650 458 700 458 770L426 770C412 700 396 610 410 545Z" fill="#f5ecd2"/>
+   <path d="M424 740L456 730 482 730 490 822C494 836 486 844 472 844L404 844C388 844 388 826 404 820L418 790Z" fill="#3a2019"/>
+   <g fill="none" stroke-width="4">
+    <path d="M560 560l30 10"/>
+    <path d="M600 590l30 12"/>
+    <path d="M650 640l26 18"/>
+    <path d="M690 700l20 22"/>
+    <path d="M620 700l22 20"/>
+    <path d="M660 770l14 20"/>
+   </g>
+  </g>
+  <g id="head">
+   <path d="M232 486C262 462 292 438 318 420L334 352 352 222 410 338 468 240 492 362C510 392 514 430 512 462L536 516 488 528 468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#e9712f"/>
+   <path d="M490 520L536 516 510 548 468 562Z" fill="#f5ecd2"/>
+   <path d="M232 486C262 462 292 438 318 430 340 440 372 470 420 492 452 508 480 516 488 528L468 562C430 552 380 552 340 540 312 534 282 520 256 512 242 504 234 496 232 486Z" fill="#f5ecd2"/>
+   <path d="M352 300L358 248 392 322Z" fill="#3a2019"/>
+   <path d="M452 306L468 262 478 342Z" fill="#3a2019"/>
+   <path d="M318 452Q338 436 362 448 340 462 318 452Z" fill="#1c1a1a"/>
+   <circle cx="236" cy="488" r="10" fill="#1c1a1a"/>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,173 @@
+[
+  {
+    "id": "cinematic-poster",
+    "name": "Cinematic Poster",
+    "family": "genre",
+    "aliases": ["movie poster", "film poster", "cinematic", "cinematic style", "blockbuster poster", "theatrical poster", "key art", "one sheet", "epic poster", "teaser poster", "hollywood poster"],
+    "keywords": ["title treatment", "billing block", "tagline", "epic", "teal and orange", "lens flare", "dramatic lighting"],
+    "description": "Epic key art: a single dramatic focal image with cinematic lighting and colour grading, strong silhouette, atmospheric depth and a well-structured title treatment with tagline and billing block.",
+    "visual_characteristics": [
+      "one iconic image; wide dramatic composition or heroic low-angle silhouette",
+      "colour-graded palette (teal/orange, monochrome red, cold blue) with a lit focal point",
+      "atmosphere: haze, light rays, particles, lens flares, vignette",
+      "professional typography: large title, tagline, credit block with condensed type"
+    ],
+    "palette": {"guidance": "Pick ONE grading: teal & orange (complementary), monochrome + one accent, or night-blue with warm key. Keep shadows deep and highlights controlled; keep saturated colour only around the light source.", "swatches": ["#06131c", "#0e3b4a", "#1d6a7a", "#e8894a", "#ffcf99", "#f5efe6"]},
+    "geometry": "Strong vertical or wide-cinematic silhouette shapes; leading lines to the focal point; foreground silhouettes framing the scene; central or golden-ratio anchor.",
+    "stroke": "Little to none for art; type gets thin keylines; hairline rules in the billing block.",
+    "texture": "Film grain (single feTurbulence overlay), subtle dust/particles, bloom around lights, soft vignette.",
+    "composition": "Poster (2:3): top tagline, hero image dominating the middle, title lower third (large, wide tracking), billing block small at the bottom; strong value structure; depth planes with atmosphere.",
+    "typography": "Title in bold cinematic serif/sans, wide tracking or heavily condensed; tagline small caps; billing block in condensed sans at 3-4% height; use paths for the title if possible.",
+    "lighting_depth": "Volumetric: light rays as gradient polygons; rim light on silhouette; atmospheric perspective via layered haze; lens flare group at the light source.",
+    "svg_techniques": [
+      "sky/backdrop with 3-4 stop linearGradient (grading); radialGradient for light bloom",
+      "light shafts: polygons with linearGradient opacity fade, low fill-opacity",
+      "silhouette layers in near-black with subtle rim strokes in light colour",
+      "grain overlay + vignette overlay as last two layers"
+    ],
+    "avoid": ["flat clip-art look", "rainbow colour palettes", "multiple competing focal points", "tiny illegible text", "cluttered layout", "real actor names / real film titles or logos"],
+    "compatible_with": ["fantasy", "sci-fi", "horror", "gothic", "cyberpunk-neon", "vintage-poster", "retro-futurism", "luxury-premium", "art-deco", "minimal-modern", "comic-book"],
+    "conflicts_with": ["childrens-illustration", "flat-design", "pixel-art", "hand-drawn-doodle", "sticker"],
+    "best_for": ["poster", "scene", "illustration"],
+    "detail_level": "high",
+    "checks": {"require_text": true, "min_gradients": 3, "min_elements": 25},
+    "reference": "genre.md#cinematic-poster"
+  },
+  {
+    "id": "fantasy",
+    "name": "Fantasy",
+    "family": "genre",
+    "aliases": ["fantasy art", "fantasy illustration", "high fantasy", "epic fantasy", "sword and sorcery", "storybook fantasy", "mythical", "magical", "rpg fantasy", "dungeons and dragons style", "d&d style", "tolkienesque"],
+    "keywords": ["dragon", "castle", "wizard", "elf", "magic", "enchanted", "sword", "kingdom", "mystical", "quest"],
+    "description": "Storied worlds of castles, dragons, magic and ancient landscapes: painterly depth, glowing magic light, grand scale and richly layered atmosphere.",
+    "visual_characteristics": [
+      "grand vistas with layered atmospheric depth (mist, mountains, ruins)",
+      "magical light sources (runes, orbs, dragon-fire, aurora) casting coloured glow",
+      "ornate detail: filigree, armour engraving, runic borders",
+      "heroic scale: tiny figures against monumental structures"
+    ],
+    "palette": {"guidance": "Rich jewel or earthy palettes with a magical accent (arcane teal/violet, ember orange). Atmospheric perspective: far layers desaturated toward sky colour. Sunset golds for heroic, cool twilight for mystery.", "swatches": ["#120f24", "#2e2a5c", "#5b4b8a", "#8fb8d9", "#e8a13a", "#ffd98a", "#2d6a4f"]},
+    "geometry": "Organic terrain curves against strong architectural verticals (towers, spires); dragons and creatures with sweeping S-curve silhouettes; asymmetrical but weighted layout; ornate frames.",
+    "stroke": "Painterly/mostly fills; optional fine dark outline (1-1.5) on key characters; rune strokes glowing (round caps).",
+    "texture": "Soft mist layers, star/particle fields, subtle stone/bark textures via patterns; optional grain.",
+    "composition": "Depth stack: foreground framing (rocks/trees), mid-ground hero, background castle/mountains with haze; light source off-centre creating a path of light; leading lines toward the focal point.",
+    "typography": "Decorative serif or blackletter-like display for titles; runic glyphs as shapes; minimal.",
+    "lighting_depth": "Motivated glow: radial gradients around magic; god rays; rim light on silhouettes; aerial perspective bands of low-opacity gradient.",
+    "svg_techniques": [
+      "mountain ranges as layered paths with progressively lighter gradients and mist gradient bands between",
+      "glow via radialGradient (preferred) and one blur filter for hero magic only",
+      "stars/particles from a single <pattern> or <use> scatter",
+      "runes/ornaments as reusable <symbol>s"
+    ],
+    "avoid": ["flat clip-art fills", "modern sans typography", "photoreal textures", "uniform lighting", "copying trademarked creatures or worlds"],
+    "compatible_with": ["gothic", "medieval-manuscript", "cinematic-poster", "art-nouveau", "ukiyo-e", "sumi-e", "childrens-illustration", "retro-16bit", "paper-cutout", "comic-book", "manga", "pixel-art", "low-poly", "isometric"],
+    "conflicts_with": ["brutalist", "minimal-modern", "blueprint", "infographic", "y2k"],
+    "best_for": ["scene", "illustration", "poster", "character"],
+    "detail_level": "high",
+    "checks": {"min_gradients": 3, "min_elements": 35, "min_groups": 4},
+    "reference": "genre.md#fantasy"
+  },
+  {
+    "id": "sci-fi",
+    "name": "Sci-Fi",
+    "family": "genre",
+    "weak_aliases": ["futuristic"],
+    "aliases": ["science fiction", "scifi", "sci fi", "space opera", "space art", "spaceship art", "hard sci-fi", "sci-fi illustration", "alien world", "starship", "space scene"],
+    "keywords": ["spaceship", "planet", "starfield", "alien", "hologram", "space station", "orbit", "nebula", "rocket", "interstellar"],
+    "description": "Futurist scenes of space, technology and alien worlds: clean engineered hard-surface forms, glowing instrument lights, vast scale and atmospheric nebulae or planetary vistas.",
+    "visual_characteristics": [
+      "hard-surface engineered forms with panel lines, vents, greebles in moderation",
+      "vast scale: planets, rings, stations dwarfing ships",
+      "glowing indicator lights and engine plumes; lens flares off stars",
+      "cool palette with a warm sun/engine counter-light"
+    ],
+    "palette": {"guidance": "Deep space blue-black base; cool grey hulls with warm-lit edges; engine/energy accents (cyan, orange, magenta); planet atmospheres in teal/amber. Keep the brightest value at one focal light.", "swatches": ["#04060f", "#0e1a33", "#1f3a66", "#7ea6d9", "#dfe8f5", "#ff8a3d", "#39e6ff"]},
+    "geometry": "Modular hard-surface: bevelled shapes, straight panel seams, symmetrical hulls with asymmetric details; large circles for planets; orbits and trajectories as thin curves.",
+    "stroke": "Fine 0.5-1 panel lines in darker hull tone; thin light rim strokes on lit edges; glow strokes on engines.",
+    "texture": "Starfield (random small circles at varying opacities, or a <pattern>), subtle nebula clouds via layered gradients, panel line patterns.",
+    "composition": "Cinematic diagonal: ship or station in the foreground at an angle, planet or star large behind; strong scale contrast; a single light source direction; empty space for scale.",
+    "typography": "Clean sans or techno-condensed HUD text as small callouts (optional); vector mission patch style if requested.",
+    "lighting_depth": "Hard single light (sun) plus soft bounce from the planet; rim light on hulls; atmospheric glow on the planet limb (radial gradient); engine glow with small blur.",
+    "svg_techniques": [
+      "planet: circle with radialGradient shading + clipped cloud bands + limb-atmosphere ring (radialGradient stroke)",
+      "hull shapes as layered polygons with linearGradient for metal; panel lines as thin paths",
+      "starfield: 80-200 <circle>s generated by script or one <pattern> tile scaled; vary radius and opacity",
+      "glow through a single small filter on engine group"
+    ],
+    "avoid": ["fantasy ornament", "flat sticker look unless requested", "uniform lighting", "scale without reference objects", "copying franchise ships/logos"],
+    "compatible_with": ["cyberpunk-neon", "retro-futurism", "blueprint", "isometric", "low-poly", "pixel-art", "retro-16bit", "comic-book", "manga", "cinematic-poster", "minimal-modern", "technical-illustration", "horror", "geometric"],
+    "conflicts_with": ["medieval-manuscript", "art-nouveau", "organic-botanical", "sumi-e", "childrens-illustration"],
+    "best_for": ["scene", "illustration", "poster", "icon"],
+    "detail_level": "high",
+    "checks": {"min_gradients": 2, "min_elements": 30},
+    "reference": "genre.md#sci-fi"
+  },
+  {
+    "id": "horror",
+    "name": "Horror",
+    "family": "genre",
+    "aliases": ["horror style", "horror art", "creepy", "spooky", "scary", "dread", "nightmare", "haunted", "macabre", "eerie", "horror movie style", "halloween dark", "supernatural horror"],
+    "keywords": ["haunted", "ghost", "skull", "blood", "fog", "moonlit", "graveyard", "monster", "dread", "creeping"],
+    "description": "Dread through restraint: deep shadows, sickly colour, distorted proportions, obscured details and a single unsettling focal point revealed by hard, unnatural light.",
+    "visual_characteristics": [
+      "dominant darkness (70%+ of the canvas) with a small area of hard cold or sickly light",
+      "distortion: elongated limbs, uneven eyes, off-balance framing",
+      "fog, vignette, and silhouettes hiding detail; reveal only the eyes/hands/shape",
+      "muted sickly palette with one visceral accent (blood red or toxic green)"
+    ],
+    "palette": {"guidance": "Near-black green/blue/purple base, desaturated bone and grey-green mids, ONE violent accent (arterial red or sickly yellow-green). Highlights are small and cold.", "swatches": ["#050706", "#0e1512", "#1f2a26", "#4a5b52", "#c8cdb8", "#a4161a", "#9bb04a"]},
+    "geometry": "Angular, jagged edges; asymmetry; extreme aspect proportions; branches/claws as thin tapering forms; irregular silhouettes; slightly tilted horizons.",
+    "stroke": "Sparse: thin, uneven scratchy lines for detail; heavy black masses for shadow; jagged joins (miter) on claw-like shapes.",
+    "texture": "Grain, scratches, fog gradients, ink bleed; optionally a single displacement to roughen edges.",
+    "composition": "Off-centre focal point at the edge of the light; large negative darkness pressing in; low or Dutch angle; fog cutting mid-ground; something that half-hides in the dark.",
+    "typography": "Distressed condensed serif or scratchy hand-lettered look if used; small; low contrast against darkness.",
+    "lighting_depth": "Hard under-lighting or backlight; hard cast shadows; radial vignette; fog planes reduce contrast with depth.",
+    "svg_techniques": [
+      "start from a near-black base, add light as radialGradient cones/rects with low opacity, then draw only what the light touches",
+      "fog: horizontal linearGradient bands with opacity .1-.4 at multiple depths",
+      "roughened silhouettes: irregular hand-placed polygon points or one small feTurbulence displacement (scale <= 4) on the silhouette group",
+      "vignette overlay as last layer"
+    ],
+    "avoid": ["gore and graphic violence", "bright cheerful colours", "even lighting", "centred symmetric framing", "cartoonish cuteness (unless requested)"],
+    "compatible_with": ["gothic", "pixel-art", "retro-8bit", "retro-16bit", "manga", "comic-book", "monochrome", "cinematic-poster", "medieval-manuscript", "fantasy", "sci-fi", "cyberpunk-neon", "screen-print"],
+    "conflicts_with": ["childrens-illustration", "frutiger-aero", "flat-design", "clay-soft-3d", "y2k"],
+    "best_for": ["scene", "illustration", "poster", "character"],
+    "detail_level": "medium",
+    "checks": {"dark_base": true, "min_gradients": 1, "min_elements": 20},
+    "reference": "genre.md#horror"
+  },
+  {
+    "id": "retro-futurism",
+    "name": "Retro Futurism",
+    "family": "genre",
+    "aliases": ["retrofuturism", "retro futuristic", "retro-futuristic", "atomic age", "space age", "googie", "jetsons style", "1950s future", "raygun gothic", "synthwave", "outrun", "vaporwave", "retro sci-fi", "mid century futurism"],
+    "keywords": ["sunset grid", "chrome", "rocket", "atomic", "boomerang", "starburst", "retro grid", "80s future", "jetpack"],
+    "description": "Yesterday's tomorrow: atomic-age optimism (googie shapes, rockets, starbursts) or 80s synthwave (sunset grids, chrome type, palm silhouettes) rendered with bold flat shapes, gradients and confident geometry.",
+    "visual_characteristics": [
+      "streamlined forms, fins, boomerangs, orbital rings, starbursts",
+      "sunset gradients (yellow -> orange -> magenta -> purple) with a striped setting sun",
+      "perspective grid floor, chrome lettering, neon line accents",
+      "optimistic, clean, poster-like composition"
+    ],
+    "palette": {"guidance": "Two options: (a) atomic age - teal, cream, mustard, tomato red, navy on aged white; (b) synthwave - deep purple/indigo base with hot pink, orange, cyan, yellow sun gradient. Pick one and stay consistent.", "swatches": ["#1a0b3b", "#5b1a8f", "#ff2e93", "#ff8a1f", "#ffd23f", "#22d3ee", "#f6efe2"]},
+    "geometry": "Smooth streamlined curves, perfect circles and ellipses, angular fins, orbits; horizon grid with converging lines; striped sun (horizontal cut bands widening downward).",
+    "stroke": "Clean monoline 2-4 units with round caps for atomic motifs; neon strokes for grid lines; occasional double line.",
+    "texture": "Subtle grain or halftone; chrome banding through gradient stops; starfield dots.",
+    "composition": "Symmetric or centred hero (rocket/sun/car) on a horizon; grid floor to a vanishing point; big title in chrome letters; balanced geometry with plenty of air.",
+    "typography": "Italic extended or chrome-gradient display type; atomic-age script for retro accents; keep short.",
+    "lighting_depth": "Sun glow through radialGradient; chrome reflection via multi-stop gradient with a hard horizon band; grid lines fade with distance (opacity gradient).",
+    "svg_techniques": [
+      "striped sun: circle filled with a vertical gradient, masked by horizontal bars that grow thicker toward the bottom",
+      "perspective grid: converging lines from a vanishing point + horizontal lines spaced by geometric progression; opacity fade via mask gradient",
+      "chrome text: gradient with hard mid-stop; outline stroke + offset shadow",
+      "atomic motifs: reusable starburst <symbol> and orbit ellipses with rotation"
+    ],
+    "avoid": ["muddy realism", "dark grim cyberpunk grit", "hand-drawn wobble", "inconsistent grid perspective", "too many hues"],
+    "compatible_with": ["cyberpunk-neon", "y2k", "vintage-poster", "art-deco", "sci-fi", "minimal-modern", "geometric", "screen-print", "cinematic-poster", "low-poly", "retro-16bit", "comic-book", "bauhaus"],
+    "conflicts_with": ["gothic", "medieval-manuscript", "sumi-e", "organic-botanical", "scientific-illustration"],
+    "best_for": ["poster", "scene", "illustration", "logo"],
+    "detail_level": "medium",
+    "checks": {"min_gradients": 2, "min_elements": 20},
+    "reference": "genre.md#retro-futurism"
+  }
+]

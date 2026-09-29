@@ -1,0 +1,70 @@
+[
+  {
+    "id": "comic-book",
+    "name": "Comic Book",
+    "family": "comics",
+    "aliases": ["comic", "comics", "comic style", "comic book style", "western comic", "superhero comic", "pop art comic", "lichtenstein", "graphic novel", "cartoon inks", "marvel style", "ben-day dots"],
+    "keywords": ["halftone", "speech bubble", "action lines", "ben day", "inked", "panel", "pow"],
+    "description": "Bold inked contours with dynamic angles, flat saturated colours, Ben-Day halftone shading, spotted blacks and energetic action typography.",
+    "visual_characteristics": [
+      "thick-to-thin ink outlines with confident spotted blacks",
+      "flat CMYK-like colour (primary red, yellow, cyan, magenta) with halftone dot shading",
+      "dynamic foreshortening, diagonal composition, speed lines and impact bursts",
+      "onomatopoeia and caption boxes as graphic elements"
+    ],
+    "palette": {"guidance": "Primary-leaning process colours: red #e63946, yellow #ffd60a, cyan #00b4d8, magenta #d81b60, plus ink black and paper cream. Shadows via halftone dots or darker flat tone, not gradients.", "swatches": ["#fff8e1", "#111111", "#e63946", "#ffd60a", "#00b4d8", "#d81b60", "#3a86ff"]},
+    "geometry": "Heroic proportions, angular shadows, dramatic perspective and cropping; bursts as jagged star polygons; panel borders as skewed rectangles with gutters.",
+    "stroke": "Variable line weight: heavy outer contour (4-6 units), medium interior (2-3), fine detail (1). Round joins on outer contour, miter on bursts; filled-black shadow shapes.",
+    "texture": "Ben-Day dots via <pattern> (circles on a rotated 45 degree grid, size varies by tone) used for skin tones and shadows; zip-a-tone diagonal hatching.",
+    "composition": "Dynamic Dutch angles, subject breaking the panel frame, speed lines converging on the focal point, high contrast between black masses and bright colour.",
+    "typography": "Bold hand-lettered caps: impact SFX text with thick outline and drop shadow (e.g. 'POW!'), caption boxes in yellow with black border.",
+    "lighting_depth": "Hard light: solid black cast shadows and rim highlights; depth via overlap and line weight (thick foreground, thin background).",
+    "svg_techniques": [
+      "halftone: <pattern patternTransform=\"rotate(45)\"> with a dot circle; vary dot radius by defining 3 patterns (light/mid/dark) and using them on clipped shape regions",
+      "ink layer separate from colour layer (colour slightly offset for print mis-registration)",
+      "burst = star <polygon> with alternating radii, thick outline, drop shadow polygon offset",
+      "text with paint-order=\"stroke\" for outlined lettering"
+    ],
+    "avoid": ["soft gradients", "thin uniform outlines", "pastel palette", "static centred posing", "photoreal shading"],
+    "compatible_with": ["manga", "cyberpunk-neon", "sci-fi", "screen-print", "risograph", "vintage-poster", "monochrome", "sticker", "hand-drawn-doodle", "graffiti-street-art", "retro-futurism", "horror"],
+    "conflicts_with": ["minimal-modern", "luxury-premium", "clay-soft-3d", "frutiger-aero", "sumi-e", "glassmorphism"],
+    "best_for": ["illustration", "poster", "character", "scene", "sticker"],
+    "detail_level": "high",
+    "checks": {"require_stroke": true, "min_stroke_widths": 2, "require_elements_any": ["pattern"], "min_elements": 30},
+    "reference": "comics.md#comic-book"
+  },
+  {
+    "id": "manga",
+    "name": "Manga",
+    "family": "comics",
+    "aliases": ["manga style", "anime manga", "japanese comic", "shonen", "shojo", "seinen", "manga panel", "black and white manga", "screentone", "tankobon", "manga ink"],
+    "keywords": ["japanese", "japan", "screentone", "speed lines", "sparkle eyes", "manga panel", "kawaii ink", "inking"],
+    "description": "Crisp black-ink linework with G-pen line variation, screentone shading, expressive emotive framing, speed lines and emphasis effects; mostly black and white with optional single-colour accents.",
+    "visual_characteristics": [
+      "clean, precise contours with tapered strokes; hair as flowing clumps with highlight gaps",
+      "screentone (dot/gradient/hatch) instead of shading gradients",
+      "large expressive eyes / stylised faces; emotion effects (sweat drops, blush lines, sparkles)",
+      "speed lines, focus lines and dramatic panel framing"
+    ],
+    "palette": {"guidance": "Ink black on white paper, with 2-3 screentone greys (dot patterns at different densities). Optional colour-page variant: flat cel colours with soft cool shadow tone.", "swatches": ["#ffffff", "#111111", "#4a4a4a", "#9a9a9a", "#d9d9d9", "#ff5d8f"]},
+    "geometry": "Slender proportions, angular jaw/hair points, dynamic gesture; background rendered with ruler-straight perspective lines; effects lines radiate from a focal point.",
+    "stroke": "Tapered variable-width filled paths for contours (thick at shadow side, thin at highlights); hairline for hatch; round caps; 3 weights (outer 3, inner 1.5, detail .7).",
+    "texture": "Screentones: <pattern> of dots at 45 degrees (three densities), gradient tones via dot radius ramp; hatch and cross-hatch; solid black fill for deep shadows.",
+    "composition": "Panel-based or splash page; emphasis by empty white margins; radial focus lines behind the subject; asymmetric framing with strong diagonal.",
+    "typography": "Vertical-feel SFX strokes as shapes, speech balloons with tails; keep text minimal or as shapes.",
+    "lighting_depth": "Graphic: black cast shadows plus tone; rim-light gaps in hair; atmospheric perspective by thinner distant lines.",
+    "svg_techniques": [
+      "tapered contour = closed path built from two offset curves (or stroke + separate thinner overlay)",
+      "3 screentone <pattern> defs (dot radius .6/1.1/1.6 at spacing 4, patternTransform rotate 45)",
+      "speed lines = many <line> in a radial <g> with clip to panel; vary length and weight",
+      "panel frame as thick rect stroke with skewed variants"
+    ],
+    "avoid": ["gradient shading", "western comic halftone colours", "uniform-width strokes", "realistic proportions", "colour overload"],
+    "compatible_with": ["comic-book", "monochrome", "cyberpunk-neon", "sci-fi", "horror", "fantasy", "sticker", "hand-drawn-doodle", "sumi-e"],
+    "conflicts_with": ["clay-soft-3d", "frutiger-aero", "glassmorphism", "luxury-premium", "brutalist"],
+    "best_for": ["character", "illustration", "poster", "scene"],
+    "detail_level": "high",
+    "checks": {"require_stroke": true, "min_stroke_widths": 2, "require_elements_any": ["pattern"], "max_colors": 10, "max_filters": 0},
+    "reference": "comics.md#manga"
+  }
+]
