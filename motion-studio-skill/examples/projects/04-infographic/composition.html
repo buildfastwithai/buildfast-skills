@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Q3 in numbers - infographic</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* Q3 in numbers - 16 s infographic (style: infographic, motion: snappy, 112 bpm).
+   ALL NUMBERS ARE ILLUSTRATIVE SAMPLE DATA and are labelled as such on screen. One insight per scene. */
+MS.boot(C => {
+  const b = C.beat(1), D = { mau: 1240000, months: [['Jul', 312], ['Aug', 356], ['Sep', 491]], retention: 68, trend: [41, 44, 43, 49, 52, 55, 61, 64, 68] };
+
+  C.scene('title', 0, 2.6, s => {
+    s.bg('solid');
+    const k = s.text('ACME ANALYTICS', { size: 'caption', font: 'mono', y: .32, tracking: .35, color: 'var(--accent)' });
+    s.anim(k, 'tracking', .1, { from: .8, to: .35, dur: .6 });
+    const t = s.text('Q3 in numbers', { size: 'display', y: .5, split: 'words' });
+    s.anim(t, 'wordReveal', .25, { each: 'spring' });
+    const n = s.text('illustrative sample data', { size: 'caption', font: 'body', y: .68, color: 'var(--muted)' });
+    s.enter(n, .8);
+  }, { energy: .4 });
+
+  C.scene('users', 2.6, 3.2, s => {
+    s.bg('dots', { color: 'var(--line)' });
+    const c = MS.chart.counter(s, { to: D.mau, x: 0, y: .38, anchor: 'left', align: 'left', at: .15, dur: 1.2, size: 'display' });
+    s.anim(c, 'fadeIn', .1, { dur: .2 });
+    const lab = s.text('monthly active users', { size: 'h3', font: 'body', weight: 600, x: 0, y: .58, anchor: 'left', align: 'left', color: 'var(--muted)' });
+    s.enter(lab, .45);
+    // icon grid: each dot = 50k users
+    const grid = s.group({ x: .74, y: .5, w: .36, h: .5 }); const n = Math.round(D.mau / 50000);
+    for (let i = 0; i < 30; i++) { const d = MS.util.div('ms-abs', grid), on = i < n;
+      d.style.cssText = `left:${(i % 6) * 17}%;top:${Math.floor(i / 6) * 20}%;width:${4.2 * C.u}px;height:${4.2 * C.u}px;border-radius:50%;background:${on ? 'var(--accent)' : 'var(--line)'}`;
+      s.anim(d, 'pop', .3 + i * .025); }
+    const key = s.text('● = 50k users', { size: 'caption', font: 'mono', x: .74, y: .85, color: 'var(--muted)' }); s.enter(key, 1.2);
+    C.cue(2.6 + .15, 'riser', { dur: 1.1, gain: .5 }); C.cue(2.6 + 1.35, 'ding');
+  }, { energy: .6 });
+
+  C.scene('signups', 5.8, 4.4, s => {
+    s.bg('solid');
+    const h = s.text('New sign-ups per month (k)', { size: 'h3', font: 'body', weight: 700, x: 0, y: .04, anchor: 'top-left', align: 'left' });   // already on screen as the wipe reveals it
+    MS.chart.bar(s, D.months.map(([l, v]) => ({ label: l, value: v })), { x: .38, y: .56, w: .62, h: .78, at: .25, highlight: 2, stagger: b / 2 });
+    D.months.forEach((m, i) => C.cue(5.8 + .25 + i * b / 2, 'tick'));
+    const call = s.text('+38%', { size: 'display', x: 1, y: .38, anchor: 'right', align: 'right', color: 'var(--accent)' });
+    s.anim(call, 'pop', 1.6, { cue: 'impact' });
+    const cl = s.text('September vs August', { size: 'body', font: 'body', weight: 600, x: 1, y: .56, anchor: 'right', align: 'right', color: 'var(--muted)' });
+    s.enter(cl, 1.9);
+  }, { energy: .75 });
+
+  C.scene('retention', 10.2, 2.8, s => {
+    s.bg('solid');
+    MS.chart.donut(s, D.retention, { x: .2, y: .5, r: 17, width: 3.4, at: .15 });
+    const l = s.text('7-day retention', { size: 'h3', font: 'body', weight: 700, x: .2, y: .92 }); s.enter(l, .5);
+    const h = s.text('Retention, weekly cohorts (%)', { size: 'caption', font: 'body', weight: 600, x: .48, y: .1, anchor: 'left', align: 'left', color: 'var(--muted)' }); s.enter(h, .3);
+    MS.chart.line(s, D.trend, { x: .72, y: .52, w: .48, h: .55, at: .4, dur: 1.4, min: 30, max: 75, labels: ['W1', '', '', '', 'W5', '', '', '', 'W9'] });
+    C.cue(10.2 + .15, 'riser', { dur: 1.3, gain: .4 });
+  }, { energy: .7 });
+
+  C.scene('takeaway', 13.0, 3.0, s => {
+    s.bg('solid');
+    const t = s.text('Growth is compounding.', { size: 'h1', y: .44, split: 'words' });
+    s.anim(t, 'wordReveal', .1, { each: 'spring' });
+    s.anim(t, 'underline', .9, { color: 'var(--accent)' });
+    const src = s.text('Source: illustrative sample data - replace with your own', { size: 'caption', font: 'mono', y: .9, color: 'var(--muted)' });
+    s.enter(src, .6);
+  }, { energy: .4, hold: true });
+
+  C.transition('title', 'users', { type: 'push', dir: 'left' });
+  C.transition('users', 'signups', { type: 'wipe', dir: 'right' });
+  C.transition('signups', 'retention', { type: 'shape', shape: 'circle' });
+  C.transition('retention', 'takeaway', { type: 'zoom' });
+});
+</script>
+</body></html>

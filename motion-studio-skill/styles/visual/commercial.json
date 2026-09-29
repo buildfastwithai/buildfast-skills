@@ -1,0 +1,587 @@
+{
+ "family": "commercial",
+ "styles": [
+  {
+   "id": "minimal",
+   "name": "Minimal",
+   "aliases": [
+    "minimal",
+    "minimalist",
+    "minimalism",
+    "clean and simple",
+    "simple"
+   ],
+   "description": "Reduction as the idea: one subject, one message per shot, huge negative space, a single accent colour.",
+   "palette": {
+    "bg": "#f5f4f0",
+    "bg2": "#ebe9e3",
+    "surface": "#ffffff",
+    "fg": "#111111",
+    "muted": "#77756f",
+    "accent": "#111111",
+    "accent2": "#ff4f2e",
+    "accent3": "#c9c6bd",
+    "line": "#0000001a"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.035,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 14,
+   "stroke": 2,
+   "shadow": "0 20px 60px rgba(0,0,0,.12)",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "mask",
+     "push",
+     "cut"
+    ],
+    "avoid": [
+     "glitch",
+     "flash",
+     "particles",
+     "slice"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "static or very slow push; no shake",
+   "sound": {
+    "music": "ambient",
+    "bpm": 84,
+    "key": "D",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "single product silhouette",
+    "thin rules",
+    "one accent dot"
+   ],
+   "do": [
+    "one idea per scene",
+    ">= 50% negative space",
+    "left-aligned or centred grid, generous margins",
+    "hold still moments"
+   ],
+   "dont": [
+    "gradients everywhere",
+    "more than 1 accent",
+    "busy backgrounds",
+    "decorative particles"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "apple-product",
+   "name": "Apple-style product ad",
+   "aliases": [
+    "apple style",
+    "apple-style",
+    "apple commercial",
+    "apple product",
+    "keynote style",
+    "product commercial",
+    "like an apple ad"
+   ],
+   "description": "Hero-product cinematography on black or white: dramatic rim light, slow orbits, oversized confident headlines, one line of copy at a time.",
+   "palette": {
+    "bg": "#000000",
+    "bg2": "#0d0d0f",
+    "surface": "#161618",
+    "fg": "#f5f5f7",
+    "muted": "#86868b",
+    "accent": "#2997ff",
+    "accent2": "#bf5af2",
+    "accent3": "#ff9f0a",
+    "line": "#ffffff1a"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.04,
+    "lead": 1.0,
+    "display_scale": 1.05
+   },
+   "radius": 22,
+   "stroke": 2,
+   "shadow": "0 30px 90px rgba(0,0,0,.55)",
+   "glow": 0,
+   "texture": [
+    "vignette:.35"
+   ],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "blur",
+     "mask",
+     "cut",
+     "zoom"
+    ],
+    "avoid": [
+     "glitch",
+     "whip",
+     "slice",
+     "particles"
+    ]
+   },
+   "motion_default": "cinematic",
+   "camera": "slow orbit / push on the hero, shallow depth (rack focus), light sweeps",
+   "sound": {
+    "music": "ambient",
+    "bpm": 90,
+    "key": "E",
+    "sfx": "soft",
+    "mood": "premium"
+   },
+   "assets": [
+    "hero product with gradient rim light",
+    "spec numbers",
+    "feature callouts"
+   ],
+   "do": [
+    "headline <= 5 words",
+    "product fills 40-60% of frame",
+    "gradient text for the key word",
+    "big numbers for specs"
+   ],
+   "dont": [
+    "clutter",
+    "cartoon icons",
+    "more than two typefaces"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "luxury",
+   "name": "Premium / Luxury",
+   "aliases": [
+    "luxury",
+    "premium",
+    "high end",
+    "high-end",
+    "elegant",
+    "gold",
+    "opulent"
+   ],
+   "description": "Slow, elegant, restrained: deep blacks or ivory, gold hairlines, serif display type with wide tracking, light glints.",
+   "palette": {
+    "bg": "#0b0a08",
+    "bg2": "#17140f",
+    "surface": "#1c1812",
+    "fg": "#f3ead8",
+    "muted": "#a39883",
+    "accent": "#d4af6a",
+    "accent2": "#f6e3b0",
+    "accent3": "#8c6b3a",
+    "line": "#d4af6a33"
+   },
+   "fonts": {
+    "display": "Playfair Display:400",
+    "body": "Cormorant Garamond:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.18,
+    "lead": 1.1,
+    "display_scale": 0.8
+   },
+   "radius": 2,
+   "stroke": 1,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.05",
+    "vignette:.5"
+   ],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "fade",
+     "mask",
+     "iris"
+    ],
+    "avoid": [
+     "glitch",
+     "whip",
+     "slice",
+     "flash"
+    ]
+   },
+   "motion_default": "cinematic",
+   "camera": "slow dolly and push, macro details, light sweeps across metal",
+   "sound": {
+    "music": "ambient",
+    "bpm": 72,
+    "key": "F",
+    "sfx": "soft",
+    "mood": "elegant"
+   },
+   "assets": [
+    "gold hairline frames",
+    "monogram",
+    "shine sweep",
+    "slow particles of gold dust"
+   ],
+   "do": [
+    "wide letter-spacing on display",
+    "thin gold rules",
+    "slow shine passes",
+    "long holds"
+   ],
+   "dont": [
+    "neon",
+    "bouncy easing",
+    "cartoon shapes",
+    "fast cuts"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "corporate",
+   "name": "Corporate",
+   "aliases": [
+    "corporate",
+    "business",
+    "enterprise",
+    "professional",
+    "b2b",
+    "company"
+   ],
+   "description": "Trustworthy and clear: navy + bright blue, clean sans, structured grids, icons and data, calm confident pacing.",
+   "palette": {
+    "bg": "#f7f9fc",
+    "bg2": "#eaf0f8",
+    "surface": "#ffffff",
+    "fg": "#0f1e36",
+    "muted": "#5a6b85",
+    "accent": "#1f6feb",
+    "accent2": "#12b886",
+    "accent3": "#ffb020",
+    "line": "#0f1e3620"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 14,
+   "stroke": 2,
+   "shadow": "0 20px 50px rgba(15,30,54,.12)",
+   "glow": 0,
+   "texture": [],
+   "background": "gradient",
+   "transitions": {
+    "prefer": [
+     "push",
+     "wipe",
+     "dissolve",
+     "mask"
+    ],
+    "avoid": [
+     "glitch",
+     "flash",
+     "particles"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "gentle pans across grids, no shake",
+   "sound": {
+    "music": "corporate",
+    "bpm": 110,
+    "key": "C",
+    "sfx": "clean",
+    "mood": ""
+   },
+   "assets": [
+    "icons",
+    "cards",
+    "charts",
+    "team/people silhouettes"
+   ],
+   "do": [
+    "clear hierarchy",
+    "one message per card",
+    "brand blue accent",
+    "grid alignment"
+   ],
+   "dont": [
+    "irony",
+    "grunge",
+    "heavy textures"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "saas",
+   "name": "Startup / SaaS",
+   "aliases": [
+    "saas",
+    "startup",
+    "b2b saas",
+    "product launch",
+    "tech startup",
+    "app launch",
+    "software product"
+   ],
+   "description": "Bright gradients, floating UI cards, cursor-driven demos, snappy confident motion, big benefit headlines.",
+   "palette": {
+    "bg": "#0b0d1a",
+    "bg2": "#141835",
+    "surface": "#1a1e3d",
+    "fg": "#f4f5ff",
+    "muted": "#9aa0c7",
+    "accent": "#7c5cff",
+    "accent2": "#2ee6a6",
+    "accent3": "#ffcf4a",
+    "line": "#ffffff1c"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.03,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 20,
+   "stroke": 2,
+   "shadow": "0 30px 90px rgba(0,0,0,.55)",
+   "glow": 0,
+   "texture": [
+    "grain:.04"
+   ],
+   "background": "mesh",
+   "transitions": {
+    "prefer": [
+     "push",
+     "zoom",
+     "whip",
+     "radial",
+     "shape"
+    ],
+    "avoid": [
+     "iris",
+     "fade"
+    ]
+   },
+   "motion_default": "snappy",
+   "camera": "quick pushes onto UI, subtle parallax of stacked cards",
+   "sound": {
+    "music": "corporate",
+    "bpm": 118,
+    "key": "G",
+    "sfx": "ui",
+    "mood": "optimistic"
+   },
+   "assets": [
+    "UI windows",
+    "cards",
+    "cursor",
+    "notifications",
+    "metrics"
+   ],
+   "do": [
+    "show the product UI",
+    "benefit headlines",
+    "cursor clicks with ripples",
+    "stack cards in depth"
+   ],
+   "dont": [
+    "stock-photo vibes",
+    "long holds",
+    "serif display"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "editorial",
+   "name": "Editorial",
+   "aliases": [
+    "editorial",
+    "magazine",
+    "print editorial",
+    "newspaper",
+    "journalistic"
+   ],
+   "description": "Magazine layouts in motion: big serif headlines, italic accents, columns, rules, photo-like blocks, confident asymmetry.",
+   "palette": {
+    "bg": "#f2eee6",
+    "bg2": "#e6e0d4",
+    "surface": "#fbf9f4",
+    "fg": "#141210",
+    "muted": "#6f675c",
+    "accent": "#c8321e",
+    "accent2": "#1d3b6e",
+    "accent3": "#e0a526",
+    "line": "#1412101f"
+   },
+   "fonts": {
+    "display": "Instrument Serif:400",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 0.95,
+    "display_scale": 1.15
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.05"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "push",
+     "mask",
+     "cut"
+    ],
+    "avoid": [
+     "glitch",
+     "particles",
+     "flash"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "slow pans across layouts; cut on type",
+   "sound": {
+    "music": "documentary",
+    "bpm": 92,
+    "key": "D",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "pull quotes",
+    "column rules",
+    "drop caps",
+    "numbered sections"
+   ],
+   "do": [
+    "asymmetric grid",
+    "italic emphasis word",
+    "hairline rules",
+    "caption labels"
+   ],
+   "dont": [
+    "neon",
+    "gradients",
+    "3D"
+   ],
+   "family": "commercial"
+  },
+  {
+   "id": "clean-ui",
+   "name": "Clean UI",
+   "aliases": [
+    "clean ui",
+    "ui",
+    "interface",
+    "app ui",
+    "product ui",
+    "dashboard"
+   ],
+   "description": "Soft light UI: white cards, subtle shadows, one brand colour, crisp system type; motion follows interaction.",
+   "palette": {
+    "bg": "#eef1f6",
+    "bg2": "#e2e7ef",
+    "surface": "#ffffff",
+    "fg": "#131722",
+    "muted": "#6b7385",
+    "accent": "#3d6bff",
+    "accent2": "#16c79a",
+    "accent3": "#ff8a3d",
+    "line": "#1317221a"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.025,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 18,
+   "stroke": 2,
+   "shadow": "0 18px 50px rgba(19,23,34,.12)",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "push",
+     "zoom",
+     "shape",
+     "dissolve"
+    ],
+    "avoid": [
+     "glitch",
+     "slice",
+     "flash"
+    ]
+   },
+   "motion_default": "snappy",
+   "camera": "zoom into the part of the UI being used; follow the cursor",
+   "sound": {
+    "music": "corporate",
+    "bpm": 116,
+    "key": "F",
+    "sfx": "ui",
+    "mood": ""
+   },
+   "assets": [
+    "cards",
+    "toggles",
+    "charts",
+    "cursor",
+    "toasts"
+   ],
+   "do": [
+    "8px grid",
+    "real-looking UI copy",
+    "cursor tells the story",
+    "one action per beat"
+   ],
+   "dont": [
+    "dark grunge",
+    "noisy textures"
+   ],
+   "family": "commercial"
+  }
+ ]
+}

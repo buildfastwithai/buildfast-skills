@@ -1,0 +1,22 @@
+{
+ "formats": {
+  "16:9": {"width": 1920, "height": 1080, "aliases": ["16:9", "landscape", "widescreen", "youtube", "horizontal", "1080p"], "safe": {"x": 0.06, "y": 0.08, "w": 0.88, "h": 0.84},
+           "layout": "wide: side-by-side compositions, text left + visual right, lower thirds, letterbox allowed"},
+  "9:16": {"width": 1080, "height": 1920, "aliases": ["9:16", "vertical", "portrait", "reels", "shorts", "tiktok", "story", "stories"], "safe": {"x": 0.07, "y": 0.13, "w": 0.86, "h": 0.67},
+           "layout": "stacked: headline in the upper third, subject centred, captions mid-lower (above the platform UI zone), >= 5% height captions, one element at a time"},
+  "1:1": {"width": 1080, "height": 1080, "aliases": ["1:1", "square", "instagram post", "feed"], "safe": {"x": 0.07, "y": 0.07, "w": 0.86, "h": 0.86},
+          "layout": "centred compositions, stacked text over visual, symmetric framing"},
+  "4:5": {"width": 1080, "height": 1350, "aliases": ["4:5", "portrait post", "instagram portrait"], "safe": {"x": 0.07, "y": 0.08, "w": 0.86, "h": 0.8},
+          "layout": "like 1:1 with room for a headline band on top"},
+  "21:9": {"width": 2560, "height": 1080, "aliases": ["21:9", "ultrawide", "cinemascope", "2.39"], "safe": {"x": 0.1, "y": 0.08, "w": 0.8, "h": 0.84},
+           "layout": "panoramic; keep text in the centre 60%"}
+ },
+ "platforms": {
+  "x": {"format": "16:9", "max_seconds": 140, "note": "autoplays muted: burn in captions/key text"},
+  "instagram-reels": {"format": "9:16", "max_seconds": 90, "note": "bottom 20% and right edge covered by UI"},
+  "tiktok": {"format": "9:16", "max_seconds": 180, "note": "bottom 20% + right 12% covered by UI"},
+  "youtube-shorts": {"format": "9:16", "max_seconds": 60},
+  "youtube": {"format": "16:9"},
+  "linkedin": {"format": "1:1"}
+ }
+}

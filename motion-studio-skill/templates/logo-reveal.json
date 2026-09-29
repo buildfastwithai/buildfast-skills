@@ -1,0 +1,60 @@
+{
+ "id": "logo-reveal",
+ "name": "Logo reveal",
+ "aliases": [
+  "logo reveal",
+  "logo animation",
+  "logo intro",
+  "logo sting",
+  "ident",
+  "brand reveal",
+  "animated logo"
+ ],
+ "default_duration": 8,
+ "default_format": "16:9",
+ "default_style": "luxury",
+ "default_motion": "cinematic",
+ "purpose": "A 5-10 s reveal that ends on a clean, well-held logo lockup.",
+ "beats": [
+  {
+   "id": "build",
+   "share": 0.35,
+   "purpose": "Anticipation",
+   "visual": "particles/lines converge, light builds",
+   "camera": "slow push",
+   "animation": "elements gather",
+   "typography": "none",
+   "transition": "flash or match",
+   "audio": "riser",
+   "energy": 0.4,
+   "intent": "reveal"
+  },
+  {
+   "id": "reveal",
+   "share": 0.35,
+   "purpose": "Logo forms",
+   "visual": "logo draws on, fill, shine sweep",
+   "camera": "settle",
+   "animation": "stroke draw \u2192 fill \u2192 shine",
+   "typography": "wordmark",
+   "transition": "none",
+   "audio": "impact + chime",
+   "energy": 0.9,
+   "intent": "impact"
+  },
+  {
+   "id": "hold",
+   "share": 0.3,
+   "purpose": "Clean hold",
+   "visual": "final lockup + tagline",
+   "camera": "almost still",
+   "animation": "tagline fades in",
+   "typography": "tagline",
+   "transition": "fade",
+   "audio": "tail",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "hold the final lockup >= 1.5 s, perfectly still and centred"
+}

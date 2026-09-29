@@ -1,0 +1,635 @@
+{
+ "family": "information",
+ "styles": [
+  {
+   "id": "infographic",
+   "name": "Infographic",
+   "aliases": [
+    "infographic",
+    "infographics",
+    "stats",
+    "statistics",
+    "numbers",
+    "data story"
+   ],
+   "description": "Clear data storytelling: big numbers, icons, bars/rings that build, consistent visual grammar, one insight per beat.",
+   "palette": {
+    "bg": "#f6f7fb",
+    "bg2": "#e9ecf5",
+    "surface": "#ffffff",
+    "fg": "#141a2e",
+    "muted": "#66708a",
+    "accent": "#3d6bff",
+    "accent2": "#ff6b4a",
+    "accent3": "#19c39c",
+    "line": "#141a2e1a"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.03,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 16,
+   "stroke": 2,
+   "shadow": "0 18px 40px rgba(20,26,46,.1)",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "push",
+     "wipe",
+     "shape",
+     "zoom"
+    ],
+    "avoid": [
+     "glitch",
+     "distortion"
+    ]
+   },
+   "motion_default": "snappy",
+   "camera": "slide between data panels; zoom into the number that matters",
+   "sound": {
+    "music": "corporate",
+    "bpm": 112,
+    "key": "G",
+    "sfx": "ui",
+    "mood": ""
+   },
+   "assets": [
+    "bar charts",
+    "rings",
+    "counters",
+    "icons"
+   ],
+   "do": [
+    "one insight per scene",
+    "numbers count up",
+    "label everything",
+    "source line"
+   ],
+   "dont": [
+    "decorative 3D charts",
+    "invented data"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "data-viz",
+   "name": "Data visualization",
+   "aliases": [
+    "data visualization",
+    "data viz",
+    "dataviz",
+    "charts",
+    "graphs",
+    "chart animation"
+   ],
+   "description": "Chart-first: axes, gridlines, lines that draw, highlighted series, annotations; dark analytical canvas.",
+   "palette": {
+    "bg": "#0c1017",
+    "bg2": "#141a24",
+    "surface": "#161d29",
+    "fg": "#e8edf5",
+    "muted": "#7d8899",
+    "accent": "#4cc9f0",
+    "accent2": "#f72585",
+    "accent3": "#b5e48c",
+    "line": "#e8edf51c"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 10,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "vignette:.3"
+   ],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "zoom",
+     "push",
+     "dissolve",
+     "wipe"
+    ],
+    "avoid": [
+     "glitch",
+     "shape"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "zoom into annotated data points",
+   "sound": {
+    "music": "ambient",
+    "bpm": 100,
+    "key": "E",
+    "sfx": "ui",
+    "mood": ""
+   },
+   "assets": [
+    "line charts",
+    "bars",
+    "annotations",
+    "legends"
+   ],
+   "do": [
+    "highlight one series",
+    "annotations appear with the point",
+    "axes first"
+   ],
+   "dont": [
+    "chartjunk",
+    "unlabelled axes"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "technical",
+   "name": "Technical",
+   "aliases": [
+    "technical",
+    "engineering",
+    "schematic",
+    "exploded view",
+    "technical animation",
+    "how it works"
+   ],
+   "description": "Precise linework, callouts with leader lines, exploded parts, measurement labels, neutral greys + one signal colour.",
+   "palette": {
+    "bg": "#eceff2",
+    "bg2": "#dde2e8",
+    "surface": "#ffffff",
+    "fg": "#15191e",
+    "muted": "#66717d",
+    "accent": "#ff5a1f",
+    "accent2": "#1f7aff",
+    "accent3": "#15191e",
+    "line": "#15191e2b"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.04,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 4,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [],
+   "background": "grid",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "slice",
+     "push",
+     "cut"
+    ],
+    "avoid": [
+     "particles",
+     "morph"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "orthographic moves; precise zoom into parts",
+   "sound": {
+    "music": "glitch",
+    "bpm": 104,
+    "key": "D",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "callouts",
+    "leader lines",
+    "parts",
+    "dimensions"
+   ],
+   "do": [
+    "leader-line callouts",
+    "mono labels",
+    "exploded views"
+   ],
+   "dont": [
+    "organic wobble"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "blueprint",
+   "name": "Blueprint",
+   "aliases": [
+    "blueprint",
+    "blueprints",
+    "technical drawing",
+    "technical schematic",
+    "cad"
+   ],
+   "description": "White linework on blueprint blue, construction lines, dimensions, title block; lines draw on precisely.",
+   "palette": {
+    "bg": "#0d3b73",
+    "bg2": "#0f4485",
+    "surface": "#0f4485",
+    "fg": "#eaf3ff",
+    "muted": "#9cc3ee",
+    "accent": "#ffffff",
+    "accent2": "#ffd23d",
+    "accent3": "#9cc3ee",
+    "line": "#eaf3ff40"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "IBM Plex Mono:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.12,
+    "lead": 1.0,
+    "display_scale": 0.9
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "vignette:.3"
+   ],
+   "background": "blueprint",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "slice",
+     "cut",
+     "zoom"
+    ],
+    "avoid": [
+     "particles",
+     "morph",
+     "flash"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "top-down pans along drawings; zoom into details",
+   "sound": {
+    "music": "glitch",
+    "bpm": 100,
+    "key": "D",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "construction lines",
+    "dimension arrows",
+    "title block"
+   ],
+   "do": [
+    "lines draw on",
+    "dimension labels",
+    "grid snapping"
+   ],
+   "dont": [
+    "colour fills",
+    "soft blur"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "scientific",
+   "name": "Scientific",
+   "aliases": [
+    "scientific",
+    "science",
+    "biology",
+    "chemistry",
+    "physics",
+    "medical",
+    "research"
+   ],
+   "description": "Clean lab aesthetic: molecules, cells, equations, labelled diagrams, calm educational pacing.",
+   "palette": {
+    "bg": "#f4f7f8",
+    "bg2": "#e3ecef",
+    "surface": "#ffffff",
+    "fg": "#10222b",
+    "muted": "#5b7482",
+    "accent": "#00a3a3",
+    "accent2": "#ff6f59",
+    "accent3": "#6c63ff",
+    "line": "#10222b1f"
+   },
+   "fonts": {
+    "display": "Inter:800",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 12,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [],
+   "background": "dots",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "zoom",
+     "radial",
+     "push"
+    ],
+    "avoid": [
+     "glitch",
+     "flash"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "zoom through scales (organ → cell → molecule)",
+   "sound": {
+    "music": "ambient",
+    "bpm": 92,
+    "key": "C",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "molecules",
+    "cells",
+    "graphs",
+    "labels"
+   ],
+   "do": [
+    "label everything",
+    "scale zooms",
+    "accurate simple diagrams"
+   ],
+   "dont": [
+    "dramatic horror grades"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "whiteboard",
+   "name": "Whiteboard",
+   "aliases": [
+    "whiteboard",
+    "whiteboard animation",
+    "explainer drawing",
+    "marker",
+    "rsa animate"
+   ],
+   "description": "Marker drawings appear stroke-by-stroke on white, handwritten labels, arrows, a hand/pen implied.",
+   "palette": {
+    "bg": "#fbfbf9",
+    "bg2": "#f0f0ec",
+    "surface": "#ffffff",
+    "fg": "#1c1c1c",
+    "muted": "#6b6b6b",
+    "accent": "#1f6feb",
+    "accent2": "#e5484d",
+    "accent3": "#f5a524",
+    "line": "#1c1c1c26"
+   },
+   "fonts": {
+    "display": "Caveat:700",
+    "body": "Caveat:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.3
+   },
+   "radius": 0,
+   "stroke": 4,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "push",
+     "wipe",
+     "cut"
+    ],
+    "avoid": [
+     "glitch",
+     "flash",
+     "distortion"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "pan along the board as drawings accumulate",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 100,
+    "key": "F",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "marker lines",
+    "arrows",
+    "icons",
+    "labels"
+   ],
+   "do": [
+    "everything draws on",
+    "left-to-right storytelling",
+    "colour for emphasis only"
+   ],
+   "dont": [
+    "textures",
+    "dark mode"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "documentary-map",
+   "name": "Documentary map",
+   "aliases": [
+    "map",
+    "maps",
+    "map animation",
+    "route map",
+    "travel map",
+    "war map",
+    "documentary map"
+   ],
+   "description": "Parchment/dark maps, dotted landmass, animated routes, pins, dates and labels; camera flies between places.",
+   "palette": {
+    "bg": "#1a1712",
+    "bg2": "#26221a",
+    "surface": "#2a251c",
+    "fg": "#f1e7d2",
+    "muted": "#9b8f78",
+    "accent": "#e4572e",
+    "accent2": "#e9c46a",
+    "accent3": "#7fb7be",
+    "line": "#f1e7d233"
+   },
+   "fonts": {
+    "display": "Instrument Serif:400",
+    "body": "Inter:600",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.1
+   },
+   "radius": 2,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.08",
+    "vignette:.5",
+    "paper:.2"
+   ],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "zoom",
+     "cut",
+     "wipe"
+    ],
+    "avoid": [
+     "glitch",
+     "shape"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "fly-over zooms between pins",
+   "sound": {
+    "music": "documentary",
+    "bpm": 84,
+    "key": "D",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "dotted map",
+    "routes",
+    "pins",
+    "labels",
+    "dates"
+   ],
+   "do": [
+    "route draws with the narration",
+    "labels near pins",
+    "date stamps"
+   ],
+   "dont": [
+    "neon",
+    "bouncy motion"
+   ],
+   "family": "information"
+  },
+  {
+   "id": "timeline",
+   "name": "Timeline",
+   "aliases": [
+    "timeline",
+    "history",
+    "chronology",
+    "year by year",
+    "evolution of",
+    "through the years"
+   ],
+   "description": "Horizontal/vertical time axis that draws on; years as big numerals; events pop at their date; camera tracks along.",
+   "palette": {
+    "bg": "#0f1115",
+    "bg2": "#181b22",
+    "surface": "#1c2029",
+    "fg": "#f2efe9",
+    "muted": "#8a8f9c",
+    "accent": "#ffb547",
+    "accent2": "#5ac8fa",
+    "accent3": "#ff6b6b",
+    "line": "#f2efe926"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 12,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.05"
+   ],
+   "background": "gradient",
+   "transitions": {
+    "prefer": [
+     "push",
+     "wipe",
+     "dissolve"
+    ],
+    "avoid": [
+     "glitch"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "track along the time axis",
+   "sound": {
+    "music": "documentary",
+    "bpm": 96,
+    "key": "A",
+    "sfx": "clean",
+    "mood": ""
+   },
+   "assets": [
+    "axis",
+    "year numerals",
+    "event cards"
+   ],
+   "do": [
+    "time flows one direction",
+    "big years",
+    "consistent event cards"
+   ],
+   "dont": [
+    "random ordering"
+   ],
+   "family": "information"
+  }
+ ]
+}

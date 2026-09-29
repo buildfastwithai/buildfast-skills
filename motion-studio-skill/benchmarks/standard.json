@@ -1,0 +1,36 @@
+{
+ "about": "Fixed, reproducible motion-graphics briefs for comparing models/agents. Spec, timings, seed, fps, format, audio and the style set are frozen; only composition.html is written by the model under test.",
+ "rules": [
+  "Do not edit spec.json or the scene timings in storyboard.md.",
+  "Write one composition.html that reads style/motion tokens (var(--accent), s.M, s.enter, auto transitions) so it renders fairly in every benchmark style.",
+  "Every required text must appear on screen, readable (>= the engine's minimum text size) and inside the safe area.",
+  "No external network assets. Deterministic: no Math.random/Date - the engine seeds everything.",
+  "Stop after one final render per style; the scorecard is computed by scripts/benchmark.py run."
+ ],
+ "benchmarks": [
+  {
+   "id": "agent-explainer",
+   "brief": "Create a 12 second motion graphics video explaining how an AI agent completes a task in four steps: plan, act, check, done.",
+   "template": "explainer", "format": "16:9", "fps": 30, "duration": 12, "seed": 2026, "bpm": 120,
+   "scenes": [["hook", 0, 2, "Pose the question: how does an agent finish a task?"], ["plan", 2, 5, "Breaks the goal into steps"], ["act", 5, 8, "Uses tools to do each step"], ["check", 8, 10, "Verifies the result"], ["done", 10, 12, "Task complete - title card"]],
+   "required_text": ["plan", "act", "check", "done"],
+   "variants": [["minimal", "smooth"], ["cyberpunk", "cinematic"], ["paper-cutout", "elastic"]]
+  },
+  {
+   "id": "product-launch",
+   "brief": "Create a 10 second launch teaser for Tempo, a fictional calendar app that schedules your week automatically. End on the logo and 'Plan less. Do more.'",
+   "template": "product-ad", "format": "9:16", "fps": 30, "duration": 10, "seed": 2026, "bpm": 118,
+   "scenes": [["hook", 0, 1.8, "Chaotic calendar"], ["reveal", 1.8, 4.5, "Tempo arranges it"], ["benefit", 4.5, 7.5, "Three benefits, one per beat"], ["cta", 7.5, 10, "Logo + tagline"]],
+   "required_text": ["Tempo", "Plan less. Do more."],
+   "variants": [["saas", "snappy"], ["y2k", "elastic"], ["luxury", "cinematic"]]
+  },
+  {
+   "id": "data-story",
+   "brief": "Create a 12 second data animation of this sample dataset: monthly active users 2.1M -> 3.4M over 6 months (Jan 2.1, Feb 2.3, Mar 2.4, Apr 2.8, May 3.1, Jun 3.4). Label it as sample data.",
+   "template": "infographic", "format": "16:9", "fps": 30, "duration": 12, "seed": 2026, "bpm": 112,
+   "scenes": [["title", 0, 2, "Topic"], ["growth", 2, 7, "Line chart of the six months"], ["headline", 7, 10, "+62% in six months"], ["source", 10, 12, "Sample data note"]],
+   "required_text": ["3.4M", "+62%", "sample data"],
+   "variants": [["infographic", "snappy"], ["blueprint", "mechanical"], ["gradient-abstract", "organic"]]
+  }
+ ]
+}

@@ -1,0 +1,711 @@
+{
+ "family": "retro",
+ "styles": [
+  {
+   "id": "vhs",
+   "name": "VHS",
+   "aliases": [
+    "vhs",
+    "vhs tape",
+    "camcorder",
+    "home video",
+    "found footage",
+    "tape"
+   ],
+   "description": "Camcorder tape: chroma bleed, tracking bands, timestamp, soft focus, jittery lines, washed colours.",
+   "palette": {
+    "bg": "#0d0c10",
+    "bg2": "#1b1920",
+    "surface": "#201e26",
+    "fg": "#f1eee6",
+    "muted": "#9c98a6",
+    "accent": "#ff3b5c",
+    "accent2": "#3bd6ff",
+    "accent3": "#f4e04d",
+    "line": "#ffffff22"
+   },
+   "fonts": {
+    "display": "VT323:400",
+    "body": "VT323:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.04,
+    "lead": 1.0,
+    "display_scale": 1.1
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "vhs"
+   ],
+   "background": "gradient",
+   "transitions": {
+    "prefer": [
+     "glitch",
+     "cut",
+     "distortion",
+     "flash"
+    ],
+    "avoid": [
+     "shape",
+     "morph",
+     "iris"
+    ]
+   },
+   "motion_default": "glitch",
+   "camera": "handheld wobble, snap zooms",
+   "sound": {
+    "music": "lofi",
+    "bpm": 84,
+    "key": "A",
+    "sfx": "tape",
+    "mood": "nostalgic"
+   },
+   "assets": [
+    "timestamp",
+    "PLAY overlay",
+    "tracking noise",
+    "REC dot"
+   ],
+   "do": [
+    "timestamp + PLAY label",
+    "tracking band",
+    "occasional frame jumps"
+   ],
+   "dont": [
+    "crisp vector perfection",
+    "modern gradients"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "crt",
+   "name": "CRT",
+   "aliases": [
+    "crt",
+    "crt monitor",
+    "old tv",
+    "television",
+    "tube tv",
+    "retro monitor"
+   ],
+   "description": "Curved-glass monitor: scanlines, phosphor glow, flicker, bezel vignette; green or amber terminal type.",
+   "palette": {
+    "bg": "#020604",
+    "bg2": "#07140c",
+    "surface": "#0a1a10",
+    "fg": "#b9ffc9",
+    "muted": "#4f8f61",
+    "accent": "#33ff77",
+    "accent2": "#ffb000",
+    "accent3": "#b9ffc9",
+    "line": "#33ff7733"
+   },
+   "fonts": {
+    "display": "VT323:400",
+    "body": "VT323:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.06,
+    "lead": 1.0,
+    "display_scale": 1.2
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.5,
+   "texture": [
+    "crt",
+    "grain:.08"
+   ],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "glitch",
+     "iris",
+     "flash"
+    ],
+    "avoid": [
+     "morph",
+     "particles"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "locked-off; channel-change cuts",
+   "sound": {
+    "music": "chiptune",
+    "bpm": 112,
+    "key": "A",
+    "sfx": "tape",
+    "mood": ""
+   },
+   "assets": [
+    "terminal text",
+    "static",
+    "test pattern"
+   ],
+   "do": [
+    "phosphor glow on text",
+    "typewriter terminal",
+    "channel-change static"
+   ],
+   "dont": [
+    "pastel",
+    "3D"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "eighties",
+   "name": "80s",
+   "aliases": [
+    "80s",
+    "1980s",
+    "eighties",
+    "retro 80s",
+    "miami vice"
+   ],
+   "description": "Neon pinks and teals, chrome type, laser grids, memphis shapes, VHS-ready saturation.",
+   "palette": {
+    "bg": "#14062b",
+    "bg2": "#2a0d4d",
+    "surface": "#2a1052",
+    "fg": "#fff4fb",
+    "muted": "#c49bd9",
+    "accent": "#ff4fd8",
+    "accent2": "#2ff3e0",
+    "accent3": "#ffe14f",
+    "line": "#ff4fd833"
+   },
+   "fonts": {
+    "display": "Unbounded:800",
+    "body": "Space Grotesk:500",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 0.95,
+    "display_scale": 1.0
+   },
+   "radius": 8,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.25,
+   "texture": [
+    "grain:.06",
+    "scanlines:.1"
+   ],
+   "background": "horizon",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "shape",
+     "zoom",
+     "flash"
+    ],
+    "avoid": [
+     "dissolve"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "fast zooms, spinning shapes",
+   "sound": {
+    "music": "synthwave",
+    "bpm": 112,
+    "key": "C",
+    "sfx": "digital",
+    "mood": "fun"
+   },
+   "assets": [
+    "memphis shapes",
+    "laser grid",
+    "chrome text"
+   ],
+   "do": [
+    "chrome/gradient type",
+    "memphis confetti"
+   ],
+   "dont": [
+    "muted tones"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "nineties",
+   "name": "90s",
+   "aliases": [
+    "90s",
+    "1990s",
+    "nineties",
+    "grunge",
+    "mtv",
+    "90s tv"
+   ],
+   "description": "Loud collage: xerox textures, stickers, zine type, stamped labels, crooked frames, MTV-style bumpers.",
+   "palette": {
+    "bg": "#f2ea3a",
+    "bg2": "#1a1a1a",
+    "surface": "#fffbe0",
+    "fg": "#111111",
+    "muted": "#555555",
+    "accent": "#ff3e8a",
+    "accent2": "#2d7bff",
+    "accent3": "#3fd97f",
+    "line": "#1111112a"
+   },
+   "fonts": {
+    "display": "Bangers:400",
+    "body": "Space Grotesk:700",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 0.95,
+    "display_scale": 1.0
+   },
+   "radius": 4,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.1",
+    "halftone"
+   ],
+   "background": "halftone",
+   "transitions": {
+    "prefer": [
+     "slice",
+     "whip",
+     "cut",
+     "shape"
+    ],
+    "avoid": [
+     "dissolve",
+     "iris"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "crooked cuts, dutch angles, snap zooms",
+   "sound": {
+    "music": "lofi",
+    "bpm": 96,
+    "key": "E",
+    "sfx": "tape",
+    "mood": "rebellious"
+   },
+   "assets": [
+    "stickers",
+    "xerox photos",
+    "tape strips",
+    "stamps"
+   ],
+   "do": [
+    "tilted frames",
+    "stamped labels",
+    "clashing colours"
+   ],
+   "dont": [
+    "polish",
+    "minimal space"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "y2k",
+   "name": "Y2K",
+   "aliases": [
+    "y2k",
+    "y2k aesthetic",
+    "2000s",
+    "early 2000s",
+    "frutiger aero",
+    "glossy internet",
+    "millennium"
+   ],
+   "description": "Glossy bubbles, chrome, silver gradients, aqua highlights, blobby shapes, sparkle stars, optimistic tech.",
+   "palette": {
+    "bg": "#dfe8f5",
+    "bg2": "#c7d6ee",
+    "surface": "#f4f8ffcc",
+    "fg": "#1c2440",
+    "muted": "#5d6a8c",
+    "accent": "#3aa0ff",
+    "accent2": "#ff5fd2",
+    "accent3": "#b5ff4a",
+    "line": "#1c244022"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 30,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.03"
+   ],
+   "background": "mesh",
+   "transitions": {
+    "prefer": [
+     "shape",
+     "morph",
+     "radial",
+     "zoom"
+    ],
+    "avoid": [
+     "glitch",
+     "fade"
+    ]
+   },
+   "motion_default": "elastic",
+   "camera": "floating bubbles, bouncy zooms",
+   "sound": {
+    "music": "corporate",
+    "bpm": 124,
+    "key": "D",
+    "sfx": "ui",
+    "mood": "playful"
+   },
+   "assets": [
+    "chrome blobs",
+    "sparkles",
+    "glossy buttons"
+   ],
+   "do": [
+    "glossy highlights",
+    "sparkle stars",
+    "rounded bubbly type"
+   ],
+   "dont": [
+    "grunge",
+    "gritty textures"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "pixel-art",
+   "name": "Pixel art",
+   "aliases": [
+    "pixel",
+    "pixel art",
+    "pixelated",
+    "sprite",
+    "pixel style"
+   ],
+   "description": "Crisp integer grid, limited palette, pixel font, stepped animation, dithering; no soft edges.",
+   "palette": {
+    "bg": "#1a1c2c",
+    "bg2": "#29366f",
+    "surface": "#333c57",
+    "fg": "#f4f4f4",
+    "muted": "#94b0c2",
+    "accent": "#ef7d57",
+    "accent2": "#73eff7",
+    "accent3": "#ffcd75",
+    "line": "#f4f4f433"
+   },
+   "fonts": {
+    "display": "Press Start 2P:400",
+    "body": "Press Start 2P:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 1.25,
+    "display_scale": 0.55
+   },
+   "radius": 0,
+   "stroke": 4,
+   "shadow": "none",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "slice",
+     "iris",
+     "wipe"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur",
+     "morph",
+     "distortion"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "stepped pans; no rotation",
+   "sound": {
+    "music": "chiptune",
+    "bpm": 132,
+    "key": "C",
+    "sfx": "chip",
+    "mood": ""
+   },
+   "assets": [
+    "sprites",
+    "tiles",
+    "pixel UI",
+    "coins"
+   ],
+   "do": [
+    "image-rendering: pixelated",
+    "stepped motion (12 fps)",
+    "hard-edged shapes"
+   ],
+   "dont": [
+    "blur",
+    "gradients",
+    "anti-aliased curves"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "eight-bit",
+   "name": "8-bit",
+   "aliases": [
+    "8-bit",
+    "8 bit",
+    "8bit",
+    "nes",
+    "chiptune style"
+   ],
+   "description": "NES-era: tiny palette, big chunky pixels, black background, blink text, chiptune bleeps.",
+   "palette": {
+    "bg": "#000000",
+    "bg2": "#1b1b3a",
+    "surface": "#0f0f22",
+    "fg": "#fcfcfc",
+    "muted": "#9c9c9c",
+    "accent": "#e40058",
+    "accent2": "#3cbcfc",
+    "accent3": "#f8b800",
+    "line": "#fcfcfc33"
+   },
+   "fonts": {
+    "display": "Press Start 2P:400",
+    "body": "Press Start 2P:400",
+    "mono": "Press Start 2P:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 1.4,
+    "display_scale": 0.5
+   },
+   "radius": 0,
+   "stroke": 4,
+   "shadow": "none",
+   "glow": 0,
+   "texture": [],
+   "background": "stars",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "iris",
+     "slice"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur",
+     "morph",
+     "distortion"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "screen-by-screen cuts",
+   "sound": {
+    "music": "chiptune",
+    "bpm": 140,
+    "key": "A",
+    "sfx": "chip",
+    "mood": ""
+   },
+   "assets": [
+    "sprites",
+    "blinking PRESS START",
+    "score counter"
+   ],
+   "do": [
+    "blink text",
+    "score/HUD counters",
+    "hard cuts"
+   ],
+   "dont": [
+    "gradients",
+    "soft shadows"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "sixteen-bit",
+   "name": "16-bit",
+   "aliases": [
+    "16-bit",
+    "16 bit",
+    "16bit",
+    "snes",
+    "genesis",
+    "mega drive"
+   ],
+   "description": "SNES-era: richer ramps, parallax layers, mode-7 floors, bold pixel logos.",
+   "palette": {
+    "bg": "#101030",
+    "bg2": "#28205a",
+    "surface": "#241e4e",
+    "fg": "#fff7e8",
+    "muted": "#a6a0c8",
+    "accent": "#ff5a36",
+    "accent2": "#3ee0a0",
+    "accent3": "#ffd84a",
+    "line": "#fff7e833"
+   },
+   "fonts": {
+    "display": "Press Start 2P:400",
+    "body": "VT323:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 1.3,
+    "display_scale": 0.6
+   },
+   "radius": 0,
+   "stroke": 3,
+   "shadow": "none",
+   "glow": 0,
+   "texture": [],
+   "background": "stars",
+   "transitions": {
+    "prefer": [
+     "iris",
+     "cut",
+     "wipe",
+     "slice"
+    ],
+    "avoid": [
+     "blur",
+     "morph"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "multi-layer parallax scroll",
+   "sound": {
+    "music": "chiptune",
+    "bpm": 124,
+    "key": "D",
+    "sfx": "chip",
+    "mood": ""
+   },
+   "assets": [
+    "parallax layers",
+    "sprites",
+    "title logo"
+   ],
+   "do": [
+    "parallax scrolling",
+    "shine on logo"
+   ],
+   "dont": [
+    "soft blur"
+   ],
+   "family": "retro"
+  },
+  {
+   "id": "arcade",
+   "name": "Arcade",
+   "aliases": [
+    "arcade",
+    "arcade game",
+    "retro game",
+    "insert coin",
+    "game cabinet"
+   ],
+   "description": "Cabinet energy: attract-mode flashes, INSERT COIN blink, high-score tables, neon marquee colours, CRT glow.",
+   "palette": {
+    "bg": "#05010f",
+    "bg2": "#140a33",
+    "surface": "#12072b",
+    "fg": "#ffffff",
+    "muted": "#9b8fd1",
+    "accent": "#ff2e63",
+    "accent2": "#08d9d6",
+    "accent3": "#fff200",
+    "line": "#ffffff33"
+   },
+   "fonts": {
+    "display": "Press Start 2P:400",
+    "body": "VT323:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.04,
+    "lead": 1.3,
+    "display_scale": 0.6
+   },
+   "radius": 0,
+   "stroke": 3,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.4,
+   "texture": [
+    "crt"
+   ],
+   "background": "grid",
+   "transitions": {
+    "prefer": [
+     "flash",
+     "cut",
+     "iris",
+     "slice"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "punch-ins on score, flashing marquee",
+   "sound": {
+    "music": "chiptune",
+    "bpm": 150,
+    "key": "E",
+    "sfx": "chip",
+    "mood": "hype"
+   },
+   "assets": [
+    "high-score table",
+    "INSERT COIN",
+    "marquee"
+   ],
+   "do": [
+    "blink + flash",
+    "score count-ups"
+   ],
+   "dont": [
+    "subtle pastels"
+   ],
+   "family": "retro"
+  }
+ ]
+}

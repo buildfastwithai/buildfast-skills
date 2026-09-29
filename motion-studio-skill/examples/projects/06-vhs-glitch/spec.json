@@ -1,0 +1,21 @@
+{
+ "name": "the-signal",
+ "title": "The Signal",
+ "brief": "VHS horror found-footage teaser called The Signal with glitch motion, 13 seconds",
+ "template": "cinematic-trailer",
+ "style": "vhs+horror",
+ "motion": "glitch",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 13.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

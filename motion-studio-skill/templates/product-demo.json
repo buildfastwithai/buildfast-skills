@@ -1,0 +1,85 @@
+{
+ "id": "product-demo",
+ "name": "Product demo",
+ "aliases": [
+  "demo",
+  "product demo",
+  "walkthrough",
+  "feature tour",
+  "how it works in the app",
+  "screen demo"
+ ],
+ "default_duration": 30,
+ "default_format": "16:9",
+ "default_style": "clean-ui",
+ "default_motion": "snappy",
+ "purpose": "Show the workflow: task \u2192 action \u2192 result, with the UI as hero.",
+ "beats": [
+  {
+   "id": "context",
+   "share": 0.12,
+   "purpose": "Who it's for / the job to be done",
+   "visual": "headline over blurred UI",
+   "camera": "static",
+   "animation": "headline mask reveal",
+   "typography": "one line",
+   "transition": "zoom into UI",
+   "audio": "soft riser",
+   "energy": 0.4,
+   "intent": "reveal"
+  },
+  {
+   "id": "step1",
+   "share": 0.22,
+   "purpose": "First action",
+   "visual": "app window, cursor clicks",
+   "camera": "zoom into the clicked area",
+   "animation": "cursor moves + click ripple, UI responds",
+   "typography": "step label",
+   "transition": "push",
+   "audio": "clicks, pops",
+   "energy": 0.6,
+   "intent": "continue"
+  },
+  {
+   "id": "step2",
+   "share": 0.22,
+   "purpose": "Second action / automation",
+   "visual": "cards or results appearing",
+   "camera": "follow the change",
+   "animation": "staggered UI updates, toasts",
+   "typography": "step label",
+   "transition": "push",
+   "audio": "ui sounds",
+   "energy": 0.7,
+   "intent": "continue"
+  },
+  {
+   "id": "result",
+   "share": 0.24,
+   "purpose": "The payoff / result state",
+   "visual": "completed dashboard / metric",
+   "camera": "pull out to show the whole",
+   "animation": "numbers count up",
+   "typography": "result headline",
+   "transition": "cut",
+   "audio": "success chime",
+   "energy": 0.8,
+   "intent": "impact"
+  },
+  {
+   "id": "cta",
+   "share": 0.2,
+   "purpose": "Try it",
+   "visual": "logo + URL",
+   "camera": "static",
+   "animation": "logo reveal",
+   "typography": "CTA",
+   "transition": "fade",
+   "audio": "resolve",
+   "energy": 0.5,
+   "intent": "end"
+  }
+ ],
+ "pacing": "each UI action gets ~1.5-2.5s; never move the cursor and the camera at the same time"
+}

@@ -1,0 +1,21 @@
+{
+ "name": "aurelia-logo",
+ "title": "Aurelia",
+ "brief": "Luxury + cinematic logo reveal for a perfume house called Aurelia, 7 seconds",
+ "template": "logo-reveal",
+ "style": "luxury",
+ "motion": "cinematic",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 7.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

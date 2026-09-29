@@ -1,0 +1,21 @@
+{
+ "name": "lumen-ad",
+ "title": "Lumen",
+ "brief": "A 15 second minimal product advertisement for Lumen, a smart desk lamp, calm motion",
+ "template": "product-ad",
+ "style": "minimal",
+ "motion": "calm",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 15.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

@@ -1,0 +1,86 @@
+{
+ "id": "product-ad",
+ "name": "Product advertisement",
+ "aliases": [
+  "ad",
+  "advert",
+  "advertisement",
+  "commercial",
+  "promo",
+  "product ad",
+  "spot"
+ ],
+ "default_duration": 20,
+ "default_format": "16:9",
+ "default_style": "apple-product",
+ "default_motion": "cinematic",
+ "purpose": "Make one product desirable and memorable in under 30s.",
+ "beats": [
+  {
+   "id": "hook",
+   "share": 0.15,
+   "purpose": "Stop the scroll with a striking image or claim",
+   "visual": "hero close-up / macro detail",
+   "camera": "slow push-in",
+   "animation": "reveal via light sweep or mask",
+   "typography": "one short line, huge",
+   "transition": "match cut or flash",
+   "audio": "low impact + riser",
+   "energy": 0.5,
+   "intent": "reveal"
+  },
+  {
+   "id": "problem",
+   "share": 0.15,
+   "purpose": "Name the pain in one line",
+   "visual": "before-state, muted colour",
+   "camera": "static or slow pan",
+   "animation": "type-led",
+   "typography": "line-by-line mask",
+   "transition": "whip or push",
+   "audio": "tension",
+   "energy": 0.4,
+   "intent": "escalate"
+  },
+  {
+   "id": "reveal",
+   "share": 0.2,
+   "purpose": "Product reveal",
+   "visual": "product hero, rim light",
+   "camera": "orbit / push",
+   "animation": "scale + blur in, particles",
+   "typography": "product name",
+   "transition": "cut",
+   "audio": "impact",
+   "energy": 0.8,
+   "intent": "impact"
+  },
+  {
+   "id": "features",
+   "share": 0.3,
+   "purpose": "2-3 benefits as proof",
+   "visual": "feature callouts on product or UI cards",
+   "camera": "push between features",
+   "animation": "staggered cards / callouts",
+   "typography": "benefit headlines <= 5 words",
+   "transition": "push / zoom",
+   "audio": "rhythmic ticks on beat",
+   "energy": 0.7,
+   "intent": "continue"
+  },
+  {
+   "id": "cta",
+   "share": 0.2,
+   "purpose": "Logo + call to action",
+   "visual": "logo lockup, tagline, URL",
+   "camera": "slow pull-out",
+   "animation": "logo reveal",
+   "typography": "tagline + CTA",
+   "transition": "fade to black",
+   "audio": "resolve + logo chime",
+   "energy": 0.5,
+   "intent": "end"
+  }
+ ],
+ "pacing": "accelerate into features, slow down for the CTA; the product is on screen >= 50% of the runtime"
+}

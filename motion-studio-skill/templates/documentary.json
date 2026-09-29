@@ -1,0 +1,85 @@
+{
+ "id": "documentary",
+ "name": "Documentary",
+ "aliases": [
+  "documentary",
+  "history video",
+  "mini documentary",
+  "doc",
+  "story of",
+  "historical"
+ ],
+ "default_duration": 40,
+ "default_format": "16:9",
+ "default_style": "documentary",
+ "default_motion": "calm",
+ "purpose": "Tell a true story with maps, dates, quotes and archival treatment.",
+ "beats": [
+  {
+   "id": "cold-open",
+   "share": 0.15,
+   "purpose": "A striking fact or quote",
+   "visual": "quote on dark, film grain",
+   "camera": "slow push",
+   "animation": "line reveal",
+   "typography": "quote + attribution",
+   "transition": "dissolve",
+   "audio": "ambient drone",
+   "energy": 0.3,
+   "intent": "calm"
+  },
+  {
+   "id": "setting",
+   "share": 0.2,
+   "purpose": "Where and when",
+   "visual": "map fly-in, pins, date stamp",
+   "camera": "zoom from wide to place",
+   "animation": "route draws",
+   "typography": "place + date lower third",
+   "transition": "dissolve",
+   "audio": "pad",
+   "energy": 0.4,
+   "intent": "continue"
+  },
+  {
+   "id": "events",
+   "share": 0.35,
+   "purpose": "What happened, in order",
+   "visual": "timeline / archival stills with Ken Burns",
+   "camera": "pan along the timeline",
+   "animation": "events pop at dates",
+   "typography": "dates + captions",
+   "transition": "dissolve / wipe",
+   "audio": "ticks",
+   "energy": 0.5,
+   "intent": "continue"
+  },
+  {
+   "id": "impact",
+   "share": 0.18,
+   "purpose": "Why it mattered",
+   "visual": "number or consequence",
+   "camera": "slow push",
+   "animation": "counter or reveal",
+   "typography": "key number/line",
+   "transition": "fade",
+   "audio": "swell",
+   "energy": 0.6,
+   "intent": "impact"
+  },
+  {
+   "id": "close",
+   "share": 0.12,
+   "purpose": "Reflective close",
+   "visual": "title + credit/source",
+   "camera": "static",
+   "animation": "fade",
+   "typography": "title",
+   "transition": "fade to black",
+   "audio": "resolve",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "lower thirds stay >= 3 s; slow Ken Burns on every still; sources on screen"
+}

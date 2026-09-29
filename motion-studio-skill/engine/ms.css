@@ -1,0 +1,20 @@
+@import url(fonts.css);
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+#ms-stage{position:absolute;left:0;top:0;overflow:hidden;background:var(--bg);color:var(--fg);font-family:var(--font-body);transform-origin:0 0;
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.ms-scene{position:absolute;inset:0;overflow:hidden;display:none;background:var(--scene-bg,transparent)}
+.ms-rig{position:absolute;inset:0;transform-origin:50% 50%}
+.ms-layer{position:absolute;inset:0;transform-origin:50% 50%}
+.ms-abs{position:absolute}
+.ms-text{position:absolute;white-space:pre;line-height:1.02}
+.ms-text.wrap{white-space:normal}
+.ms-text .w,.ms-text .c{display:inline-block;white-space:pre}
+.ms-text .ln{display:block;overflow:hidden;padding:0 .04em}
+.ms-overlay{position:absolute;inset:0;pointer-events:none}
+.ms-canvas{position:absolute;left:0;top:0}
+.ms-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line)}
+.ms-mono{font-family:var(--font-mono)}
+#ms-dev{position:fixed;left:0;right:0;bottom:0;height:44px;background:#111;color:#ddd;font:13px/44px system-ui,sans-serif;display:flex;gap:12px;align-items:center;padding:0 12px;z-index:99}
+#ms-dev input{flex:1}
+#ms-dev button{background:#333;color:#fff;border:0;border-radius:6px;padding:4px 12px;cursor:pointer}

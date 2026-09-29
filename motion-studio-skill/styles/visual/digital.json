@@ -1,0 +1,506 @@
+{
+ "family": "digital",
+ "styles": [
+  {
+   "id": "cyberpunk",
+   "name": "Cyberpunk",
+   "aliases": [
+    "cyberpunk",
+    "cyber punk",
+    "neon city",
+    "neon futuristic",
+    "blade runner",
+    "neon noir",
+    "cyber"
+   ],
+   "description": "Neon magenta/cyan on near-black, rain, signage, glow, scanlines, synth pulse; dense layered city depth.",
+   "palette": {
+    "bg": "#07040f",
+    "bg2": "#150a2e",
+    "surface": "#140d24",
+    "fg": "#f6ecff",
+    "muted": "#9087b8",
+    "accent": "#ff2fb8",
+    "accent2": "#25e6ff",
+    "accent3": "#ffd23d",
+    "line": "#25e6ff26"
+   },
+   "fonts": {
+    "display": "Orbitron:800",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.06,
+    "lead": 1.0,
+    "display_scale": 0.9
+   },
+   "radius": 6,
+   "stroke": 2,
+   "shadow": "0 0 40px rgba(255,47,184,.25)",
+   "glow": 0.35,
+   "texture": [
+    "grain:.08",
+    "scanlines:.12",
+    "vignette:.5"
+   ],
+   "background": "horizon",
+   "transitions": {
+    "prefer": [
+     "glitch",
+     "whip",
+     "flash",
+     "wipe",
+     "slice"
+    ],
+    "avoid": [
+     "iris",
+     "fade"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "push through layered skyline; parallax signs; rain streaks",
+   "sound": {
+    "music": "synthwave",
+    "bpm": 104,
+    "key": "A",
+    "sfx": "digital",
+    "mood": "night"
+   },
+   "assets": [
+    "neon signs",
+    "rain",
+    "skyline",
+    "grid floor",
+    "HUD fragments"
+   ],
+   "do": [
+    "glow on hero edges",
+    "dark base 70%+",
+    "layered depth",
+    "RGB split on hits"
+   ],
+   "dont": [
+    "pastels",
+    "paper textures",
+    "serif body"
+   ],
+   "family": "digital"
+  },
+  {
+   "id": "futuristic-hud",
+   "name": "Futuristic HUD",
+   "aliases": [
+    "hud",
+    "futuristic hud",
+    "heads up display",
+    "interface overlay",
+    "iron man",
+    "targeting",
+    "sci-fi ui"
+   ],
+   "description": "Thin cyan linework, rings, tick marks, data readouts, scanning motions; everything is an instrument.",
+   "palette": {
+    "bg": "#020a0e",
+    "bg2": "#06161d",
+    "surface": "#081d26",
+    "fg": "#d8fbff",
+    "muted": "#5d8c96",
+    "accent": "#2de2ff",
+    "accent2": "#ff9f1c",
+    "accent3": "#8cff66",
+    "line": "#2de2ff33"
+   },
+   "fonts": {
+    "display": "Orbitron:500",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.2,
+    "lead": 1.0,
+    "display_scale": 0.8
+   },
+   "radius": 0,
+   "stroke": 1.5,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.25,
+   "texture": [
+    "hud",
+    "scanlines:.1",
+    "vignette:.5"
+   ],
+   "background": "grid",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "radial",
+     "glitch",
+     "slice"
+    ],
+    "avoid": [
+     "dissolve",
+     "fade"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "locked-off, precise zooms into readouts",
+   "sound": {
+    "music": "glitch",
+    "bpm": 110,
+    "key": "E",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "rings",
+    "ticks",
+    "radar",
+    "readouts",
+    "brackets"
+   ],
+   "do": [
+    "everything aligns to a grid",
+    "counters and readouts",
+    "scan lines sweep"
+   ],
+   "dont": [
+    "organic shapes",
+    "serif"
+   ],
+   "family": "digital"
+  },
+  {
+   "id": "holographic",
+   "name": "Holographic",
+   "aliases": [
+    "holographic",
+    "hologram",
+    "iridescent",
+    "holo",
+    "chrome holographic"
+   ],
+   "description": "Iridescent gradients, translucent layers, light refraction, soft glow and floating glass panels.",
+   "palette": {
+    "bg": "#0b0816",
+    "bg2": "#161030",
+    "surface": "#1b1438cc",
+    "fg": "#f7f2ff",
+    "muted": "#a79cc9",
+    "accent": "#8af3ff",
+    "accent2": "#ff9ef2",
+    "accent3": "#c9ff8a",
+    "line": "#ffffff2b"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 26,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.25,
+   "texture": [
+    "grain:.05"
+   ],
+   "background": "aurora",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "morph",
+     "radial",
+     "blur"
+    ],
+    "avoid": [
+     "slice",
+     "glitch"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "slow orbits around floating panels",
+   "sound": {
+    "music": "ambient",
+    "bpm": 96,
+    "key": "E",
+    "sfx": "soft",
+    "mood": "dreamy"
+   },
+   "assets": [
+    "glass panels",
+    "iridescent blobs",
+    "light caustics"
+   ],
+   "do": [
+    "iridescent gradient text",
+    "translucent stacked panels",
+    "slow shimmer"
+   ],
+   "dont": [
+    "flat dull colours",
+    "hard shadows"
+   ],
+   "family": "digital"
+  },
+  {
+   "id": "glitch-art",
+   "name": "Glitch",
+   "aliases": [
+    "glitch style",
+    "glitch art",
+    "glitch aesthetic",
+    "databend",
+    "corrupted",
+    "datamosh"
+   ],
+   "description": "Broken signal as aesthetic: RGB separation, slice displacement, pixel sorting bars, harsh digital colour, stutter cuts.",
+   "palette": {
+    "bg": "#050505",
+    "bg2": "#111111",
+    "surface": "#161616",
+    "fg": "#f2f2f2",
+    "muted": "#7d7d7d",
+    "accent": "#ff1f5a",
+    "accent2": "#00f0ff",
+    "accent3": "#f4ff00",
+    "line": "#ffffff22"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 0.95,
+    "display_scale": 1.0
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.12",
+    "scanlines:.2",
+    "chromatic"
+   ],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "glitch",
+     "slice",
+     "flash",
+     "cut"
+    ],
+    "avoid": [
+     "dissolve",
+     "iris",
+     "fade"
+    ]
+   },
+   "motion_default": "glitch",
+   "camera": "jump cuts, frame holds, jitter",
+   "sound": {
+    "music": "glitch",
+    "bpm": 128,
+    "key": "F",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "slices",
+    "noise bars",
+    "pixel blocks",
+    "error text"
+   ],
+   "do": [
+    "decode text",
+    "RGB split on every hit",
+    "stutter holds"
+   ],
+   "dont": [
+    "smooth long easing",
+    "soft pastels"
+   ],
+   "family": "digital"
+  },
+  {
+   "id": "digital-tech",
+   "name": "Digital / Tech",
+   "aliases": [
+    "digital tech",
+    "tech style",
+    "digital style",
+    "network",
+    "data flow",
+    "techy"
+   ],
+   "description": "Nodes, networks, code and data flows on dark blue; precise type; glowing connections.",
+   "palette": {
+    "bg": "#050a14",
+    "bg2": "#0b1628",
+    "surface": "#0f1d33",
+    "fg": "#e8f0ff",
+    "muted": "#7d8fb0",
+    "accent": "#3d8bff",
+    "accent2": "#2ee6c5",
+    "accent3": "#a970ff",
+    "line": "#3d8bff2e"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 12,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.2,
+   "texture": [
+    "grain:.04",
+    "vignette:.4"
+   ],
+   "background": "dots",
+   "transitions": {
+    "prefer": [
+     "zoom",
+     "wipe",
+     "radial",
+     "glitch",
+     "push"
+    ],
+    "avoid": [
+     "iris"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "fly through node networks; zoom into code",
+   "sound": {
+    "music": "corporate",
+    "bpm": 116,
+    "key": "E",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "node graphs",
+    "code",
+    "data streams",
+    "chips"
+   ],
+   "do": [
+    "connections draw on",
+    "mono labels",
+    "grid alignment"
+   ],
+   "dont": [
+    "hand-drawn",
+    "vintage textures"
+   ],
+   "family": "digital",
+   "weak_aliases": [
+    "ai",
+    "tech",
+    "digital",
+    "technology",
+    "data",
+    "software"
+   ]
+  },
+  {
+   "id": "retro-futurism",
+   "name": "Retro-futurism",
+   "aliases": [
+    "retro futurism",
+    "retro-futurism",
+    "retrofuturism",
+    "synthwave",
+    "outrun",
+    "atomic age",
+    "raygun"
+   ],
+   "description": "The future as the past imagined it: chrome sunsets, grid floors, star-streaks, italic chrome type, synth pulse.",
+   "palette": {
+    "bg": "#12061f",
+    "bg2": "#2b0b3d",
+    "surface": "#24103a",
+    "fg": "#fff1e6",
+    "muted": "#b48fb8",
+    "accent": "#ff6ad5",
+    "accent2": "#ffb86b",
+    "accent3": "#6af7ff",
+    "line": "#ff6ad533"
+   },
+   "fonts": {
+    "display": "Unbounded:800",
+    "body": "Space Grotesk:500",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 0.95,
+    "display_scale": 1.0
+   },
+   "radius": 8,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.3,
+   "texture": [
+    "grain:.07",
+    "scanlines:.1"
+   ],
+   "background": "horizon",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "zoom",
+     "flash",
+     "shape"
+    ],
+    "avoid": [
+     "glitch"
+    ]
+   },
+   "motion_default": "smooth",
+   "camera": "glide over the grid floor toward the sun",
+   "sound": {
+    "music": "synthwave",
+    "bpm": 100,
+    "key": "E",
+    "sfx": "digital",
+    "mood": "nostalgic"
+   },
+   "assets": [
+    "sun with slits",
+    "grid floor",
+    "chrome text",
+    "palm silhouettes"
+   ],
+   "do": [
+    "sunset gradient",
+    "grid perspective",
+    "chrome gradient type"
+   ],
+   "dont": [
+    "flat corporate UI"
+   ],
+   "family": "digital"
+  }
+ ]
+}

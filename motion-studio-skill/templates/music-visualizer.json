@@ -1,0 +1,76 @@
+{
+ "id": "music-visualizer",
+ "name": "Music visualizer",
+ "aliases": [
+  "visualizer",
+  "visualiser",
+  "music visualizer",
+  "audio visualizer",
+  "audio reactive",
+  "spectrum",
+  "music video",
+  "for my song",
+  "for a track",
+  "beat video"
+ ],
+ "default_duration": 30,
+ "default_format": "1:1",
+ "default_style": "gradient-abstract",
+ "default_motion": "organic",
+ "purpose": "Visuals driven by an audio track's energy, bands and beats.",
+ "beats": [
+  {
+   "id": "intro",
+   "share": 0.15,
+   "purpose": "Establish the visual system",
+   "visual": "shapes at rest, title",
+   "camera": "slow drift",
+   "animation": "breathing with RMS",
+   "typography": "track + artist",
+   "transition": "dissolve",
+   "audio": "track",
+   "energy": 0.3,
+   "intent": "calm"
+  },
+  {
+   "id": "groove",
+   "share": 0.45,
+   "purpose": "Main section, beat-synced",
+   "visual": "bands drive shapes, onsets trigger bursts",
+   "camera": "pulse zoom on beats",
+   "animation": "audio-reactive",
+   "typography": "none",
+   "transition": "cut on downbeats",
+   "audio": "track",
+   "energy": 0.7,
+   "intent": "continue"
+  },
+  {
+   "id": "peak",
+   "share": 0.25,
+   "purpose": "Peak energy",
+   "visual": "particles, colour shift",
+   "camera": "shake on onsets",
+   "animation": "bursts",
+   "typography": "none",
+   "transition": "flash on drop",
+   "audio": "track",
+   "energy": 1.0,
+   "intent": "impact"
+  },
+  {
+   "id": "outro",
+   "share": 0.15,
+   "purpose": "Wind down",
+   "visual": "system settles",
+   "camera": "pull out",
+   "animation": "decay",
+   "typography": "title",
+   "transition": "fade",
+   "audio": "track",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "drive visuals from analyze_audio.py features; never animate against the beat"
+}

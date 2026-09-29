@@ -1,0 +1,22 @@
+{
+ "name": "skyrunner",
+ "title": "Skyrunner",
+ "brief": "Make an anime-style game trailer for a sky-racing game called Skyrunner with energetic motion, 17 seconds",
+ "template": "cinematic-trailer",
+ "style": "anime",
+ "motion": "energetic",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 17.2,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": [],
+ "bpm": 140
+}

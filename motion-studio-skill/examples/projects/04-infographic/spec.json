@@ -1,0 +1,21 @@
+{
+ "name": "q3-numbers",
+ "title": "Q3 in numbers",
+ "brief": "16 second infographic data animation of quarterly product metrics, snappy motion",
+ "template": "infographic",
+ "style": "infographic",
+ "motion": "snappy",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 16.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

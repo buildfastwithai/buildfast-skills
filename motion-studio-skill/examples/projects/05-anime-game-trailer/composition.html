@@ -1,0 +1,138 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Skyrunner - anime game trailer</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* SKYRUNNER - 17.2 s anime game trailer (style: anime, motion: energetic, 140 bpm = 0.429 s/beat).
+   Arc: calm dawn sky -> two title cards -> six-shot montage cut on every 2 beats -> one beat of silence -> title slam -> date.
+   Density/scale alternate shot to shot; the only still moment is the silence before the title. */
+MS.boot(C => {
+  const b = C.beat(1), u = C.u, W = C.W, H = C.H;
+  const CRAFT = (hull = 'url(#hull)', wing = '#ff4d6d', wing2 = '#c9304f', glass = '#4dd2ff', flame = true) => `<svg viewBox="0 0 200 80">
+    <defs><linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9fb4ff"/></linearGradient>
+    <linearGradient id="flame" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#ffd166"/><stop offset=".4" stop-color="#ff4d6d"/><stop offset="1" stop-color="#ff4d6d" stop-opacity="0"/></linearGradient></defs>
+    ${flame ? '<path d="M14 40 L-70 36 L-70 50 L14 48 Z" fill="url(#flame)"/>' : ''}
+    <path d="M70 41 L40 6 L60 6 L112 39 Z" fill="${wing}"/>
+    <path d="M10 40 C40 30 120 26 192 39 C150 47 60 53 10 48 Z" fill="${hull}"/>
+    <path d="M72 45 L46 76 L64 76 L114 45 Z" fill="${wing2}"/>
+    <path d="M118 34 C132 26 152 27 166 35 C150 37 132 37 118 34 Z" fill="${glass}"/>
+    <path d="M14 41 L28 24 L42 40 Z" fill="${wing}"/></svg>`;
+  const CLOUD = `<svg viewBox="0 0 300 120"><g fill="#fff"><circle cx="60" cy="80" r="40"/><circle cx="118" cy="58" r="56"/><circle cx="190" cy="72" r="46"/><circle cx="244" cy="88" r="32"/><rect x="36" y="80" width="232" height="40" rx="20"/></g></svg>`;
+  const drift = (s, n, speed) => s.every(n, (lt, st) => { st.x -= lt * speed * u; });
+
+  // 01 OPEN - dawn sky, three parallax cloud planes, a tiny racer crosses (calm before the storm)
+  C.scene('open', 0, 6 * b, s => {
+    s.bg('gradient', { angle: 180, from: '#1e2f6b', to: '#ff9a8b' });
+    const far = s.layer(.3, 'far'), mid = s.layer(.7, 'mid'), near = s.layer(1.6, 'near');
+    const sun = s.shape('circle', { size: 30, color: '#ffd166', x: .72, y: .7, layer: far }); sun.style.boxShadow = `0 0 ${12 * u}px ${4 * u}px #ffd16688`;
+    [[.1, .35, .22, .5], [.45, .25, .18, .45], [.85, .42, .26, .55]].forEach(([x, y, sz, o]) => { const c = s.svg(CLOUD, { x, y, size: sz, layer: far }); c.style.opacity = o; drift(s, c, 1.2); });
+    [[.2, .78, .42], [.78, .9, .5]].forEach(([x, y, sz]) => { const c = s.svg(CLOUD, { x, y, size: sz, layer: mid }); c.style.opacity = .85; drift(s, c, 4); });
+    const craft = s.svg(CRAFT(), { x: .5, y: .55, size: .14 });
+    s.tween(craft, 1.0, 1.6, 'inOutSine', (e, st) => { st.x += MS.lerp(-.6, .6, e) * W; st.y += -Math.sin(e * Math.PI) * 6 * u; st.r -= 6; st.o *= e > 0 && e < 1 ? 1 : 0; });
+    C.cue(1.1, 'whoosh', { dur: 1.2, gain: .5 });
+    const c3 = s.svg(CLOUD, { x: .05, y: 1.02, size: .8, layer: near }); drift(s, c3, 10);
+    const line = s.text('The sky has no finish line', { size: 'h3', font: 'body', y: .16, tracking: .12, color: '#fff' });
+    s.anim(line, 'fadeUp', 1.5, { dur: .6 }); s.exit(line, 6 * b - .35, { dur: .25 });
+    s.particles({ type: 'dust', colors: ['#ffffff'], count: 60 });
+    s.push(.08);
+  }, { energy: .25, purpose: 'establish the world at dawn' });
+
+  // 02 CARDS - two title cards on black, each slammed on a downbeat
+  C.scene('cards', 6 * b, 6 * b, s => {
+    s.bg('solid', { color: '#05060d' });
+    const t1 = s.text('12 racers.', { size: 'display', y: .5 });
+    s.anim(t1, 'slam', .02, { from: 2.2 }); s.anim(t1, 'scaleOut', 3 * b - .12, { dur: .12 });
+    const t2 = s.text('One sky.', { size: 'display', y: .5, color: 'var(--accent2)' });
+    s.anim(t2, 'slam', 3 * b, { from: 2.2 });
+    C.cue(6 * b, 'impact'); C.cue(9 * b, 'impact');
+  }, { energy: .5, purpose: 'stakes' });
+
+  // 03 MONTAGE - six shots, 2 beats each, alternating density and colour
+  const M0 = 12 * b, shot = 2 * b;
+  C.scene('m-speed', M0, shot, s => {                          // wide: speed lines + big banking craft
+    s.bg('speedlines', { bg: '#0e1633', color: '#4dd2ff', n: 160 });
+    const cr = s.svg(CRAFT(), { x: .5, y: .5, size: .5 }); s.anim(cr, 'slam', 0, { from: .4, shake: false });
+    s.every(cr, (lt, st) => { st.r += -8 + Math.sin(lt * 14) * 1.5; st.y += Math.sin(lt * 23) * .5 * u; });
+    s.handheld(1.2);
+  }, { energy: .9 });
+  C.scene('m-boost', M0 + shot, shot, s => {                   // tight: HUD boost meter
+    s.bg('radial', { from: '#2a1b5c', to: '#0e1633' });
+    const lab = s.text('BOOST', { size: 'h2', font: 'body', x: .1, y: .32, anchor: 'left', align: 'left', color: 'var(--accent3)', tracking: .3 });
+    const pct = s.text('0%', { size: 'display', x: .1, y: .58, anchor: 'left', align: 'left' });
+    s.anim(pct, 'countUp', .05, { to: 300, dur: .55, suffix: '%' });
+    const bar = MS.ui.progress(s, { x: .55, y: .82, w: .9, at: .05, dur: .55 }); bar.firstChild.style.background = 'linear-gradient(90deg,var(--accent2),var(--accent))';
+    s.particles({ type: 'sparks', at: .55, x: .97, y: .8, colors: ['#ffd166', '#ff4d6d'] });
+    s.enter(lab, 0, { dur: .15 });
+  }, { energy: 1 });
+  C.scene('m-rivals', M0 + 2 * shot, shot, s => {             // silhouettes against rays
+    s.bg('rays', { a: '#ff4d6d', b: '#ff7a92', w: 5, speed: 30 });
+    [[.25, .62, .2, 0], [.5, .42, .28, .06], [.76, .64, .22, .12]].forEach(([x, y, sz, d]) => {
+      const r = s.svg(CRAFT('#101428', '#101428', '#101428', '#ff2050', false), { x, y, size: sz }); s.anim(r, 'slideIn', d, { from: 'right', dist: 40, dur: .3 }); });
+    const t = s.text('Rivals', { size: 'h1', y: .14, color: '#101428' }); s.anim(t, 'pop', .2);
+  }, { energy: .9 });
+  C.scene('m-faster', M0 + 3 * shot, shot, s => {             // full-screen type
+    s.bg('speedlines', { bg: '#ff4d6d', color: '#ffffff', n: 120, width: 7 });
+    const t = s.text('Faster', { size: 30, y: .5, color: '#fff', css: 'text-shadow:.06em .06em 0 #101428' });
+    s.anim(t, 'slam', 0, { from: 3 }); s.particles({ type: 'burst', at: .2, colors: ['#ffd166', '#fff'], y: .5, count: 90 });
+  }, { energy: 1 });
+  C.scene('m-storm', M0 + 4 * shot, shot, s => {              // dark storm, lightning, craft threads through
+    s.bg('gradient', { angle: 180, from: '#070a18', to: '#27305e' });
+    const far = s.layer(.5, 'far');
+    [[.15, .2, .5], [.6, .15, .6], [.9, .35, .45]].forEach(([x, y, sz]) => { const c = s.svg(CLOUD, { x, y, size: sz, layer: far }); s.every(c, (lt, st) => { st.filter += ' brightness(.3)'; }); drift(s, c, 6); });
+    const bolt = s.svg('<polyline points="60,0 42,40 58,40 36,100" fill="none" stroke="#e8f4ff" stroke-width="3" stroke-linejoin="round"/>', { x: .7, y: .38, size: .5, viewBox: '0 0 100 100' });
+    s.anim(bolt, 'drawPath', .12, { dur: .12 }); s.tween(bolt, .24, .3, 'linear', (e, st) => { st.o *= 1 - e; });
+    s.tween(null, .12, .25, 'linear', (e, _, p) => { s.root.style.filter = p > 0 && p < 1 ? `brightness(${1 + (1 - e) * .9})` : ''; });
+    C.cue(M0 + 4 * shot + .12, 'boom');
+    const cr = s.svg(CRAFT(), { x: .5, y: .62, size: .22 });
+    s.tween(cr, 0, shot, 'linear', (e, st) => { st.x += MS.lerp(-.5, .5, e) * W; st.r -= 4; });
+  }, { energy: .9 });
+  C.scene('m-higher', M0 + 5 * shot, shot, s => {             // inverse of 'faster'
+    s.bg('solid', { color: '#ffffff' });
+    const t = s.text('Higher', { size: 30, y: .5, color: '#101428' });
+    s.anim(t, 'slam', 0, { from: .3 }); s.shake(.1, .3, 1.4);
+  }, { energy: 1 });
+
+  // 04 SILENCE - one beat of nothing but a whisper
+  C.scene('silence', M0 + 6 * shot, 2 * b, s => {
+    s.bg('solid', { color: '#000' });
+    const t = s.text('ready?', { size: 'h3', font: 'body', y: .5, color: '#c3cbe8', tracking: .4 }); s.anim(t, 'fadeIn', .15, { dur: .3 });
+  }, { energy: .05, hold: 'black' });
+
+  // 05 TITLE - rays, slam, sparks, the craft streaks behind the title
+  const T0 = M0 + 6 * shot + 2 * b;
+  C.scene('title', T0, 8 * b, s => {
+    s.bg('rays', { a: '#1e2f6b', b: '#16235a', w: 8, speed: 10 });
+    const glow = s.shape('circle', { size: 70, color: 'radial-gradient(closest-side,#4dd2ff66,transparent)', x: .5, y: .5 });
+    const cr = s.svg(CRAFT(), { x: .5, y: .5, size: .3 });
+    s.tween(cr, .25, .7, 'inExpo', (e, st) => { st.x += MS.lerp(-.9, .9, e) * W; st.y += MS.lerp(.35, -.35, e) * H; st.r -= 18; st.o *= e > 0 && e < 1 ? 1 : 0; st.blur += e * .4 * u; });
+    C.cue(T0 + .25, 'whoosh', { dur: .7 });
+    const t = s.text('Skyrunner', { size: 24, y: .46, color: '#fff', css: 'text-shadow:.05em .05em 0 #ff4d6d,.1em .1em 0 #101428' });
+    s.anim(t, 'slam', 0, { from: 3.2 }); s.particles({ type: 'sparks', at: .15, y: .46, colors: ['#ffd166', '#4dd2ff', '#fff'], count: 140 });
+    const sub = s.text('race the horizon', { size: 'h3', font: 'body', y: .72, tracking: .5, color: 'var(--accent3)' }); s.anim(sub, 'tracking', .5, { from: 1.2, to: .5, dur: 1.2 });
+    s.push(.06);
+  }, { energy: 1, purpose: 'title reveal' });
+
+  // 06 DATE - clean end card for the thumbnail
+  C.scene('date', T0 + 8 * b, C.duration - (T0 + 8 * b), s => {
+    s.bg('gradient', { angle: 180, from: '#0e1633', to: '#1e2f6b' });
+    const d = s.text('Coming soon', { size: 'h1', y: .44 });   // Bangers' 7 reads as 1 - keep numbers in the body font
+    s.anim(d, 'maskReveal', .05);
+    const p = s.text('2027 · PC · Console · Wishlist now', { size: 'h3', font: 'body', y: .62, color: 'var(--muted)', tracking: .15 }); s.enter(p, .35);
+    s.particles({ type: 'dust', colors: ['#ffffff'], count: 40 });
+  }, { energy: .3, hold: true });
+
+  C.transition('open', 'cards', { type: 'cut' });
+  C.transition('cards', 'm-speed', { type: 'flash', dur: .2 });
+  C.transition('m-speed', 'm-boost', { type: 'whip', dir: 'left', dur: .3 });
+  C.transition('m-boost', 'm-rivals', { type: 'slice', dur: .3 });
+  C.transition('m-rivals', 'm-faster', { type: 'flash', dur: .2 });
+  C.transition('m-faster', 'm-storm', { type: 'zoom', dur: .35 });
+  C.transition('m-storm', 'm-higher', { type: 'flash', dur: .2 });
+  C.transition('m-higher', 'silence', { type: 'cut' });
+  C.transition('silence', 'title', { type: 'flash', dur: .25 });
+  C.transition('title', 'date', { type: 'shape', shape: 'diamond', color: 'var(--accent)', dur: .6 });
+  C.overlay('letterbox', { ratio: 2.1, animate: true, from: 0 });
+});
+</script>
+</body></html>

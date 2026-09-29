@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Your to-do list does itself - vertical short</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* 15 s vertical short, 1080x1920 (style: saas, motion: snappy, 118 bpm).
+   Vertical rules: one idea per screen, huge type in the upper-middle, subject centred, nothing in the bottom 20 %
+   (platform UI), readable with sound off, ending echoes the hook so the loop feels intentional. */
+MS.boot(C => {
+  const b = C.beat(1), u = C.u;
+  const CHECK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // 01 HOOK - frame 1 already has type on screen (no fade-in from nothing)
+  C.scene('hook', 0, 4 * b, s => {
+    s.bg('mesh', { opacity: .45 });
+    const a = s.text('Stop doing', { size: 13, y: .3 }), m = s.text('this', { size: 13, y: .43, color: 'var(--accent2)' }), c = s.text('manually.', { size: 13, y: .56 });
+    s.anim(a, 'slam', 0, { from: 1.4, shake: false }); s.anim(m, 'slam', b, { from: 1.8 }); s.anim(c, 'slam', 2 * b, { from: 1.8, shake: false });
+    const strike = s.el('<div style="height:1.4vw;background:var(--accent);border-radius:9px"></div>', { x: .5, y: .43, w: .42 });
+    s.anim(strike, 'wipeIn', 3 * b, { dur: .25 }); C.cue(3 * b, 'swoosh');
+  }, { energy: .9 });
+
+  // 02 THE LIST - tasks tick themselves off, one per beat
+  C.scene('list', 4 * b, 8 * b, s => {
+    s.bg('radial');
+    const h = s.text('Your to-do list', { size: 'h2', y: .12 }); s.enter(h, 0);
+    const tasks = ['Reply to emails', 'Update the CRM', 'Book flights', 'Weekly report'];          // 4 short items: readable at a glance
+    tasks.forEach((t, i) => {
+      const y = .28 + i * .13, card = MS.ui.card(s, { x: .5, y, w: .92, title: t, icon: '·', iconBg: 'var(--surface)' });
+      s.anim(card, 'slideIn', .1 + i * .08, { from: 'right', dist: 30 });
+      const at = 1.2 + i * b;
+      const ic = card.firstElementChild;
+      s.tween(null, at, .01, 'linear', e => { if (e > 0) { ic.innerHTML = CHECK; ic.style.background = 'var(--accent)'; ic.style.color = 'var(--bg)'; card.style.textDecoration = 'line-through'; } else { ic.innerHTML = '·'; ic.style.background = 'var(--surface)'; card.style.textDecoration = 'none'; } });
+      s.every(card, (lt, st) => { if (lt >= at) st.o *= .55; });
+      s.anim(ic, 'pop', at); C.cue(4 * b + at, 'pop', { gain: .7 });
+    });
+    const cap = s.text('done while you slept', { size: 'h3', font: 'body', y: .86, color: 'var(--accent2)' }); s.enter(cap, 1.2 + 4 * b);
+  }, { energy: .7 });
+
+  // 03 ASK IT - one sentence in, finished work out (chat)
+  C.scene('ask', 12 * b, 8 * b, s => {
+    s.bg('mesh', { opacity: .3 });
+    const h = s.text('Just ask.', { size: 'h1', y: .1 }); s.anim(h, 'pop', 0);
+    MS.ui.chat(s, [{ who: 'me', text: 'Flights to Berlin, Tuesday, under $300', at: .5 },
+                   { who: 'agent', text: 'Held the 8:40 nonstop, $214. Book it?', at: 1.6 },
+                   { who: 'me', text: 'Yes', at: 2.6 }], { y: .2, w: .86, size: 3.2 });
+    const t = MS.ui.toast(s, { at: 3.2, title: 'Booked ✓', icon: '✈', y: .72, x: .5, w: .92 });
+  }, { energy: .75 });
+
+  // 04 PARALLEL - three agents at once (progress bars race)
+  C.scene('parallel', 20 * b, 6 * b, s => {
+    s.bg('grid', { size: 9 });
+    const h = s.text('Three at once.', { size: 'h1', y: .12 }); s.anim(h, 'slam', 0, { from: 1.6 });
+    ['Research', 'Drafts', 'Scheduling'].forEach((n, i) => {
+      const y = .34 + i * .17, lab = s.text(n, { size: 'h3', font: 'body', x: 0, y, anchor: 'left', align: 'left' });
+      s.enter(lab, .2 + i * .1);
+      const pb = MS.ui.progress(s, { x: .5, y: y + .065, w: 1, at: .4 + i * .15, dur: 1.3 + i * .35 });
+      pb.firstChild.style.background = ['var(--accent)', 'var(--accent2)', 'var(--accent3)'][i];
+      C.cue(20 * b + .4 + i * .15 + 1.3 + i * .35, 'ding', { gain: 1 });
+    });
+  }, { energy: .85 });
+
+  // 05 CTA - echoes the hook's layout so the loop reads as intentional
+  C.scene('cta', 26 * b, C.duration - 26 * b, s => {
+    s.bg('mesh', { opacity: .45 });
+    const a = s.text('Let it', { size: 13, y: .36 }), c = s.text('run.', { size: 13, y: .49, color: 'var(--accent2)' });
+    s.anim(a, 'slam', 0, { from: 1.4 }); s.anim(c, 'slam', b, { from: 1.8, shake: false });
+    const f = s.text('Follow for part 2 →', { size: 'h3', font: 'body', y: .7, color: 'var(--muted)' }); s.enter(f, 1.6 * b);                                   // readable for 1.2 s before the end
+  }, { energy: .6, hold: true });
+
+  C.transition('hook', 'list', { type: 'zoom' });
+  C.transition('list', 'ask', { type: 'push', dir: 'up' });
+  C.transition('ask', 'parallel', { type: 'slice' });
+  C.transition('parallel', 'cta', { type: 'shape', shape: 'circle' });
+});
+</script>
+</body></html>

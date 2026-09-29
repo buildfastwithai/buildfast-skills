@@ -1,0 +1,647 @@
+{
+ "family": "illustration",
+ "styles": [
+  {
+   "id": "comic-book",
+   "name": "Comic book",
+   "aliases": [
+    "comic",
+    "comic book",
+    "comics",
+    "graphic novel",
+    "pop art",
+    "superhero comic"
+   ],
+   "description": "Panels, bold ink outlines, halftone dots, action lines, SFX lettering (POW!), primary colours.",
+   "palette": {
+    "bg": "#fff4d6",
+    "bg2": "#ffe066",
+    "surface": "#ffffff",
+    "fg": "#111111",
+    "muted": "#444444",
+    "accent": "#e63946",
+    "accent2": "#1d9bf0",
+    "accent3": "#ffd60a",
+    "line": "#111111"
+   },
+   "fonts": {
+    "display": "Bangers:400",
+    "body": "Space Grotesk:700",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.03,
+    "lead": 1.0,
+    "display_scale": 1.2
+   },
+   "radius": 0,
+   "stroke": 6,
+   "shadow": "8px 8px 0 #111",
+   "glow": 0,
+   "texture": [
+    "halftone"
+   ],
+   "background": "halftone",
+   "transitions": {
+    "prefer": [
+     "slice",
+     "whip",
+     "shape",
+     "cut",
+     "flash"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur",
+     "fade"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "panel-to-panel pushes, impact shakes",
+   "sound": {
+    "music": "trailer",
+    "bpm": 120,
+    "key": "C",
+    "sfx": "cartoon",
+    "mood": "heroic"
+   },
+   "assets": [
+    "panels",
+    "speech balloons",
+    "SFX lettering",
+    "speed lines"
+   ],
+   "do": [
+    "thick outlines",
+    "halftone shading",
+    "SFX words on impacts"
+   ],
+   "dont": [
+    "gradients",
+    "thin hairlines"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "manga",
+   "name": "Manga",
+   "aliases": [
+    "manga",
+    "black and white manga",
+    "shonen manga",
+    "screentone"
+   ],
+   "description": "Black & white ink, screentones, speed lines, dramatic close-ups, vertical Japanese-style panels.",
+   "palette": {
+    "bg": "#f7f7f2",
+    "bg2": "#e6e6df",
+    "surface": "#ffffff",
+    "fg": "#0c0c0c",
+    "muted": "#555555",
+    "accent": "#0c0c0c",
+    "accent2": "#d62828",
+    "accent3": "#7a7a7a",
+    "line": "#0c0c0c"
+   },
+   "fonts": {
+    "display": "Bangers:400",
+    "body": "Inter:600",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.02,
+    "lead": 1.0,
+    "display_scale": 1.2
+   },
+   "radius": 0,
+   "stroke": 5,
+   "shadow": "none",
+   "glow": 0,
+   "texture": [
+    "halftone:.1"
+   ],
+   "background": "speedlines",
+   "transitions": {
+    "prefer": [
+     "slice",
+     "flash",
+     "cut",
+     "whip"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur",
+     "morph"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "extreme close-up punches, speed-line zooms",
+   "sound": {
+    "music": "trailer",
+    "bpm": 132,
+    "key": "D",
+    "sfx": "cartoon",
+    "mood": ""
+   },
+   "assets": [
+    "speed lines",
+    "screentone",
+    "panel borders",
+    "ink splashes"
+   ],
+   "do": [
+    "black/white only (+1 red accent)",
+    "speed lines on action",
+    "panel framing"
+   ],
+   "dont": [
+    "colour gradients",
+    "soft pastels"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "anime",
+   "name": "Anime",
+   "aliases": [
+    "anime",
+    "anime style",
+    "japanese animation",
+    "shonen",
+    "anime opening",
+    "anime op"
+   ],
+   "description": "Saturated skies, cel-shaded shapes, speed lines, dramatic character-silhouette reveals, sakura/sparkle particles, title slams.",
+   "palette": {
+    "bg": "#0e1633",
+    "bg2": "#1e2f6b",
+    "surface": "#1a2550",
+    "fg": "#ffffff",
+    "muted": "#a9b7e6",
+    "accent": "#ff4d6d",
+    "accent2": "#4dd2ff",
+    "accent3": "#ffd166",
+    "line": "#ffffff33"
+   },
+   "fonts": {
+    "display": "Bangers:400",
+    "body": "Space Grotesk:700",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.04,
+    "lead": 0.95,
+    "display_scale": 1.2
+   },
+   "radius": 6,
+   "stroke": 4,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.04",
+    "vignette:.35"
+   ],
+   "background": "gradient",
+   "transitions": {
+    "prefer": [
+     "flash",
+     "whip",
+     "slice",
+     "cut",
+     "shape"
+    ],
+    "avoid": [
+     "dissolve",
+     "fade"
+    ]
+   },
+   "motion_default": "energetic",
+   "camera": "fast pushes, impact frames, speed-line zooms",
+   "sound": {
+    "music": "trailer",
+    "bpm": 140,
+    "key": "E",
+    "sfx": "cartoon",
+    "mood": "hype"
+   },
+   "assets": [
+    "speed lines",
+    "sparkles",
+    "sakura",
+    "character silhouette",
+    "impact frames"
+   ],
+   "do": [
+    "impact frames on hits",
+    "title slam with shake",
+    "sky gradient backgrounds"
+   ],
+   "dont": [
+    "muted corporate palettes"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "hand-drawn",
+   "name": "Hand-drawn",
+   "aliases": [
+    "hand drawn",
+    "hand-drawn",
+    "sketch",
+    "sketchy",
+    "pencil",
+    "illustrated",
+    "handmade"
+   ],
+   "description": "Wobbly ink lines drawn on, paper texture, marker fills slightly off-register, handwritten labels.",
+   "palette": {
+    "bg": "#faf6ee",
+    "bg2": "#f0e9da",
+    "surface": "#fffdf8",
+    "fg": "#23201c",
+    "muted": "#7a7266",
+    "accent": "#e4572e",
+    "accent2": "#2e86ab",
+    "accent3": "#f3a712",
+    "line": "#23201c33"
+   },
+   "fonts": {
+    "display": "Caveat:700",
+    "body": "Caveat:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.05,
+    "display_scale": 1.25
+   },
+   "radius": 6,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "paper:.3"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "cut",
+     "dissolve",
+     "mask"
+    ],
+    "avoid": [
+     "glitch",
+     "flash"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "gentle pans across the page",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 100,
+    "key": "G",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "ink lines",
+    "arrows",
+    "scribbles",
+    "marker highlights"
+   ],
+   "do": [
+    "lines draw on (drawPath)",
+    "boil/jitter 12fps",
+    "handwritten labels"
+   ],
+   "dont": [
+    "perfect geometry",
+    "neon glow"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "doodle",
+   "name": "Doodle",
+   "aliases": [
+    "doodle",
+    "doodles",
+    "scribble",
+    "notebook",
+    "cute doodle"
+   ],
+   "description": "Notebook doodles: marker outlines, stickers, arrows, stars, playful bouncing icons on lined paper.",
+   "palette": {
+    "bg": "#fffdf5",
+    "bg2": "#f4f0e2",
+    "surface": "#ffffff",
+    "fg": "#1f1f1f",
+    "muted": "#6b6b6b",
+    "accent": "#ff6b6b",
+    "accent2": "#4ecdc4",
+    "accent3": "#ffd93d",
+    "line": "#1f1f1f33"
+   },
+   "fonts": {
+    "display": "Caveat:700",
+    "body": "Fredoka:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.3
+   },
+   "radius": 14,
+   "stroke": 4,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "paper:.25"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "shape",
+     "push",
+     "cut"
+    ],
+    "avoid": [
+     "glitch",
+     "distortion"
+    ]
+   },
+   "motion_default": "elastic",
+   "camera": "bouncy pop-ins",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 112,
+    "key": "C",
+    "sfx": "cartoon",
+    "mood": ""
+   },
+   "assets": [
+    "arrows",
+    "stars",
+    "hearts",
+    "speech bubbles"
+   ],
+   "do": [
+    "everything pops in",
+    "boiling outlines",
+    "handwritten notes"
+   ],
+   "dont": [
+    "photorealism",
+    "dark palettes"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "paper-cutout",
+   "name": "Paper cutout",
+   "aliases": [
+    "paper cutout",
+    "paper cut",
+    "papercraft",
+    "cut paper",
+    "craft paper",
+    "paper craft"
+   ],
+   "description": "Layered paper sheets with soft drop shadows, visible texture, slight wobble, stepped stop-motion timing.",
+   "palette": {
+    "bg": "#f2e8d8",
+    "bg2": "#e6d7bf",
+    "surface": "#fbf5ea",
+    "fg": "#2b2521",
+    "muted": "#7b6d61",
+    "accent": "#e76f51",
+    "accent2": "#2a9d8f",
+    "accent3": "#e9c46a",
+    "line": "#2b252126"
+   },
+   "fonts": {
+    "display": "Fredoka:700",
+    "body": "Fredoka:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.1
+   },
+   "radius": 10,
+   "stroke": 2,
+   "shadow": "4px 8px 10px rgba(43,37,33,.35)",
+   "glow": 0,
+   "texture": [
+    "paper:.3",
+    "vignette:.3"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "push",
+     "shape",
+     "wipe",
+     "cut"
+    ],
+    "avoid": [
+     "glitch",
+     "blur"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "parallax between paper layers",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 104,
+    "key": "F",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "layered hills",
+    "cut shapes",
+    "clouds"
+   ],
+   "do": [
+    "drop shadows per layer",
+    "12 fps stepped movement",
+    "paper texture"
+   ],
+   "dont": [
+    "glow",
+    "neon",
+    "perfect gradients"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "stop-motion",
+   "name": "Stop-motion simulation",
+   "aliases": [
+    "stop motion",
+    "stop-motion",
+    "claymation",
+    "clay",
+    "stopmotion"
+   ],
+   "description": "12 fps stepped motion, subtle per-frame jitter of every object, tactile materials and soft light.",
+   "palette": {
+    "bg": "#efe4d2",
+    "bg2": "#e0cfb3",
+    "surface": "#f9f1e3",
+    "fg": "#2a2320",
+    "muted": "#7d6f63",
+    "accent": "#d9593d",
+    "accent2": "#3e8e7e",
+    "accent3": "#f0b341",
+    "line": "#2a232026"
+   },
+   "fonts": {
+    "display": "Fredoka:700",
+    "body": "Fredoka:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.1
+   },
+   "radius": 24,
+   "stroke": 2,
+   "shadow": "0 12px 18px rgba(0,0,0,.25)",
+   "glow": 0,
+   "texture": [
+    "grain:.08",
+    "vignette:.35"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "push",
+     "wipe"
+    ],
+    "avoid": [
+     "glitch",
+     "blur",
+     "morph"
+    ]
+   },
+   "motion_default": "stop-motion",
+   "camera": "locked-off camera with tiny bumps",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 96,
+    "key": "D",
+    "sfx": "paper",
+    "mood": ""
+   },
+   "assets": [
+    "clay shapes",
+    "felt textures",
+    "props"
+   ],
+   "do": [
+    "12 fps",
+    "per-frame jitter",
+    "soft shadows"
+   ],
+   "dont": [
+    "smooth 60fps motion blur"
+   ],
+   "family": "illustration"
+  },
+  {
+   "id": "childrens",
+   "name": "Children's illustration",
+   "aliases": [
+    "children's",
+    "childrens",
+    "kids",
+    "for kids",
+    "storybook",
+    "cartoon",
+    "children's book"
+   ],
+   "description": "Round friendly shapes, bright soft colours, bouncy timing, big rounded type, sparkles and smiles.",
+   "palette": {
+    "bg": "#fff7e8",
+    "bg2": "#ffe9c2",
+    "surface": "#ffffff",
+    "fg": "#2d2a4a",
+    "muted": "#7c7899",
+    "accent": "#ff7a59",
+    "accent2": "#43c6ac",
+    "accent3": "#ffc93c",
+    "line": "#2d2a4a22"
+   },
+   "fonts": {
+    "display": "Fredoka:700",
+    "body": "Fredoka:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0,
+    "lead": 1.02,
+    "display_scale": 1.15
+   },
+   "radius": 28,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "shape",
+     "iris",
+     "push",
+     "wipe"
+    ],
+    "avoid": [
+     "glitch",
+     "flash",
+     "distortion"
+    ]
+   },
+   "motion_default": "elastic",
+   "camera": "bouncy pans, zoom-ins on characters",
+   "sound": {
+    "music": "whimsical",
+    "bpm": 118,
+    "key": "C",
+    "sfx": "cartoon",
+    "mood": "joyful"
+   },
+   "assets": [
+    "round characters",
+    "stars",
+    "clouds",
+    "rainbows"
+   ],
+   "do": [
+    "rounded everything",
+    "squash & stretch",
+    "sparkle accents"
+   ],
+   "dont": [
+    "dark palettes",
+    "sharp aggression"
+   ],
+   "family": "illustration"
+  }
+ ]
+}

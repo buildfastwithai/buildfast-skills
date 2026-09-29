@@ -1,0 +1,511 @@
+{
+ "family": "cinematic",
+ "styles": [
+  {
+   "id": "cinematic-trailer",
+   "name": "Cinematic trailer",
+   "aliases": [
+    "cinematic trailer",
+    "movie trailer",
+    "film trailer",
+    "blockbuster",
+    "trailer style",
+    "cinematic look",
+    "cinematic style"
+   ],
+   "description": "Letterboxed, high contrast, teal/orange grade, huge condensed titles on black between shots, braams and silence.",
+   "palette": {
+    "bg": "#050607",
+    "bg2": "#0e1316",
+    "surface": "#12181c",
+    "fg": "#f2efe8",
+    "muted": "#8a949a",
+    "accent": "#e8a33d",
+    "accent2": "#2d8fa6",
+    "accent3": "#c94b2b",
+    "line": "#ffffff18"
+   },
+   "fonts": {
+    "display": "Bebas Neue:400",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.12,
+    "lead": 0.95,
+    "display_scale": 1.25
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "letterbox",
+    "grain:.08",
+    "vignette:.6"
+   ],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "flash",
+     "fade",
+     "zoom"
+    ],
+    "avoid": [
+     "slice",
+     "shape",
+     "push"
+    ]
+   },
+   "motion_default": "cinematic",
+   "camera": "slow push-ins, dramatic reveals, a shake on impacts",
+   "sound": {
+    "music": "cinematic",
+    "bpm": 80,
+    "key": "D",
+    "sfx": "cinematic",
+    "mood": "epic"
+   },
+   "assets": [
+    "title cards",
+    "light rays",
+    "dust",
+    "silhouettes"
+   ],
+   "do": [
+    "title cards on black between beats",
+    "3-act rise",
+    "silence before the logo",
+    "impacts on cuts"
+   ],
+   "dont": [
+    "cute easing",
+    "bright flat colours"
+   ],
+   "family": "cinematic",
+   "weak_aliases": [
+    "cinematic",
+    "trailer",
+    "epic",
+    "movie"
+   ]
+  },
+  {
+   "id": "scifi-cinematic",
+   "name": "Sci-fi cinematic",
+   "aliases": [
+    "sci-fi",
+    "scifi",
+    "science fiction",
+    "space",
+    "sci fi cinematic",
+    "space opera"
+   ],
+   "description": "Vast scale, cold blues with a hot accent, starfields, planets, HUD fragments, slow majestic camera.",
+   "palette": {
+    "bg": "#03060c",
+    "bg2": "#0a1424",
+    "surface": "#0f1b2e",
+    "fg": "#e6f1ff",
+    "muted": "#7e93b3",
+    "accent": "#59c2ff",
+    "accent2": "#ff7a3d",
+    "accent3": "#b8f1ff",
+    "line": "#59c2ff26"
+   },
+   "fonts": {
+    "display": "Orbitron:800",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.14,
+    "lead": 1.0,
+    "display_scale": 0.85
+   },
+   "radius": 4,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.3,
+   "texture": [
+    "grain:.06",
+    "vignette:.55",
+    "letterbox"
+   ],
+   "background": "stars",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "zoom",
+     "flash",
+     "radial"
+    ],
+    "avoid": [
+     "slice",
+     "shape"
+    ]
+   },
+   "motion_default": "cinematic",
+   "camera": "slow dolly through space; warp on transitions",
+   "sound": {
+    "music": "cinematic",
+    "bpm": 76,
+    "key": "C",
+    "sfx": "digital",
+    "mood": "vast"
+   },
+   "assets": [
+    "planets",
+    "starfield",
+    "ship silhouettes",
+    "HUD rings"
+   ],
+   "do": [
+    "scale contrast",
+    "glowing rims",
+    "slow reveals"
+   ],
+   "dont": [
+    "cartoon",
+    "paper textures"
+   ],
+   "family": "cinematic"
+  },
+  {
+   "id": "fantasy-cinematic",
+   "name": "Fantasy cinematic",
+   "aliases": [
+    "fantasy",
+    "epic fantasy",
+    "magical",
+    "mythic",
+    "medieval fantasy"
+   ],
+   "description": "Warm golds and deep greens, ornate serif titles, embers and god-rays, mist, heroic slow reveals.",
+   "palette": {
+    "bg": "#0b0a07",
+    "bg2": "#1b160d",
+    "surface": "#211a10",
+    "fg": "#f5ead0",
+    "muted": "#a8987a",
+    "accent": "#e8b04a",
+    "accent2": "#4fa36d",
+    "accent3": "#b84a2d",
+    "line": "#e8b04a33"
+   },
+   "fonts": {
+    "display": "Cormorant Garamond:700",
+    "body": "Cormorant Garamond:500",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.12,
+    "lead": 1.0,
+    "display_scale": 1.1
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.07",
+    "vignette:.6",
+    "lightleak:.2"
+   ],
+   "background": "radial",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "fade",
+     "flash",
+     "particles"
+    ],
+    "avoid": [
+     "glitch",
+     "slice",
+     "whip"
+    ]
+   },
+   "motion_default": "cinematic",
+   "camera": "slow crane-like rises, drifting embers",
+   "sound": {
+    "music": "cinematic",
+    "bpm": 76,
+    "key": "D",
+    "sfx": "cinematic",
+    "mood": "heroic"
+   },
+   "assets": [
+    "embers",
+    "runes",
+    "mountains",
+    "sigils"
+   ],
+   "do": [
+    "gold serif titles",
+    "embers/particles",
+    "mist layers"
+   ],
+   "dont": [
+    "neon",
+    "tech UI"
+   ],
+   "family": "cinematic"
+  },
+  {
+   "id": "horror",
+   "name": "Horror",
+   "aliases": [
+    "horror",
+    "scary",
+    "creepy",
+    "terror",
+    "haunted",
+    "spooky"
+   ],
+   "description": "Mostly darkness; cold desaturated greens; one red; flicker, long silences and sudden stingers; hide more than you show.",
+   "palette": {
+    "bg": "#030504",
+    "bg2": "#0b100d",
+    "surface": "#101612",
+    "fg": "#d9dcd4",
+    "muted": "#5f6b62",
+    "accent": "#b3121b",
+    "accent2": "#7a8b7f",
+    "accent3": "#e8e0c8",
+    "line": "#ffffff12"
+   },
+   "fonts": {
+    "display": "Cormorant Garamond:700",
+    "body": "Inter:400",
+    "mono": "VT323:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": 0.2,
+    "lead": 1.05,
+    "display_scale": 0.9
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.14",
+    "vignette:.8",
+    "film"
+   ],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "cut",
+     "flash",
+     "fade",
+     "distortion"
+    ],
+    "avoid": [
+     "shape",
+     "push",
+     "slice"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "creeping pushes, slow handheld, sudden shake on stingers",
+   "sound": {
+    "music": "horror",
+    "bpm": 60,
+    "key": "C",
+    "sfx": "dark",
+    "mood": "dread"
+   },
+   "assets": [
+    "fog",
+    "silhouettes",
+    "flicker",
+    "scratches"
+   ],
+   "do": [
+    "long stillness then a jolt",
+    "flicker lights",
+    "red used once"
+   ],
+   "dont": [
+    "bright colours",
+    "bouncy motion"
+   ],
+   "family": "cinematic"
+  },
+  {
+   "id": "dark-atmospheric",
+   "name": "Dark atmospheric",
+   "aliases": [
+    "atmospheric",
+    "moody",
+    "noir",
+    "brooding",
+    "dark atmospheric"
+   ],
+   "description": "Low-key lighting, fog, bokeh and slow reveals; mood over information.",
+   "palette": {
+    "bg": "#060708",
+    "bg2": "#101318",
+    "surface": "#14181f",
+    "fg": "#e9e6df",
+    "muted": "#737a86",
+    "accent": "#9fb4d6",
+    "accent2": "#d98f5a",
+    "accent3": "#4a5a78",
+    "line": "#ffffff14"
+   },
+   "fonts": {
+    "display": "Instrument Serif:400",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0.02,
+    "lead": 1.02,
+    "display_scale": 1.1
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.1",
+    "vignette:.7"
+   ],
+   "background": "bokeh",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "fade",
+     "blur",
+     "mask"
+    ],
+    "avoid": [
+     "glitch",
+     "whip",
+     "slice"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "slow drift, rack focus between layers",
+   "sound": {
+    "music": "ambient",
+    "bpm": 66,
+    "key": "B",
+    "sfx": "soft",
+    "mood": "melancholy"
+   },
+   "assets": [
+    "fog",
+    "bokeh",
+    "rain",
+    "light shafts"
+   ],
+   "do": [
+    "let shots breathe",
+    "rack focus",
+    "small type in big space"
+   ],
+   "dont": [
+    "saturated colour",
+    "fast cuts"
+   ],
+   "family": "cinematic",
+   "weak_aliases": [
+    "dark"
+   ]
+  },
+  {
+   "id": "documentary",
+   "name": "Documentary",
+   "aliases": [
+    "documentary",
+    "docu",
+    "doc style",
+    "nat geo",
+    "historical",
+    "investigative"
+   ],
+   "description": "Archival credibility: lower thirds, dates, maps, captions, film grain, Ken Burns moves on stills.",
+   "palette": {
+    "bg": "#11100e",
+    "bg2": "#1d1b17",
+    "surface": "#24211c",
+    "fg": "#efe8dc",
+    "muted": "#9a917f",
+    "accent": "#e0b04a",
+    "accent2": "#7fa7c9",
+    "accent3": "#c85a3a",
+    "line": "#efe8dc26"
+   },
+   "fonts": {
+    "display": "Instrument Serif:400",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.01,
+    "lead": 1.02,
+    "display_scale": 1.1
+   },
+   "radius": 2,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.1",
+    "vignette:.45",
+    "film"
+   ],
+   "background": "gradient",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "cut",
+     "fade",
+     "wipe"
+    ],
+    "avoid": [
+     "glitch",
+     "shape",
+     "whip"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "Ken Burns pans/zooms on stills, map fly-ins",
+   "sound": {
+    "music": "documentary",
+    "bpm": 84,
+    "key": "D",
+    "sfx": "paper",
+    "mood": "serious"
+   },
+   "assets": [
+    "lower thirds",
+    "dates",
+    "maps",
+    "archival frames",
+    "quotes"
+   ],
+   "do": [
+    "lower thirds with name/date",
+    "slow pans on stills",
+    "restrained type"
+   ],
+   "dont": [
+    "neon",
+    "bouncy motion"
+   ],
+   "family": "cinematic"
+  }
+ ]
+}

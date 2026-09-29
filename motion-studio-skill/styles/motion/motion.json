@@ -1,0 +1,708 @@
+{
+ "motions": [
+  {
+   "id": "smooth",
+   "name": "Smooth (neutral)",
+   "aliases": [
+    "smooth",
+    "neutral",
+    "standard",
+    "default"
+   ],
+   "description": "Balanced professional default: confident eases, moderate durations, clean dissolves and pushes.",
+   "ease": {
+    "enter": "outQuart",
+    "exit": "in",
+    "move": "smooth",
+    "emphasis": "outBack",
+    "camera": "inOutSine"
+   },
+   "dur": {
+    "enter": 0.6,
+    "exit": 0.4,
+    "move": 0.9,
+    "emphasis": 0.5,
+    "hold": 1.4
+   },
+   "stagger": {
+    "chars": 0.025,
+    "words": 0.07,
+    "lines": 0.12,
+    "items": 0.09
+   },
+   "dist": 5,
+   "blur": 0,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.05,
+    "drift": 0.15,
+    "shake": 0,
+    "handheld": 0
+   },
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "push",
+     "wipe",
+     "zoom",
+     "mask"
+    ],
+    "avoid": [],
+    "dur": 0.6
+   },
+   "enter": "fadeUp",
+   "exit": "fadeOut",
+   "pacing": {
+    "avg_shot": 3.0,
+    "min_shot": 1.5
+   },
+   "principles": [
+    "ease out on entrances, ease in on exits",
+    "stagger related items",
+    "one moving focal point at a time"
+   ]
+  },
+  {
+   "id": "cinematic",
+   "name": "Cinematic",
+   "aliases": [
+    "cinematic",
+    "cinematic motion",
+    "filmic",
+    "dramatic",
+    "epic motion",
+    "slow and dramatic"
+   ],
+   "description": "Slow camera pushes, deliberate reveals, long easing curves, dramatic pauses, layered depth.",
+   "ease": {
+    "enter": "bezier(.16,1,.3,1)",
+    "exit": "bezier(.7,0,.84,0)",
+    "move": "cinematic",
+    "emphasis": "outExpo",
+    "camera": "inOutSine"
+   },
+   "dur": {
+    "enter": 1.2,
+    "exit": 0.8,
+    "move": 1.8,
+    "emphasis": 0.9,
+    "hold": 2.4
+   },
+   "stagger": {
+    "chars": 0.04,
+    "words": 0.14,
+    "lines": 0.25,
+    "items": 0.18
+   },
+   "dist": 3,
+   "blur": 2.5,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.09,
+    "drift": 0.25,
+    "shake": 0,
+    "handheld": 0.15
+   },
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "fade",
+     "mask",
+     "iris",
+     "flash",
+     "cut"
+    ],
+    "avoid": [
+     "whip",
+     "slice",
+     "shape"
+    ],
+    "dur": 1.0
+   },
+   "enter": "blurIn",
+   "exit": "fadeOut",
+   "pacing": {
+    "avg_shot": 3.8,
+    "min_shot": 2.2
+   },
+   "principles": [
+    "every scene has a camera move (push, dolly, orbit)",
+    "reveal slowly, then hold",
+    "silence/stillness before the big moment",
+    "foreground/midground/background depth"
+   ]
+  },
+  {
+   "id": "snappy",
+   "name": "Snappy",
+   "aliases": [
+    "snappy",
+    "punchy",
+    "crisp",
+    "quick",
+    "fast-paced",
+    "fast paced",
+    "zippy"
+   ],
+   "description": "Rapid transitions, quick scale changes, overshoot, strong anticipation, short holds.",
+   "ease": {
+    "enter": "bezier(.2,1,.3,1)",
+    "exit": "bezier(.6,0,.9,.3)",
+    "move": "snap",
+    "emphasis": "outBackStrong",
+    "camera": "outExpo"
+   },
+   "dur": {
+    "enter": 0.35,
+    "exit": 0.22,
+    "move": 0.45,
+    "emphasis": 0.4,
+    "hold": 0.9
+   },
+   "stagger": {
+    "chars": 0.015,
+    "words": 0.045,
+    "lines": 0.07,
+    "items": 0.05
+   },
+   "dist": 6,
+   "blur": 0,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.04,
+    "drift": 0,
+    "shake": 0.4,
+    "handheld": 0
+   },
+   "transitions": {
+    "prefer": [
+     "push",
+     "zoom",
+     "whip",
+     "shape",
+     "radial"
+    ],
+    "avoid": [
+     "fade",
+     "iris",
+     "blur"
+    ],
+    "dur": 0.35
+   },
+   "enter": "spring",
+   "exit": "scaleOut",
+   "pacing": {
+    "avg_shot": 1.6,
+    "min_shot": 0.8
+   },
+   "principles": [
+    "anticipate (small pull back) before big moves",
+    "overshoot then settle",
+    "cut on the beat",
+    "short holds, but long enough to read"
+   ]
+  },
+  {
+   "id": "elastic",
+   "name": "Elastic",
+   "aliases": [
+    "elastic",
+    "bouncy",
+    "springy",
+    "playful",
+    "bounce",
+    "wobbly"
+   ],
+   "description": "Spring-like motion, bounce, overshoot, playful timing; squash and stretch.",
+   "ease": {
+    "enter": "spring(150,9)",
+    "exit": "bezier(.5,-.5,.8,.3)",
+    "move": "spring(120,11)",
+    "emphasis": "outElastic",
+    "camera": "outBack"
+   },
+   "dur": {
+    "enter": 0.8,
+    "exit": 0.35,
+    "move": 0.9,
+    "emphasis": 0.9,
+    "hold": 1.2
+   },
+   "stagger": {
+    "chars": 0.03,
+    "words": 0.08,
+    "lines": 0.12,
+    "items": 0.09
+   },
+   "dist": 7,
+   "blur": 0,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.05,
+    "drift": 0.1,
+    "shake": 0,
+    "handheld": 0
+   },
+   "transitions": {
+    "prefer": [
+     "shape",
+     "iris",
+     "push",
+     "radial",
+     "morph"
+    ],
+    "avoid": [
+     "glitch",
+     "fade",
+     "slice"
+    ],
+    "dur": 0.6
+   },
+   "enter": "pop",
+   "exit": "scaleOut",
+   "pacing": {
+    "avg_shot": 2.2,
+    "min_shot": 1.0
+   },
+   "principles": [
+    "squash on landing, stretch on travel",
+    "overshoot is the joke - don't overdo it everywhere",
+    "offset timing between siblings"
+   ]
+  },
+  {
+   "id": "mechanical",
+   "name": "Mechanical",
+   "aliases": [
+    "mechanical",
+    "robotic",
+    "precise",
+    "stepped",
+    "rigid",
+    "machine"
+   ],
+   "description": "Rigid movement, precise timing on a grid, stepped transitions, robotic behaviour.",
+   "ease": {
+    "enter": "bezier(.8,0,.2,1)",
+    "exit": "bezier(.8,0,.2,1)",
+    "move": "bezier(.85,0,.15,1)",
+    "emphasis": "steps(4)",
+    "camera": "bezier(.85,0,.15,1)"
+   },
+   "dur": {
+    "enter": 0.5,
+    "exit": 0.4,
+    "move": 0.6,
+    "emphasis": 0.4,
+    "hold": 1.2
+   },
+   "stagger": {
+    "chars": 0.03,
+    "words": 0.1,
+    "lines": 0.1,
+    "items": 0.1
+   },
+   "dist": 8,
+   "blur": 0,
+   "jitter": 0,
+   "step_fps": 12,
+   "glitch": 0,
+   "camera": {
+    "push": 0.04,
+    "drift": 0,
+    "shake": 0,
+    "handheld": 0
+   },
+   "transitions": {
+    "prefer": [
+     "wipe",
+     "slice",
+     "cut",
+     "push"
+    ],
+    "avoid": [
+     "dissolve",
+     "blur",
+     "morph",
+     "iris"
+    ],
+    "dur": 0.5
+   },
+   "enter": "wipeIn",
+   "exit": "wipeOut",
+   "pacing": {
+    "avg_shot": 2.0,
+    "min_shot": 1.0
+   },
+   "principles": [
+    "move on a grid, in straight lines",
+    "quantise timing to beats",
+    "hold exactly, then move exactly",
+    "stepped (12 fps) updates"
+   ]
+  },
+  {
+   "id": "organic",
+   "name": "Organic",
+   "aliases": [
+    "organic",
+    "fluid",
+    "flowing",
+    "natural motion",
+    "gentle flow",
+    "breathing"
+   ],
+   "description": "Fluid motion, irregular timing, natural easing, flowing shapes; nothing is perfectly synchronised.",
+   "ease": {
+    "enter": "inOutSine",
+    "exit": "inOutSine",
+    "move": "bezier(.37,0,.63,1)",
+    "emphasis": "outSine",
+    "camera": "inOutSine"
+   },
+   "dur": {
+    "enter": 1.0,
+    "exit": 0.8,
+    "move": 1.6,
+    "emphasis": 0.9,
+    "hold": 1.8
+   },
+   "stagger": {
+    "chars": 0.04,
+    "words": 0.11,
+    "lines": 0.18,
+    "items": 0.14
+   },
+   "dist": 4,
+   "blur": 1,
+   "jitter": 0.6,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.05,
+    "drift": 0.4,
+    "shake": 0,
+    "handheld": 0.25
+   },
+   "transitions": {
+    "prefer": [
+     "morph",
+     "dissolve",
+     "blur",
+     "mask",
+     "distortion"
+    ],
+    "avoid": [
+     "slice",
+     "whip",
+     "glitch",
+     "cut"
+    ],
+    "dur": 1.0
+   },
+   "enter": "blurIn",
+   "exit": "blurOut",
+   "pacing": {
+    "avg_shot": 3.2,
+    "min_shot": 1.8
+   },
+   "principles": [
+    "irregular stagger",
+    "things grow/float instead of snapping",
+    "continuous subtle drift"
+   ]
+  },
+  {
+   "id": "glitch",
+   "name": "Glitch",
+   "aliases": [
+    "glitch",
+    "glitchy",
+    "glitch motion",
+    "corrupted motion",
+    "datamosh motion",
+    "digital glitch"
+   ],
+   "description": "Discontinuous movement, frame displacement, RGB separation, distortion, sudden cuts.",
+   "ease": {
+    "enter": "steps(5)",
+    "exit": "steps(3)",
+    "move": "bezier(.9,0,.1,1)",
+    "emphasis": "steps(3)",
+    "camera": "steps(6)"
+   },
+   "dur": {
+    "enter": 0.35,
+    "exit": 0.2,
+    "move": 0.4,
+    "emphasis": 0.3,
+    "hold": 1.0
+   },
+   "stagger": {
+    "chars": 0.02,
+    "words": 0.05,
+    "lines": 0.07,
+    "items": 0.05
+   },
+   "dist": 4,
+   "blur": 0,
+   "jitter": 0.3,
+   "step_fps": 0,
+   "glitch": 1,
+   "camera": {
+    "push": 0.04,
+    "drift": 0,
+    "shake": 0.8,
+    "handheld": 0.4
+   },
+   "transitions": {
+    "prefer": [
+     "glitch",
+     "slice",
+     "cut",
+     "flash",
+     "distortion"
+    ],
+    "avoid": [
+     "dissolve",
+     "fade",
+     "iris",
+     "morph",
+     "blur"
+    ],
+    "dur": 0.35
+   },
+   "enter": "fadeUp",
+   "exit": "fadeOut",
+   "pacing": {
+    "avg_shot": 1.4,
+    "min_shot": 0.5
+   },
+   "principles": [
+    "break continuity on purpose",
+    "RGB split and slice on hits",
+    "hold a broken frame, then snap back",
+    "decode text instead of fading it"
+   ]
+  },
+  {
+   "id": "energetic",
+   "name": "Energetic",
+   "aliases": [
+    "energetic",
+    "hype",
+    "high energy",
+    "intense",
+    "action",
+    "aggressive",
+    "explosive"
+   ],
+   "description": "Aggressive camera, rapid cuts, particles, impact frames, strong transitions.",
+   "ease": {
+    "enter": "outExpo",
+    "exit": "inExpo",
+    "move": "inOutExpo",
+    "emphasis": "outBackStrong",
+    "camera": "outExpo"
+   },
+   "dur": {
+    "enter": 0.3,
+    "exit": 0.2,
+    "move": 0.4,
+    "emphasis": 0.35,
+    "hold": 0.8
+   },
+   "stagger": {
+    "chars": 0.015,
+    "words": 0.04,
+    "lines": 0.06,
+    "items": 0.04
+   },
+   "dist": 8,
+   "blur": 1.5,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0.2,
+   "camera": {
+    "push": 0.12,
+    "drift": 0,
+    "shake": 1.2,
+    "handheld": 0.5
+   },
+   "transitions": {
+    "prefer": [
+     "whip",
+     "flash",
+     "zoom",
+     "slice",
+     "glitch"
+    ],
+    "avoid": [
+     "fade",
+     "dissolve",
+     "blur"
+    ],
+    "dur": 0.3
+   },
+   "enter": "slam",
+   "exit": "scaleOut",
+   "pacing": {
+    "avg_shot": 1.1,
+    "min_shot": 0.4
+   },
+   "principles": [
+    "cut on every beat in the peak",
+    "impact frames (flash + shake) on hits",
+    "particles on impacts",
+    "fast push-ins"
+   ]
+  },
+  {
+   "id": "calm",
+   "name": "Calm",
+   "aliases": [
+    "calm",
+    "slow",
+    "relaxing",
+    "gentle",
+    "serene",
+    "peaceful",
+    "soothing",
+    "meditative"
+   ],
+   "description": "Slow movement, subtle parallax, soft easing, long transitions.",
+   "ease": {
+    "enter": "inOutSine",
+    "exit": "inOutSine",
+    "move": "inOutSine",
+    "emphasis": "outSine",
+    "camera": "inOutSine"
+   },
+   "dur": {
+    "enter": 1.4,
+    "exit": 1.0,
+    "move": 2.2,
+    "emphasis": 1.0,
+    "hold": 3.0
+   },
+   "stagger": {
+    "chars": 0.05,
+    "words": 0.16,
+    "lines": 0.3,
+    "items": 0.2
+   },
+   "dist": 2.5,
+   "blur": 1.5,
+   "jitter": 0,
+   "step_fps": 0,
+   "glitch": 0,
+   "camera": {
+    "push": 0.035,
+    "drift": 0.3,
+    "shake": 0,
+    "handheld": 0
+   },
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "fade",
+     "blur",
+     "mask"
+    ],
+    "avoid": [
+     "whip",
+     "flash",
+     "glitch",
+     "slice",
+     "shape"
+    ],
+    "dur": 1.4
+   },
+   "enter": "blurIn",
+   "exit": "fadeOut",
+   "pacing": {
+    "avg_shot": 4.5,
+    "min_shot": 2.8
+   },
+   "principles": [
+    "only one thing moves at a time",
+    "long holds",
+    "parallax instead of cuts"
+   ]
+  },
+  {
+   "id": "stop-motion",
+   "name": "Stop-motion",
+   "aliases": [
+    "stop motion motion",
+    "on twos",
+    "12fps",
+    "stepped animation"
+   ],
+   "description": "Animation on twos (12 fps) with per-frame positional jitter, like physical objects moved by hand.",
+   "ease": {
+    "enter": "outQuart",
+    "exit": "in",
+    "move": "smooth",
+    "emphasis": "outBack",
+    "camera": "inOutSine"
+   },
+   "dur": {
+    "enter": 0.7,
+    "exit": 0.5,
+    "move": 1.0,
+    "emphasis": 0.6,
+    "hold": 1.4
+   },
+   "stagger": {
+    "chars": 0.04,
+    "words": 0.1,
+    "lines": 0.15,
+    "items": 0.12
+   },
+   "dist": 6,
+   "blur": 0,
+   "jitter": 0.8,
+   "step_fps": 12,
+   "glitch": 0,
+   "camera": {
+    "push": 0.03,
+    "drift": 0,
+    "shake": 0,
+    "handheld": 0.1
+   },
+   "transitions": {
+    "prefer": [
+     "cut",
+     "push",
+     "wipe"
+    ],
+    "avoid": [
+     "blur",
+     "dissolve",
+     "morph"
+    ],
+    "dur": 0.5
+   },
+   "enter": "spring",
+   "exit": "slideOut",
+   "pacing": {
+    "avg_shot": 2.4,
+    "min_shot": 1.2
+   },
+   "principles": [
+    "everything updates at 12 fps",
+    "tiny wobble on every object",
+    "no motion blur"
+   ]
+  }
+ ]
+}

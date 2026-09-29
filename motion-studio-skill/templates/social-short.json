@@ -1,0 +1,91 @@
+{
+ "id": "social-short",
+ "name": "Social media short",
+ "aliases": [
+  "short",
+  "shorts",
+  "reel",
+  "reels",
+  "tiktok",
+  "instagram",
+  "social",
+  "social media",
+  "vertical video",
+  "story",
+  "x video",
+  "twitter video"
+ ],
+ "default_duration": 15,
+ "default_format": "9:16",
+ "default_style": "saas",
+ "default_motion": "energetic",
+ "purpose": "Win the first second, deliver one idea, loop-friendly ending.",
+ "beats": [
+  {
+   "id": "hook",
+   "share": 0.15,
+   "purpose": "Pattern interrupt in the first 1s",
+   "visual": "huge text + motion in frame 1",
+   "camera": "punch-in",
+   "animation": "slam",
+   "typography": "3-5 word hook",
+   "transition": "whip",
+   "audio": "impact on frame 1",
+   "energy": 0.9,
+   "intent": "impact"
+  },
+  {
+   "id": "payoff1",
+   "share": 0.25,
+   "purpose": "Point 1",
+   "visual": "big visual + caption",
+   "camera": "push",
+   "animation": "fast reveal",
+   "typography": "caption (large, centre)",
+   "transition": "cut on beat",
+   "audio": "beat",
+   "energy": 0.8,
+   "intent": "continue"
+  },
+  {
+   "id": "payoff2",
+   "share": 0.25,
+   "purpose": "Point 2",
+   "visual": "contrasting layout",
+   "camera": "zoom",
+   "animation": "fast reveal",
+   "typography": "caption",
+   "transition": "whip",
+   "audio": "beat",
+   "energy": 0.8,
+   "intent": "escalate"
+  },
+  {
+   "id": "payoff3",
+   "share": 0.2,
+   "purpose": "Point 3 / twist",
+   "visual": "the best visual",
+   "camera": "shake on hit",
+   "animation": "impact frame",
+   "typography": "caption",
+   "transition": "flash",
+   "audio": "impact",
+   "energy": 1.0,
+   "intent": "impact"
+  },
+  {
+   "id": "loop",
+   "share": 0.15,
+   "purpose": "CTA / loop back",
+   "visual": "handle/CTA that matches frame 1",
+   "camera": "match",
+   "animation": "type",
+   "typography": "CTA",
+   "transition": "match cut to start",
+   "audio": "tail",
+   "energy": 0.6,
+   "intent": "continue"
+  }
+ ],
+ "pacing": "text in the platform-safe area; >= 5% of height font size for captions; something new every 1-2 s"
+}

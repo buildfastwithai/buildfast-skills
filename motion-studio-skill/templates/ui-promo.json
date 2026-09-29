@@ -1,0 +1,72 @@
+{
+ "id": "ui-promo",
+ "name": "UI / app promo",
+ "aliases": [
+  "app promo",
+  "ui promo",
+  "app ad",
+  "mobile app promo",
+  "app store video",
+  "ui animation"
+ ],
+ "default_duration": 20,
+ "default_format": "9:16",
+ "default_style": "saas",
+ "default_motion": "snappy",
+ "purpose": "Show the app's interface moments (cards, notifications, flows) as a fast, polished montage.",
+ "beats": [
+  {
+   "id": "hook",
+   "share": 0.15,
+   "purpose": "Hook with the app's best moment",
+   "visual": "phone/app screen close-up",
+   "camera": "punch in",
+   "animation": "UI snaps into place",
+   "typography": "3-word headline",
+   "transition": "zoom",
+   "audio": "whoosh",
+   "energy": 0.6,
+   "intent": "reveal"
+  },
+  {
+   "id": "flows",
+   "share": 0.5,
+   "purpose": "3 quick feature flows",
+   "visual": "cards, toasts, toggles animating",
+   "camera": "follow each interaction",
+   "animation": "spring cards, notifications",
+   "typography": "one label per flow",
+   "transition": "push / shape",
+   "audio": "ui pops on each action",
+   "energy": 0.8,
+   "intent": "continue"
+  },
+  {
+   "id": "proof",
+   "share": 0.15,
+   "purpose": "Social proof / metric",
+   "visual": "rating or counter",
+   "camera": "static",
+   "animation": "count-up",
+   "typography": "number + label",
+   "transition": "flash",
+   "audio": "impact",
+   "energy": 0.7,
+   "intent": "impact"
+  },
+  {
+   "id": "cta",
+   "share": 0.2,
+   "purpose": "Download / try",
+   "visual": "app icon + store badge text",
+   "camera": "pull-out",
+   "animation": "logo pop",
+   "typography": "CTA",
+   "transition": "cut",
+   "audio": "resolve",
+   "energy": 0.5,
+   "intent": "end"
+  }
+ ],
+ "pacing": "1 flow per ~3s; UI copy must be readable on a phone"
+}

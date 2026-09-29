@@ -1,0 +1,98 @@
+{
+ "id": "cinematic-trailer",
+ "name": "Cinematic trailer",
+ "aliases": [
+  "trailer",
+  "teaser",
+  "cinematic trailer",
+  "game trailer",
+  "movie trailer",
+  "launch trailer"
+ ],
+ "default_duration": 30,
+ "default_format": "16:9",
+ "default_style": "cinematic-trailer",
+ "default_motion": "cinematic",
+ "purpose": "Build anticipation in three acts, end on the title.",
+ "beats": [
+  {
+   "id": "cold-open",
+   "share": 0.15,
+   "purpose": "Atmosphere, world establishing",
+   "visual": "wide dark shot, particles, fog",
+   "camera": "very slow push",
+   "animation": "slow reveal",
+   "typography": "none or a date",
+   "transition": "fade from black",
+   "audio": "drone",
+   "energy": 0.2,
+   "intent": "calm"
+  },
+  {
+   "id": "act1",
+   "share": 0.2,
+   "purpose": "Introduce the stakes",
+   "visual": "title card on black, short line",
+   "camera": "static",
+   "animation": "tracking/blur reveal",
+   "typography": "short line",
+   "transition": "cut",
+   "audio": "braam",
+   "energy": 0.4,
+   "intent": "reveal"
+  },
+  {
+   "id": "act2",
+   "share": 0.3,
+   "purpose": "Escalation montage",
+   "visual": "fast shots: silhouettes, symbols, action",
+   "camera": "fast pushes, shake on hits",
+   "animation": "impact frames",
+   "typography": "2-3 word cards",
+   "transition": "flash cuts on beats",
+   "audio": "hits accelerate",
+   "energy": 0.9,
+   "intent": "escalate"
+  },
+  {
+   "id": "silence",
+   "share": 0.07,
+   "purpose": "The breath",
+   "visual": "black or a single image",
+   "camera": "still",
+   "animation": "nothing",
+   "typography": "none",
+   "transition": "cut",
+   "audio": "silence",
+   "energy": 0.1,
+   "intent": "calm"
+  },
+  {
+   "id": "title",
+   "share": 0.18,
+   "purpose": "Title reveal",
+   "visual": "logo/title with light rays",
+   "camera": "slow pull",
+   "animation": "title slam + particles",
+   "typography": "title",
+   "transition": "cut",
+   "audio": "final impact",
+   "energy": 1.0,
+   "intent": "impact"
+  },
+  {
+   "id": "date",
+   "share": 0.1,
+   "purpose": "Date / CTA",
+   "visual": "release date / platform",
+   "camera": "static",
+   "animation": "fade",
+   "typography": "date",
+   "transition": "fade to black",
+   "audio": "tail",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "slow \u2192 fast \u2192 silence \u2192 title; cuts accelerate through act 2"
+}

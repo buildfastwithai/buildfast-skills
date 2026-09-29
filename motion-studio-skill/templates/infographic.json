@@ -1,0 +1,85 @@
+{
+ "id": "infographic",
+ "name": "Infographic / data",
+ "aliases": [
+  "infographic",
+  "data video",
+  "stats video",
+  "data animation",
+  "numbers video",
+  "statistics"
+ ],
+ "default_duration": 25,
+ "default_format": "16:9",
+ "default_style": "infographic",
+ "default_motion": "snappy",
+ "purpose": "3-4 data points, each with one insight, building to a conclusion.",
+ "beats": [
+  {
+   "id": "title",
+   "share": 0.14,
+   "purpose": "What this data is about",
+   "visual": "title + source line",
+   "camera": "static",
+   "animation": "type reveal",
+   "typography": "title",
+   "transition": "push",
+   "audio": "soft",
+   "energy": 0.4,
+   "intent": "reveal"
+  },
+  {
+   "id": "stat1",
+   "share": 0.2,
+   "purpose": "Headline number",
+   "visual": "huge counter + label",
+   "camera": "zoom to the number",
+   "animation": "count-up",
+   "typography": "number + label",
+   "transition": "push",
+   "audio": "tick",
+   "energy": 0.6,
+   "intent": "continue"
+  },
+  {
+   "id": "chart",
+   "share": 0.28,
+   "purpose": "Comparison / trend",
+   "visual": "bar or line chart",
+   "camera": "static then push on the highlight",
+   "animation": "bars grow / line draws",
+   "typography": "axis labels + callout",
+   "transition": "wipe",
+   "audio": "ticks per bar",
+   "energy": 0.7,
+   "intent": "continue"
+  },
+  {
+   "id": "stat2",
+   "share": 0.2,
+   "purpose": "Second insight",
+   "visual": "ring/donut or icon grid",
+   "camera": "push",
+   "animation": "ring fills",
+   "typography": "percentage + label",
+   "transition": "shape",
+   "audio": "tick",
+   "energy": 0.6,
+   "intent": "continue"
+  },
+  {
+   "id": "conclusion",
+   "share": 0.18,
+   "purpose": "So what?",
+   "visual": "takeaway + source",
+   "camera": "pull out",
+   "animation": "fade",
+   "typography": "takeaway line + source",
+   "transition": "fade",
+   "audio": "resolve",
+   "energy": 0.4,
+   "intent": "end"
+  }
+ ],
+ "pacing": "each number stays readable >= 1.5 s after counting; label units; cite sources; placeholder data must be labelled"
+}

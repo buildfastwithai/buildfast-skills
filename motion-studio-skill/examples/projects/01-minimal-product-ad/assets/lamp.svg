@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520">
+ <defs><radialGradient id="warm" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".9"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient></defs>
+ <path class="beam" d="M236 204 L322 238 L392 478 L118 478 Z" fill="url(#warm)" stroke="none" opacity="0"/>
+ <g class="lamp" fill="none" style="stroke:var(--fg)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M112 470 H288 a10 10 0 0 1 0 20 H112 a10 10 0 0 1 0 -20 Z"/>
+  <path d="M200 470 L142 284"/>
+  <circle cx="142" cy="280" r="11"/>
+  <path d="M150 272 L270 170"/>
+  <circle cx="278" cy="164" r="9"/>
+  <path d="M262 146 L306 178 L322 238 L230 204 Z"/>
+ </g>
+ <ellipse class="bulb" cx="276" cy="222" rx="30" ry="10" transform="rotate(20 276 222)" fill="#ffcf8a" opacity="0"/>
+</svg>

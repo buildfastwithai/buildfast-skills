@@ -1,0 +1,83 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Motion is a language - kinetic type</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* Kinetic typography - 12 s, 1:1 (style: experimental, motion: snappy, 124 bpm).
+   Every change lands on the beat grid (C.beat). Layout, scale and move change on every phrase; one deliberate empty beat. */
+MS.boot(C => {
+  const b = C.beat(1);                                            // 0.484 s
+  const INV = { bg: 'var(--fg)', fg: 'var(--bg)' };               // inverted scenes for density/contrast changes
+
+  // 01 OPEN - four words, four layouts, one per 2 beats
+  C.scene('open', 0, 8 * b, s => {
+    s.bg('solid');
+    const w1 = s.text('EVERY', { size: 22, x: 0, y: .12, anchor: 'top-left', align: 'left' });
+    s.anim(w1, 'slam', 0, { from: 1.8 });
+    const w2 = s.text('FRAME', { size: 22, x: 1, y: .38, anchor: 'top-right', align: 'right', hollow: true, stroke: 3 });
+    s.anim(w2, 'slideIn', 2 * b, { from: 'right', dist: 60 }); C.cue(2 * b, 'swoosh');
+    const w3 = s.text('IS A', { size: 'h2', font: 'mono', x: 0, y: .66, anchor: 'left', align: 'left', color: 'var(--accent)' });
+    s.anim(w3, 'decode', 4 * b, { dur: .4 });
+    const w4 = s.text('DECISION.', { size: 20, x: .5, y: .86, color: 'var(--accent2)' });
+    s.anim(w4, 'charReveal', 5 * b, { each: 'pop' }); C.cue(5 * b, 'impact');
+    s.shake(5 * b + .15, .35, .8);
+  }, { energy: .7 });
+
+  // 02-05 BUILD - one word per scene, alternating density, cut on the beat
+  const words = [
+    ['Timing.', 'maskReveal', null], ['Rhythm.', 'charReveal', INV], ['Weight.', 'slam', null], ['Silence.', 'blurIn', INV]];
+  words.forEach(([w, mv, inv], i) => {
+    const start = 8 * b + i * 2 * b;
+    C.scene('w' + i, start, 2 * b, s => {
+      if (inv) s.root.style.setProperty('--scene-bg', inv.bg);
+      const col = inv ? 'var(--bg)' : 'var(--fg)';
+      if (mv === 'charReveal') {
+        const t = s.text(w, { size: 17, color: col, split: 'chars' });
+        s.anim(t, 'charReveal', .05, { each: 'dropIn', stagger: b / 4 });
+        for (let k = 0; k < 4; k++) C.cue(start + .05 + k * b / 4, 'tick');
+      } else if (mv === 'slam') {
+        const t = s.text(w, { size: 23, color: col, y: .5 });
+        s.anim(t, 'slam', 0, { from: 3 }); s.particles({ type: 'burst', at: .2, colors: ['var(--accent)', 'var(--fg)'], y: .5 });
+      } else if (mv === 'blurIn') {                              // the empty beat: tiny word, lots of space
+        const t = s.text(w, { size: 'h3', color: col, font: 'body', weight: 600, tracking: .4 });
+        s.anim(t, 'blurIn', .12, { dur: .45 });
+      } else {
+        const t = s.text(w, { size: 19, color: col, split: 'lines' });
+        s.anim(t, 'lineReveal', 0, { dur: .35 });
+        const bar = s.el('<div style="height:14px;background:var(--accent)"></div>', { x: .5, y: .68, w: .7 });
+        s.anim(bar, 'wipeIn', b * .5, { dur: b });
+      }
+    }, { energy: w === 'Silence.' ? .08 : .85 });           // 'Silence.' really is silent: energy <= .1 gates the music
+  });
+
+  // 06 PEAK - the key line, word by word, highlight on the key word
+  C.scene('peak', 16 * b, 8 * b, s => {
+    s.bg('solid');
+    const l1 = s.text('Motion', { size: 18, x: .04, y: .2, anchor: 'left', align: 'left' });
+    const l2 = s.text('is a', { size: 'h1', font: 'mono', x: .04, y: .43, anchor: 'left', align: 'left', color: 'var(--accent2)' });
+    const l3 = s.text('language.', { size: 17, x: .04, y: .66, anchor: 'left', align: 'left' });
+    s.anim(l1, 'slideIn', 0, { from: 'left', dist: 40 }); s.anim(l2, 'decode', b, { dur: .35 }); s.anim(l3, 'maskReveal', 2 * b, { dur: .4 });
+    s.anim(l3, 'highlight', 3 * b, { color: 'var(--accent)', top: 62, bottom: 8, dur: .45 });
+    [0, b, 2 * b, 3 * b].forEach(t => C.cue(16 * b + t, t === 3 * b ? 'impact' : 'tick'));
+    const sm = s.text('learn it, speak it, ship it', { size: 'caption', font: 'mono', x: .04, y: .86, anchor: 'left', align: 'left', tracking: .12 });
+    s.enter(sm, 4.5 * b);
+    s.push(.04);
+  }, { energy: 1.0 });
+
+  // 07 RESOLVE - sign-off
+  C.scene('resolve', 24 * b, C.duration - 24 * b, s => {
+    s.root.style.setProperty('--scene-bg', 'var(--fg)');
+    const t = s.text('/motion-studio', { size: 'h2', font: 'mono', color: 'var(--bg)' });
+    s.anim(t, 'typewriter', .1, { cps: 22 });
+  }, { energy: .3, hold: true });
+
+  C.transition('open', 'w0', { type: 'cut' });
+  C.transition('w0', 'w1', { type: 'slice', dur: .3 });
+  C.transition('w1', 'w2', { type: 'cut' });
+  C.transition('w2', 'w3', { type: 'flash', dur: .2, color: 'var(--accent)' });
+  C.transition('w3', 'peak', { type: 'push', dir: 'up', dur: .35 });
+  C.transition('peak', 'resolve', { type: 'wipe', dir: 'right', dur: .4 });
+});
+</script>
+</body></html>

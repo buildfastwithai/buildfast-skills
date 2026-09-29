@@ -1,0 +1,86 @@
+{
+ "id": "tech-news",
+ "name": "AI / tech news",
+ "aliases": [
+  "news",
+  "tech news",
+  "ai news",
+  "headline",
+  "update",
+  "announcement",
+  "breaking"
+ ],
+ "default_duration": 30,
+ "default_format": "9:16",
+ "default_style": "digital-tech",
+ "default_motion": "snappy",
+ "purpose": "Deliver 1-3 news items fast: headline \u2192 what happened \u2192 why it matters.",
+ "beats": [
+  {
+   "id": "hook",
+   "share": 0.15,
+   "purpose": "Headline hook",
+   "visual": "BREAKING / date tag + headline",
+   "camera": "punch-in",
+   "animation": "headline decode / slam",
+   "typography": "headline",
+   "transition": "glitch / flash",
+   "audio": "news sting",
+   "energy": 0.8,
+   "intent": "impact"
+  },
+  {
+   "id": "item1",
+   "share": 0.25,
+   "purpose": "What happened",
+   "visual": "key fact cards, logos as text",
+   "camera": "push",
+   "animation": "cards stack",
+   "typography": "short facts",
+   "transition": "push",
+   "audio": "ticks",
+   "energy": 0.6,
+   "intent": "continue"
+  },
+  {
+   "id": "item2",
+   "share": 0.25,
+   "purpose": "The number / detail",
+   "visual": "big stat or quote",
+   "camera": "zoom on the number",
+   "animation": "count-up",
+   "typography": "stat + label",
+   "transition": "whip",
+   "audio": "impact",
+   "energy": 0.7,
+   "intent": "escalate"
+  },
+  {
+   "id": "why",
+   "share": 0.2,
+   "purpose": "Why it matters",
+   "visual": "implication line + icon",
+   "camera": "static",
+   "animation": "type reveal",
+   "typography": "one-line takeaway",
+   "transition": "cut",
+   "audio": "tone",
+   "energy": 0.5,
+   "intent": "continue"
+  },
+  {
+   "id": "outro",
+   "share": 0.15,
+   "purpose": "Follow / source",
+   "visual": "source + handle",
+   "camera": "static",
+   "animation": "fade in",
+   "typography": "source label",
+   "transition": "fade",
+   "audio": "resolve",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "captions stay on screen >= 1.2s; always show the source; never invent facts"
+}

@@ -1,0 +1,21 @@
+{
+ "name": "neon-district",
+ "title": "Neon District",
+ "brief": "A 14 second cyberpunk cinematic teaser for a city called Neon District, cinematic motion",
+ "template": "cinematic-trailer",
+ "style": "cyberpunk",
+ "motion": "cinematic",
+ "format": "16:9",
+ "fps": 30,
+ "duration": 14.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

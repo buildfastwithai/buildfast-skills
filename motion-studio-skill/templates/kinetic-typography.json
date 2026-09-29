@@ -1,0 +1,74 @@
+{
+ "id": "kinetic-typography",
+ "name": "Kinetic typography",
+ "aliases": [
+  "kinetic typography",
+  "kinetic type",
+  "kinetic text",
+  "typography video",
+  "text animation",
+  "type animation",
+  "motion type",
+  "word animation"
+ ],
+ "default_duration": 15,
+ "default_format": "16:9",
+ "default_style": "minimal",
+ "default_motion": "snappy",
+ "purpose": "Typography is the image: rhythm, scale, and timing carry the message.",
+ "beats": [
+  {
+   "id": "open",
+   "share": 0.2,
+   "purpose": "First phrase lands",
+   "visual": "single huge word",
+   "camera": "static",
+   "animation": "slam / mask",
+   "typography": "1-2 words",
+   "transition": "cut on beat",
+   "audio": "hit",
+   "energy": 0.6,
+   "intent": "impact"
+  },
+  {
+   "id": "build",
+   "share": 0.45,
+   "purpose": "Phrases on the beat",
+   "visual": "varied layouts: stacked, rotated, split, tracking",
+   "camera": "punch-ins",
+   "animation": "a different move per phrase",
+   "typography": "3-6 phrases",
+   "transition": "cut / whip on beats",
+   "audio": "beat-synced hits",
+   "energy": 0.8,
+   "intent": "continue"
+  },
+  {
+   "id": "peak",
+   "share": 0.2,
+   "purpose": "The key line",
+   "visual": "the message, biggest scale",
+   "camera": "slow push",
+   "animation": "word-by-word or highlight",
+   "typography": "key line + highlight",
+   "transition": "flash",
+   "audio": "impact",
+   "energy": 1.0,
+   "intent": "impact"
+  },
+  {
+   "id": "resolve",
+   "share": 0.15,
+   "purpose": "Sign-off",
+   "visual": "small line / logo",
+   "camera": "static",
+   "animation": "fade",
+   "typography": "sign-off",
+   "transition": "fade",
+   "audio": "resolve",
+   "energy": 0.3,
+   "intent": "end"
+  }
+ ],
+ "pacing": "phrase changes on beats; readable time >= 0.4 s per word; vary scale/position/move every phrase"
+}

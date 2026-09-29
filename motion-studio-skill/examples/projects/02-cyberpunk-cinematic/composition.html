@@ -1,0 +1,96 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Neon District - cyberpunk cinematic</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script type="module">
+/* Neon District - 14 s cyberpunk teaser (style: cyberpunk, motion: cinematic, 3D: three.js)
+   Tool choice: the city fly-through is real 3D (three.js, instanced meshes -> 4 draw calls, fast in software GL);
+   typography, particles, HUD and transitions stay in the 2D engine on top. */
+import * as THREE from '/vendor/three.module.js';
+
+MS.boot(C => {
+  const P = C.theme.palette;
+
+  function city(s, camFn, o = {}) {
+    const cv = document.createElement('canvas'); cv.width = C.W; cv.height = C.H; cv.className = 'ms-canvas';
+    Object.assign(cv.style, { width: C.W + 'px', height: C.H + 'px' });
+    s.layer(o.depth || .3, '3d').appendChild(cv);
+    const R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, preserveDrawingBuffer: true });
+    R.setSize(C.W, C.H, false);
+    const sc = new THREE.Scene(); sc.background = new THREE.Color(P.bg); sc.fog = new THREE.FogExp2('#12082a', o.fog || .011);
+    const cam = new THREE.PerspectiveCamera(o.fov || 52, C.W / C.H, .1, 500);
+    const rnd = MS.rng(42), cols = [P.accent, P.accent2, P.accent3, '#7c5cff'].map(c => new THREE.Color(c));
+    const blocks = [];
+    for (let ix = -7; ix <= 7; ix++) for (let iz = 0; iz < 46; iz++) {
+      if (Math.abs(ix) < 1) continue;                                         // the street
+      const h = 2 + Math.pow(rnd(), 2.2) * 30 * (Math.abs(ix) > 2 ? 1.3 : .7), w = 1.8 + rnd() * 1.3, d = 1.8 + rnd() * 1.3;
+      blocks.push({ x: ix * 4 + (rnd() - .5), z: -iz * 4 + 20, w, h, d, c: cols[Math.floor(rnd() * 4)], edge: rnd() < .6, win: Math.floor(rnd() * 9) });
+    }
+    const body = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: '#150d2c' }), blocks.length), M = new THREE.Matrix4();
+    blocks.forEach((b, i) => { M.makeScale(b.w, b.h, b.d).setPosition(b.x, b.h / 2, b.z); body.setMatrixAt(i, M); }); sc.add(body);
+    const ev = [], ec = [];                                                     // all neon edges merged into one draw call
+    const corners = (b) => { const xs = [b.x - b.w / 2, b.x + b.w / 2], zs = [b.z - b.d / 2, b.z + b.d / 2]; return { xs, zs, y0: 0, y1: b.h }; };
+    blocks.filter(b => b.edge).forEach(b => { const { xs, zs, y1 } = corners(b), L = (a, c) => { ev.push(...a, ...c); ec.push(b.c.r, b.c.g, b.c.b, b.c.r, b.c.g, b.c.b); };
+      for (const x of xs) for (const z of zs) L([x, 0, z], [x, y1, z]);
+      for (const y of [y1, y1 * .6]) { L([xs[0], y, zs[0]], [xs[1], y, zs[0]]); L([xs[0], y, zs[1]], [xs[1], y, zs[1]]); L([xs[0], y, zs[0]], [xs[0], y, zs[1]]); L([xs[1], y, zs[0]], [xs[1], y, zs[1]]); } });
+    const eg = new THREE.BufferGeometry(); eg.setAttribute('position', new THREE.Float32BufferAttribute(ev, 3)); eg.setAttribute('color', new THREE.Float32BufferAttribute(ec, 3));
+    sc.add(new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 1, blending: THREE.AdditiveBlending })));
+    const wins = [];                                                           // facade window grids facing the street, ~35% lit
+    blocks.forEach(b => { const side = b.x < 0 ? 1 : -1, cols2 = 2 + Math.floor(rnd() * 3), rows = Math.floor(b.h / .9);
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols2; c++) if (rnd() < .35) wins.push({ x: b.x + side * (b.w / 2 + .02), y: .7 + r * .9, z: b.z - b.d / 2 + (c + .5) * b.d / cols2, side, col: rnd() < .3 ? b.c : null }); });
+    const win = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ color: '#ffffff', side: THREE.DoubleSide }), wins.length);
+    const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2), warm = new THREE.Color('#ffe2b8');
+    wins.forEach((w, i) => { M.compose(new THREE.Vector3(w.x, w.y, w.z), q, new THREE.Vector3(.34, .42, 1)); win.setMatrixAt(i, M); win.setColorAt(i, (w.col || warm).clone().multiplyScalar(.55 + rnd() * .45)); }); sc.add(win);
+    const signs = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ color: '#ffffff', side: THREE.DoubleSide }), 40);
+    for (let i = 0; i < 40; i++) { const b = blocks[Math.floor(rnd() * blocks.length)], side = b.x < 0 ? 1 : -1;       // vertical neon signs
+      M.compose(new THREE.Vector3(b.x + side * (b.w / 2 + .35), 3 + rnd() * Math.max(1, b.h - 5), b.z), q, new THREE.Vector3(.5, 2.5 + rnd() * 3, 1)); signs.setMatrixAt(i, M); signs.setColorAt(i, cols[i % 3]); }
+    sc.add(signs);
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshBasicMaterial({ color: '#1b1038' })); ground.rotation.x = -Math.PI / 2; sc.add(ground);
+    const grid = new THREE.GridHelper(600, 300, P.accent, '#5a2080'); grid.position.y = .03; grid.material.transparent = true; grid.material.opacity = .5; sc.add(grid);
+    const moon = new THREE.Mesh(new THREE.CircleGeometry(18, 64), new THREE.MeshBasicMaterial({ color: P.accent, fog: false, transparent: true, opacity: .55 }));
+    moon.position.set(8, 34, -200); sc.add(moon);
+    s.every(null, lt => { camFn(cam, lt); R.render(sc, cam); });
+  }
+
+  // 01 FLY-THROUGH: low dolly down the street, slow and wide
+  C.scene('flythrough', 0, 5.5, s => {
+    city(s, (cam, lt) => { const z = 16 - lt * 5.2; cam.position.set(Math.sin(lt * .4) * .6, 2.4 + Math.sin(lt * .7) * .25, z);
+      cam.lookAt(Math.sin(lt * .4 + .5) * 1.5, 4.5, z - 30); cam.rotation.z += Math.sin(lt * .5) * .03; });
+    s.particles({ type: 'rain', depth: 1.2, colors: ['#9fd8ff'] });
+    const tag = s.text('SECTOR 7  //  02:14 AM', { size: 'caption', font: 'mono', x: 0, y: 0, anchor: 'top-left', align: 'left', color: 'var(--accent2)', tracking: .2 });
+    s.anim(tag, 'decode', .8);
+    const l1 = s.text('Twelve million people.', { size: 'h2', y: .78, font: 'body', weight: 500 });
+    s.enter(l1, 1.6); s.exit(l1, 4.6);
+    C.cue(0, 'riser', { dur: 5.4, gain: .5 });
+  }, { energy: .45, purpose: 'establish the world at night' });
+
+  // 02 ORBIT: close to a tower, neon sign flicker, the stakes line
+  C.scene('orbit', 5.5, 4, s => {
+    city(s, (cam, lt) => { const a = -.9 + lt * .16, r = 16; cam.position.set(4 + Math.cos(a) * r, 5 + lt * .8, -34 + Math.sin(a) * r); cam.lookAt(4, 9 + lt * .5, -34); }, { fov: 58, fog: .009 });
+    s.particles({ type: 'rain', depth: 1.2, colors: ['#9fd8ff'] });
+    const sign = s.text('OPEN 24H', { size: 'h1', x: .83, y: .24, glow: 1.2, glowColor: 'var(--accent)', color: '#ffd0f0' });
+    s.every(sign, (lt, st) => { const f = Math.floor(lt * 24); st.o *= lt < .4 ? 0 : (MS.hash(f * 1.3) > .12 ? 1 : .15) * (lt < .9 ? (MS.hash(f) > .5 ? 1 : .2) : 1); });
+    const l2 = s.text('One of them is\nrewriting the city.', { size: 'h1', x: 0, y: .72, anchor: 'left', align: 'left', split: 'lines' });
+    s.anim(l2, 'lineReveal', .6); s.exit(l2, 3.5, { dur: .35 });
+    C.cue(8.0, 'riser', { dur: 1.5 });
+  }, { energy: .7, purpose: 'raise the stakes' });
+
+  // 03 TITLE: slam + glitch, tagline decode, date
+  C.scene('title', 9.5, 4.5, s => {
+    s.bg('horizon', { scroll: 14 });
+    s.particles({ type: 'embers', depth: 1.1, colors: ['var(--accent)', 'var(--accent3)'] });
+    const t = s.text('NEON//DISTRICT', { size: 'display', y: .42 });
+    s.anim(t, 'slam', .15, { from: 2.2 }); s.anim(t, 'glitchText', .35, { dur: .5 }); s.anim(t, 'rgbSplit', .9, { amount: 1.6 });
+    const tag = s.text('The city never logs off.', { size: 'h2', font: 'body', weight: 500, y: .7, css: 'text-shadow:0 2px 12px #000' });
+    s.anim(tag, 'decode', 1.1, { dur: .8 });
+    const date = s.text('COMING 2077', { size: 'h3', font: 'mono', y: .84, tracking: .5, color: 'var(--accent2)' });
+    s.anim(date, 'tracking', 1.8, { from: 1.2, to: .5, dur: 1.4 });
+    s.pull(.06);
+  }, { energy: 1.0, purpose: 'title reveal', hold: true });
+
+  C.transition('flythrough', 'orbit', { type: 'glitch' });
+  C.transition('orbit', 'title', { type: 'flash', color: 'var(--accent)' });
+});
+</script>
+</body></html>

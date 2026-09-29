@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>The Signal - VHS glitch teaser</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* THE SIGNAL - 13 s found-footage teaser (style: vhs + horror, motion: glitch, 84 bpm).
+   Concept: a home-video tape that should not exist. Long uneasy handheld shots, interrupted by hard static.
+   Glitch is punctuation, not wallpaper: clean frames most of the time, corruption only on the beats that matter. */
+MS.boot(C => {
+  const u = C.u, W = C.W, H = C.H;
+  const staticNoise = (s, o = {}) => MS.canvasLayer(s, (g, w, h, lt) => {      // deterministic TV snow (seeded per frame)
+    const f = Math.floor(lt * 30), cell = o.cell || 6, r = MS.rng(f * 7919 + 3);
+    for (let y = 0; y < h; y += cell) for (let x = 0; x < w; x += cell) { const v = Math.floor(r() * 255); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(x, y, cell, cell); }
+    g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(0, (lt * 900) % h, w, h * .08);
+  }, { res: .25, depth: 3 });                                       // depth 3 = in front of the background
+
+  // 01 PLAY - snow, then the tape "catches"
+  C.scene('play', 0, 1.6, s => {
+    s.bg('solid', { color: '#000' });
+    const n = staticNoise(s); s.tween(n, .9, .35, 'steps(3)', (e, st) => { st.o *= 1 - e; });
+    const t = s.text('tracking...', { size: 'h3', y: .5, color: '#d8d8d8' }); s.anim(t, 'fadeIn', 1.05, { dur: .01 });
+    C.cue(0, 'glitch', { gain: .8 }); C.cue(.9, 'glitch', { gain: .5 });
+  }, { energy: .4 });
+
+  // 02 HALLWAY - one-point perspective corridor, flickering light at the end, handheld creep forward
+  C.scene('hallway', 1.6, 3.6, s => {
+    s.bg('solid', { color: '#07070a' });
+    const hall = s.svg(`<svg viewBox="0 0 1600 900">
+      <defs><radialGradient id="lamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8" stop-opacity=".9"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient></defs>
+      <polygon points="0,0 700,380 900,380 1600,0" fill="#15141b"/>
+      <polygon points="0,900 700,520 900,520 1600,900" fill="#1d1a17"/>
+      <polygon points="0,0 700,380 700,520 0,900" fill="#24222b"/>
+      <polygon points="1600,0 900,380 900,520 1600,900" fill="#201e27"/>
+      <rect x="700" y="380" width="200" height="140" fill="#39342a"/>
+      <g fill="#100f14"><polygon points="170,170 330,257 330,650 170,730"/><polygon points="470,327 560,352 560,560 470,590"/><polygon points="1430,170 1270,257 1270,650 1430,730"/><polygon points="1130,327 1040,352 1040,560 1130,590"/></g>
+      <g stroke="#2e2b36" stroke-width="3">${Array.from({ length: 9 }, (_, i) => { const k = i / 9, y = 900 - k * 380; return `<line x1="${0 + k * 700}" y1="${y}" x2="${1600 - k * 700}" y2="${y}"/>`; }).join('')}</g>
+      <ellipse id="glow" cx="800" cy="400" rx="330" ry="170" fill="url(#lamp)"/>
+      <rect x="760" y="384" width="80" height="10" fill="#fff6d8"/></svg>`, { space: 'frame', x: .5, y: .5, size: W * 1.08 });
+    const glow = hall.querySelector('ellipse');
+    s.every(null, lt => { const f = Math.floor(lt * 24), off = (lt > 1.9 && lt < 2.3) || MS.hash(f * 1.3) > .9; glow.style.opacity = off ? .05 : .8 + .2 * Math.sin(lt * 40); });
+    const cap = s.text('3rd floor - do not enter', { size: 'h3', font: 'body', x: 0, y: .9, anchor: 'left', align: 'left', color: '#e9e4d8', layer: s.hud });   // screen space: not shaken by the handheld camera
+    s.anim(cap, 'typewriter', .5, { cps: 18 });
+    s.handheld(1.6); s.push(.12, { ease: 'inOutSine' });
+    C.cue(1.6 + 1.9, 'glitch', { gain: .35 });
+  }, { energy: .35, purpose: 'unease' });
+
+  // 03 VOICE - black, a line decodes out of the noise
+  C.scene('voice', 5.2, 1.8, s => {
+    s.bg('solid', { color: '#050507' });
+    const t = s.text('did you hear that?', { size: 'h1', y: .48, color: '#f1eee6', split: 'chars' });
+    s.anim(t, 'decode', .1, { dur: .7, spread: .6 });
+    s.anim(t, 'glitchText', 1.1, { dur: .35, amount: 1.4 });
+  }, { energy: .5 });
+
+  // 04 STATIC - the hard interruption
+  C.scene('static', 7.0, .5, s => {
+    staticNoise(s, { cell: 5 });
+    const t = s.text('signal lost', { size: 'h2', y: .5, color: '#fff', css: 'background:#0008;padding:0 .4em' }); s.anim(t, 'fadeIn', .05, { dur: .01 });
+    C.cue(7.0, 'glitch', { gain: 1 });
+  }, { energy: .9 });
+
+  // 05 DOOR - light leaks under a door; it opens a crack; blow-out
+  C.scene('door', 7.5, 2.9, s => {
+    s.bg('solid', { color: '#0a090c' });
+    const room = s.el(`<div style="width:${36 * u}px;height:${70 * u}px;background:#fffbe8;box-shadow:0 0 ${14 * u}px ${3 * u}px #fff4c8aa"></div>`, { x: .5, y: .5 });
+    const door = s.el(`<div style="width:${36 * u}px;height:${70 * u}px;background:linear-gradient(90deg,#2a2530,#1c1920);border:${.5 * u}px solid #0c0b0e;transform-origin:0 50%">
+      <div style="position:absolute;right:${3 * u}px;top:50%;width:${2 * u}px;height:${2 * u}px;border-radius:50%;background:#8a7a58"></div></div>`, { x: .5, y: .5 });
+    door.style.transformOrigin = '0% 50%';
+    s.tween(door, .9, 1.4, 'inOutSine', (e, st) => { st.ry -= e * 38; });
+    s.tween(room, .9, 1.9, 'inQuad', (e, st) => { st.bright *= 1 + e * 1.5; });
+    const leak = s.el(`<div style="width:${44 * u}px;height:${1.2 * u}px;background:#fff4c8;filter:blur(${.6 * u}px)"></div>`, { x: .5, y: .5 });
+    leak.style.top = (parseFloat(leak.style.top) + 35.5 * u) + 'px';
+    s.every(leak, (lt, st) => { st.o *= .6 + .4 * Math.sin(lt * 9) * Math.sin(lt * 3.1); });
+    s.main.style.perspective = 70 * u + 'px';                      // real 3D for the door swing
+    s.handheld(1.1); s.push(.18, { from: .3 });
+    s.anim(room, 'glitchText', 2.2, { dur: .35, amount: 2 });
+  }, { energy: .7 });
+
+  // 06 TITLE - the name glitches into place; tape runs out
+  C.scene('title', 10.4, 2.6, s => {
+    s.bg('solid', { color: '#050406' });
+    const t = s.text('the signal', { size: 20, y: .44, color: '#ff3b5c', tracking: .12 });
+    s.anim(t, 'glitchText', 0, { dur: .6, amount: 1.6 }); s.anim(t, 'fadeIn', 0, { dur: .05 }); s.anim(t, 'rgbSplit', .6, { amount: 2 });
+    const sub = s.text('tape 7 of 9 - coming soon', { size: 'h3', font: 'body', y: .66, color: '#d9d4c8' });
+    s.anim(sub, 'typewriter', .8, { cps: 20, caretHold: .8 });
+    const n = staticNoise(s); s.tween(n, 2.2, .01, 'linear', (e, st) => { st.o *= e; }); s.every(n, (lt, st) => { if (lt < 2.2) st.o = 0; });
+    C.cue(10.4 + 2.2, 'glitch', { gain: .9 });
+  }, { energy: .8, purpose: 'title' });
+
+  C.transition('play', 'hallway', { type: 'glitch', dur: .3 });
+  C.transition('hallway', 'voice', { type: 'cut' });
+  C.transition('voice', 'static', { type: 'cut' });
+  C.transition('static', 'door', { type: 'distortion', dur: .3 });
+  C.transition('door', 'title', { type: 'flash', dur: .25, color: '#fffbe8' });
+});
+</script>
+</body></html>

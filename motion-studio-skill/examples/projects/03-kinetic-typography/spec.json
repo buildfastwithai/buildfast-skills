@@ -1,0 +1,21 @@
+{
+ "name": "motion-language",
+ "title": "Motion is a language",
+ "brief": "13.5 second kinetic typography in experimental style with snappy motion, square 1:1, about why motion is a language",
+ "template": "kinetic-typography",
+ "style": "experimental",
+ "motion": "snappy",
+ "format": "1:1",
+ "fps": 30,
+ "duration": 13.5,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

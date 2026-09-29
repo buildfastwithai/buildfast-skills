@@ -1,0 +1,21 @@
+{
+ "name": "agents-short",
+ "title": "Your to-do list does itself",
+ "brief": "15 second vertical social media short about AI agents doing your to-do list, saas style, snappy motion",
+ "template": "social-short",
+ "style": "saas",
+ "motion": "snappy",
+ "format": "9:16",
+ "fps": 30,
+ "duration": 15.0,
+ "seed": 1234,
+ "audio": {
+  "music": "auto",
+  "sfx": true,
+  "file": null,
+  "voiceover": null,
+  "lufs": -14
+ },
+ "vars": {},
+ "variants": []
+}

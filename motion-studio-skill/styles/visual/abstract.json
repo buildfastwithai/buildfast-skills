@@ -1,0 +1,551 @@
+{
+ "family": "abstract",
+ "styles": [
+  {
+   "id": "generative",
+   "name": "Generative",
+   "aliases": [
+    "generative",
+    "generative art",
+    "procedural",
+    "algorithmic",
+    "creative coding"
+   ],
+   "description": "Rule-based systems in motion: flow fields, recursive shapes, noise-driven lines; the system is the subject.",
+   "palette": {
+    "bg": "#0a0a0c",
+    "bg2": "#141418",
+    "surface": "#18181e",
+    "fg": "#f0f0f0",
+    "muted": "#80808c",
+    "accent": "#ff5c5c",
+    "accent2": "#5cd6ff",
+    "accent3": "#ffe066",
+    "line": "#ffffff1c"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.05"
+   ],
+   "background": "flow",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "morph",
+     "distortion",
+     "particles"
+    ],
+    "avoid": [
+     "slice",
+     "whip"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "slow drift through the field",
+   "sound": {
+    "music": "ambient",
+    "bpm": 96,
+    "key": "E",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "flow fields",
+    "noise lines",
+    "recursive shapes"
+   ],
+   "do": [
+    "one system, evolving",
+    "seeded randomness"
+   ],
+   "dont": [
+    "clip-art",
+    "stock icons"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "geometric",
+   "name": "Geometric",
+   "aliases": [
+    "geometric",
+    "geometry",
+    "shapes",
+    "bauhaus motion",
+    "swiss",
+    "shape animation"
+   ],
+   "description": "Primitive shapes with strict ratios: circles, squares, triangles build, rotate and lock into grids; bold flat colour.",
+   "palette": {
+    "bg": "#f1ece2",
+    "bg2": "#e4ddcf",
+    "surface": "#ffffff",
+    "fg": "#111111",
+    "muted": "#6d6a63",
+    "accent": "#e63946",
+    "accent2": "#1d4e9f",
+    "accent3": "#f7b500",
+    "line": "#1111111f"
+   },
+   "fonts": {
+    "display": "Unbounded:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": -0.01,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "none",
+   "glow": 0,
+   "texture": [],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "shape",
+     "wipe",
+     "slice",
+     "push"
+    ],
+    "avoid": [
+     "blur",
+     "distortion"
+    ]
+   },
+   "motion_default": "mechanical",
+   "camera": "snap rotations, grid-locked moves",
+   "sound": {
+    "music": "corporate",
+    "bpm": 120,
+    "key": "C",
+    "sfx": "clean",
+    "mood": ""
+   },
+   "assets": [
+    "circles",
+    "squares",
+    "triangles",
+    "grids"
+   ],
+   "do": [
+    "shapes lock to grid",
+    "rotation in 90° steps",
+    "flat colour"
+   ],
+   "dont": [
+    "gradients",
+    "soft organic blobs"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "liquid",
+   "name": "Liquid",
+   "aliases": [
+    "liquid",
+    "fluid",
+    "blobs",
+    "gooey",
+    "liquid motion",
+    "metaball"
+   ],
+   "description": "Blobby morphing shapes, gooey merges, glossy highlights, fluid transitions between states.",
+   "palette": {
+    "bg": "#0d0a1a",
+    "bg2": "#1b1535",
+    "surface": "#1f183d",
+    "fg": "#fbf7ff",
+    "muted": "#a89cc8",
+    "accent": "#7b5cff",
+    "accent2": "#ff5cc8",
+    "accent3": "#5cffd9",
+    "line": "#ffffff22"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.03,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 40,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.04"
+   ],
+   "background": "mesh",
+   "transitions": {
+    "prefer": [
+     "morph",
+     "shape",
+     "radial",
+     "distortion"
+    ],
+    "avoid": [
+     "slice",
+     "cut"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "float with the fluid",
+   "sound": {
+    "music": "ambient",
+    "bpm": 100,
+    "key": "F",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "blobs",
+    "drops",
+    "morphing shapes"
+   ],
+   "do": [
+    "morph transitions",
+    "gooey easing",
+    "glossy highlights"
+   ],
+   "dont": [
+    "hard edges",
+    "grids"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "organic",
+   "name": "Organic",
+   "aliases": [
+    "organic",
+    "natural",
+    "nature",
+    "botanical",
+    "earthy",
+    "flowing"
+   ],
+   "description": "Leaves, growth, earthy palette, curves and breathing motion; things grow rather than appear.",
+   "palette": {
+    "bg": "#f1efe6",
+    "bg2": "#e1ddcd",
+    "surface": "#fbfaf4",
+    "fg": "#23291f",
+    "muted": "#6f7766",
+    "accent": "#4f7942",
+    "accent2": "#d98a3d",
+    "accent3": "#a3b18a",
+    "line": "#23291f22"
+   },
+   "fonts": {
+    "display": "Instrument Serif:400",
+    "body": "Inter:400",
+    "mono": "IBM Plex Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.01,
+    "lead": 1.02,
+    "display_scale": 1.15
+   },
+   "radius": 30,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "paper:.2"
+   ],
+   "background": "paper",
+   "transitions": {
+    "prefer": [
+     "dissolve",
+     "morph",
+     "mask",
+     "blur"
+    ],
+    "avoid": [
+     "glitch",
+     "slice",
+     "flash"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "slow drifting, growth-driven reveals",
+   "sound": {
+    "music": "ambient",
+    "bpm": 80,
+    "key": "G",
+    "sfx": "soft",
+    "mood": "warm"
+   },
+   "assets": [
+    "leaves",
+    "vines",
+    "growth lines",
+    "seeds"
+   ],
+   "do": [
+    "things grow (drawPath)",
+    "irregular timing",
+    "breathing scale"
+   ],
+   "dont": [
+    "neon",
+    "hard mechanical motion"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "particle",
+   "name": "Particle-based",
+   "aliases": [
+    "particles",
+    "particle",
+    "particle based",
+    "dust",
+    "sparks",
+    "swarm"
+   ],
+   "description": "Thousands of points form, scatter and re-form; the subject is made of particles; glowing on dark.",
+   "palette": {
+    "bg": "#04050a",
+    "bg2": "#0c0f1c",
+    "surface": "#10142a",
+    "fg": "#eef1ff",
+    "muted": "#7c83a8",
+    "accent": "#7df9ff",
+    "accent2": "#ff7de9",
+    "accent3": "#fff27d",
+    "line": "#ffffff1a"
+   },
+   "fonts": {
+    "display": "Space Grotesk:700",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": 0.02,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0.3,
+   "texture": [
+    "vignette:.5"
+   ],
+   "background": "stars",
+   "transitions": {
+    "prefer": [
+     "particles",
+     "dissolve",
+     "zoom",
+     "radial"
+    ],
+    "avoid": [
+     "slice",
+     "wipe"
+    ]
+   },
+   "motion_default": "organic",
+   "camera": "slow orbit through particle clouds",
+   "sound": {
+    "music": "ambient",
+    "bpm": 100,
+    "key": "B",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "particle fields",
+    "bursts",
+    "sparks"
+   ],
+   "do": [
+    "particles form the message",
+    "glow on dark"
+   ],
+   "dont": [
+    "flat UI"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "gradient-abstract",
+   "name": "Gradient / abstract",
+   "aliases": [
+    "gradient",
+    "gradients",
+    "abstract",
+    "abstract gradient",
+    "mesh gradient",
+    "aurora"
+   ],
+   "description": "Big soft mesh gradients drifting, grain, huge type knocked out of colour; mood-driven.",
+   "palette": {
+    "bg": "#0e0b1c",
+    "bg2": "#1d1440",
+    "surface": "#221a4a",
+    "fg": "#ffffff",
+    "muted": "#b4aee0",
+    "accent": "#ff6f91",
+    "accent2": "#6f8cff",
+    "accent3": "#ffc36f",
+    "line": "#ffffff22"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Inter:400",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "none",
+    "tracking": -0.03,
+    "lead": 1.02,
+    "display_scale": 1.0
+   },
+   "radius": 24,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.08"
+   ],
+   "background": "mesh",
+   "transitions": {
+    "prefer": [
+     "blur",
+     "dissolve",
+     "morph",
+     "radial"
+    ],
+    "avoid": [
+     "slice",
+     "glitch"
+    ]
+   },
+   "motion_default": "calm",
+   "camera": "slow drift, colour breathing",
+   "sound": {
+    "music": "ambient",
+    "bpm": 90,
+    "key": "D",
+    "sfx": "soft",
+    "mood": ""
+   },
+   "assets": [
+    "mesh gradients",
+    "grain",
+    "big type"
+   ],
+   "do": [
+    "let colour move slowly",
+    "grain on gradients"
+   ],
+   "dont": [
+    "busy diagrams"
+   ],
+   "family": "abstract"
+  },
+  {
+   "id": "experimental",
+   "name": "Experimental",
+   "aliases": [
+    "experimental",
+    "avant garde",
+    "weird",
+    "art film",
+    "surreal",
+    "unconventional"
+   ],
+   "description": "Rule-breaking type and composition: extreme scale, overlaps, distortion, unexpected cuts and colour clashes.",
+   "palette": {
+    "bg": "#e9ff3b",
+    "bg2": "#111111",
+    "surface": "#1a1a1a",
+    "fg": "#0b0b0b",
+    "muted": "#555555",
+    "accent": "#ff2e2e",
+    "accent2": "#2e5bff",
+    "accent3": "#ffffff",
+    "line": "#0b0b0b33"
+   },
+   "fonts": {
+    "display": "Syne:800",
+    "body": "Space Grotesk:500",
+    "mono": "JetBrains Mono:400"
+   },
+   "type": {
+    "case": "upper",
+    "tracking": -0.04,
+    "lead": 0.85,
+    "display_scale": 1.4
+   },
+   "radius": 0,
+   "stroke": 2,
+   "shadow": "0 30px 80px rgba(0,0,0,.35)",
+   "glow": 0,
+   "texture": [
+    "grain:.1"
+   ],
+   "background": "solid",
+   "transitions": {
+    "prefer": [
+     "distortion",
+     "slice",
+     "glitch",
+     "morph",
+     "cut"
+    ],
+    "avoid": [
+     "fade"
+    ]
+   },
+   "motion_default": "glitch",
+   "camera": "extreme zooms, rotations, jump cuts",
+   "sound": {
+    "music": "glitch",
+    "bpm": 124,
+    "key": "F",
+    "sfx": "digital",
+    "mood": ""
+   },
+   "assets": [
+    "oversized type",
+    "overlaps",
+    "distortion"
+   ],
+   "do": [
+    "break the grid deliberately",
+    "extreme scale contrast"
+   ],
+   "dont": [
+    "safe corporate layouts"
+   ],
+   "family": "abstract"
+  }
+ ]
+}

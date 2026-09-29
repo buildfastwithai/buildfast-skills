@@ -1,0 +1,80 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Lumen - minimal product ad</title><link rel="stylesheet" href="/engine/ms.css"></head>
+<body>
+<script src="/__spec.js"></script>
+<script src="/engine/ms.js"></script>
+<script>
+/* Lumen - 15 s minimal product ad (style: minimal, motion: calm). Storyboard: storyboard.md
+   Idea: the lamp is drawn as a single line, then it switches on - the product literally "lights up" the ad. */
+MS.boot(async C => {
+  const lamp = await (await fetch('/assets/lamp.svg')).text();
+  const beat = C.beat(1);                                    // 84 bpm -> 0.714 s
+
+  // 01 HOOK - line drawing + two-line claim, lots of air
+  C.scene('hook', 0, 3.6, s => {
+    s.bg('auto');
+    const h = s.text('Light,\nconsidered.', { size: 'display', x: .035, y: .46, anchor: 'left', align: 'left', split: 'lines', lead: .98 });
+    s.anim(h, 'lineReveal', .08);
+    const l = s.svg(lamp, { x: .8, y: .5, size: .62 });
+    s.anim(l, 'drawPath', 0, { dur: .75, stagger: .3, ease: 'inOutQuad' });   // one continuous line, segment by segment
+    const rule = s.el('<div style="height:2px;background:var(--fg)"></div>', { x: .035, y: .67, w: .12, anchor: 'left' });
+    s.anim(rule, 'wipeIn', 1.4);
+    s.push(.04);
+  }, { energy: .2, purpose: 'establish the product as a pure line' });
+
+  // 02 GLOW - the lamp switches on; colour temperature sweeps
+  C.scene('glow', 3.6, 3.6, s => {
+    s.bg('auto');
+    const l = s.svg(lamp, { x: .3, y: .56, size: 1.35 });
+    l.querySelector('.lamp').setAttribute('stroke-width', 3.5);
+    const beam = l.querySelector('.beam'), bulb = l.querySelector('.bulb');
+    s.tween(null, .6, 1.4, 'inOutSine', e => { beam.setAttribute('opacity', (e * .95).toFixed(3)); bulb.setAttribute('opacity', e.toFixed(3)); });
+    C.cue(3.6 + .6, 'click', { gain: .6 });
+    const cap = s.text('Adapts to your day.', { size: 'h1', x: .965, y: .6, anchor: 'right', align: 'right' });
+    s.enter(cap, .9);
+    const k = s.text('2700 K', { size: 'h2', font: 'mono', x: .965, y: .74, anchor: 'right', color: 'var(--muted)' });
+    s.enter(k, 1.3); s.anim(k, 'countUp', 1.4, { from: 2700, to: 6500, dur: 1.8, suffix: ' K', ease: 'inOutSine' });
+    const bar = s.el('<div style="height:8px;border-radius:8px;background:linear-gradient(90deg,#ffb36b,#fff4e0,#cfe3ff)"></div>', { x: .965, y: .86, w: .36, anchor: 'right' });
+    s.anim(bar, 'wipeIn', 1.3, { dur: .9 });
+    const dot = s.el('<div style="width:22px;height:22px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 6px var(--bg)"></div>', { x: .965 - .36, y: .86 });
+    s.enter(dot, 1.4); s.anim(dot, 'moveTo', 1.4, { dx: .36 * C.safe.w / C.u, dur: 1.8, ease: 'inOutSine' });
+    s.push(.05);
+  }, { energy: .35, purpose: 'the product comes alive' });
+
+  // 03 FEATURES - three quiet facts, thin rules
+  C.scene('features', 7.2, 3.8, s => {
+    s.bg('auto');
+    const items = [['12 W', 'LED, 90+ CRI'], ['Touch', 'dim & tune'], ['Aluminium', 'three finishes']];
+    items.forEach((it, i) => {
+      const x = .06 + i * .32;
+      const n = s.text(it[0], { size: 'h1', x, y: .47, anchor: 'left', align: 'left', maxWidth: .27 });   // auto-fits wide display fonts in other styles
+      const lab = s.text(it[1], { size: 'body', font: 'body', x, y: .6, anchor: 'left', align: 'left', color: 'var(--muted)' });
+      const at = .12 + i * beat;
+      s.enter(n, at); s.enter(lab, at + .25);
+      if (i) { const r = s.el('<div style="width:2px;background:var(--line)"></div>', { x: x - .05, y: .52, h: .26 }); s.anim(r, 'maskReveal', at - .1, { from: 'top' }); }
+      C.cue(7.2 + at, 'tick', { gain: .5 });
+    });
+    s.pan(.02, 0);
+  }, { energy: .45, purpose: 'proof in three facts' });
+
+  // 04 CTA - lit product + wordmark, then stillness
+  C.scene('cta', 11, 4, s => {
+    s.bg('auto');
+    const l = s.svg(lamp, { x: .2, y: .52, size: .7 });
+    l.querySelector('.beam').setAttribute('opacity', .9); l.querySelector('.bulb').setAttribute('opacity', 1);
+    s.enter(l, .1, { dur: 1.2 });
+    const w = s.text('Lumen', { size: 'display', x: .47, y: .45, anchor: 'left', align: 'left' });
+    s.anim(w, 'tracking', .5, { from: .25, to: -.035, dur: 1.6 });
+    const t = s.text('Designed for focus.', { size: 'h2', font: 'body', weight: 400, x: .47, y: .6, anchor: 'left', align: 'left', color: 'var(--muted)' });
+    s.enter(t, 1.2);
+    const url = s.text('lumen.studio', { size: 'caption', font: 'mono', x: .47, y: .72, anchor: 'left', align: 'left', tracking: .12 });
+    s.enter(url, 1.7);
+    C.cue(11.5, 'chime', { gain: .7 });
+  }, { energy: .25, purpose: 'brand + CTA, held still', hold: true });
+
+  C.transition('hook', 'glow', { type: 'mask' });
+  C.transition('glow', 'features', { type: 'push', dir: 'up' });
+  C.transition('features', 'cta', { type: 'dissolve', dur: 1.0 });
+});
+</script>
+</body></html>

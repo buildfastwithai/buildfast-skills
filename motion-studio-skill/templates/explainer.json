@@ -1,0 +1,86 @@
+{
+ "id": "explainer",
+ "name": "Explainer",
+ "aliases": [
+  "explainer",
+  "explain",
+  "explaining",
+  "how does",
+  "how it works",
+  "concept video",
+  "educational"
+ ],
+ "default_duration": 45,
+ "default_format": "16:9",
+ "default_style": "infographic",
+ "default_motion": "smooth",
+ "purpose": "Turn one concept into a visual explanation: question \u2192 model \u2192 steps \u2192 takeaway.",
+ "beats": [
+  {
+   "id": "question",
+   "share": 0.12,
+   "purpose": "Pose the question the viewer has",
+   "visual": "big question text + icon",
+   "camera": "static",
+   "animation": "type reveal",
+   "typography": "the question",
+   "transition": "shape / push",
+   "audio": "soft pop",
+   "energy": 0.3,
+   "intent": "reveal"
+  },
+  {
+   "id": "model",
+   "share": 0.22,
+   "purpose": "Introduce the mental model / metaphor",
+   "visual": "diagram or metaphor illustration",
+   "camera": "slow push",
+   "animation": "parts draw on",
+   "typography": "labels",
+   "transition": "zoom",
+   "audio": "ticks per part",
+   "energy": 0.5,
+   "intent": "continue"
+  },
+  {
+   "id": "steps",
+   "share": 0.36,
+   "purpose": "Walk through 3 steps",
+   "visual": "numbered steps, arrows, diagram evolving",
+   "camera": "pan along the diagram",
+   "animation": "each step builds on the last",
+   "typography": "step titles",
+   "transition": "push",
+   "audio": "tick per step",
+   "energy": 0.6,
+   "intent": "continue"
+  },
+  {
+   "id": "example",
+   "share": 0.15,
+   "purpose": "Concrete example",
+   "visual": "a real-world instance",
+   "camera": "zoom in",
+   "animation": "highlight the key element",
+   "typography": "caption",
+   "transition": "dissolve",
+   "audio": "light",
+   "energy": 0.5,
+   "intent": "calm"
+  },
+  {
+   "id": "takeaway",
+   "share": 0.15,
+   "purpose": "One-sentence takeaway",
+   "visual": "summary card",
+   "camera": "pull out",
+   "animation": "summary builds",
+   "typography": "takeaway line",
+   "transition": "fade",
+   "audio": "resolve",
+   "energy": 0.4,
+   "intent": "end"
+  }
+ ],
+ "pacing": "one idea per scene; hold every diagram long enough to read every label (>= 1s per 3 words)"
+}
