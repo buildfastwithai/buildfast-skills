@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unbound</title>
+<meta name="description" content="Turn any PDF into an interactive web book with Gemini 4 Argon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style id="app-css">
+/* Layout: a bindery workbench. Studio rail on the left (source PDF, build log, shelf), live book preview filling the right. */
+:root {
+  --paper: #F3F5F4;
+  --surface: #FFFFFF;
+  --ink: #17201D;
+  --muted: #5B6662;
+  --line: #DCE2DF;
+  --accent: #0E6B5C;        /* bookbinder's teal cloth */
+  --accent-soft: #E0EFEA;
+  --accent-ink: #FFFFFF;
+  --ribbon: #C8323C;        /* bookmark ribbon */
+  --ok: #1D7A46;
+  --danger: #B42F2F;
+  --app-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --app-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --app-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1211; --surface: #161B1A; --ink: #E4EAE7; --muted: #93A09B; --line: #29322F;
+    --accent: #5CC2AC; --accent-soft: #15302A; --accent-ink: #06201A; --ribbon: #F0646D; --ok: #55C487; --danger: #FF7B73;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1211; --surface: #161B1A; --ink: #E4EAE7; --muted: #93A09B; --line: #29322F;
+  --accent: #5CC2AC; --accent-soft: #15302A; --accent-ink: #06201A; --ribbon: #F0646D; --ok: #55C487; --danger: #FF7B73;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--paper); color: var(--ink); font: 15px/1.5 var(--app-ui); -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  padding-block: 12px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px));
+  border-bottom: 1px solid var(--line); background: var(--surface); flex: none;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 { margin: 0; font: 600 26px/1 var(--app-display); letter-spacing: -0.015em; }
+.brand small { color: var(--muted); font-size: 13px; }
+.top-right { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.fi { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 4px 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.fi span { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.fi select { border: 0; background: transparent; height: 32px; font: 500 13px var(--app-mono); max-width: 210px; cursor: pointer; }
+.key-btn { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 13px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); cursor: pointer; font-weight: 500; }
+.key-btn:hover { border-color: var(--accent); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
+.key-btn.has-key .dot { background: var(--ok); }
+
+.key-panel { flex: none; background: var(--surface); border-bottom: 1px solid var(--line); padding-block: 16px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); display: grid; gap: 10px; }
+.key-panel h2 { margin: 0; font: 600 19px var(--app-display); }
+.key-panel p { margin: 0; color: var(--muted); font-size: 14px; max-width: 70ch; }
+.key-panel a { color: var(--accent); }
+.key-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.key-row input { flex: 1 1 320px; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); font: 13px var(--app-mono); }
+
+.layout { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 980px) { .layout { grid-template-columns: 350px minmax(0, 1fr); } }
+.studio { min-width: 0; overflow: auto; padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 16px; display: grid; gap: 12px; align-content: start; border-right: 1px solid var(--line); }
+@media (max-width: 979px) { .studio { border-right: 0; padding-right: max(16px, env(safe-area-inset-right, 0px)); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
+.card h2 { margin: 0; font: 600 20px/1.2 var(--app-display); letter-spacing: -0.01em; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.drop { position: relative; border: 1.5px dashed var(--line); border-radius: 10px; padding: 22px 16px; text-align: center; display: grid; gap: 8px; justify-items: center; background: var(--paper); cursor: pointer; }
+.drop:hover, .drop.dragging { border-color: var(--accent); background: var(--accent-soft); }
+.drop strong { font: 600 17px var(--app-display); }
+.drop p { margin: 0; font-size: 13px; color: var(--muted); }
+.file-chip { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.file-chip .pdf { flex: none; width: 34px; height: 42px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); display: grid; place-items: end center; padding-bottom: 5px; font: 600 9px var(--app-mono); color: var(--ribbon); position: relative; }
+.file-chip .pdf::before { content: ""; position: absolute; left: 6px; right: 6px; top: 8px; height: 14px; background: repeating-linear-gradient(var(--line) 0 2px, transparent 2px 5px); }
+.file-chip .meta { min-width: 0; flex: 1; }
+.file-chip .meta b { display: block; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-chip .meta span { font: 12px var(--app-mono); color: var(--muted); }
+.x-btn { border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: 13px; padding: 4px 6px; border-radius: 6px; }
+.x-btn:hover { color: var(--ink); background: var(--accent-soft); }
+
+.seg { display: flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); }
+.seg button { flex: 1; border: 0; background: transparent; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.opt-row { display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; cursor: pointer; background: var(--surface); }
+.chips input { accent-color: var(--accent); margin: 0; }
+.chips label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+textarea.notes { width: 100%; min-height: 62px; resize: vertical; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); font-size: 14px; }
+.btn { height: 42px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.07); }
+.btn.small { height: 34px; padding: 0 12px; font-size: 13px; font-weight: 500; }
+.btn-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; }
+.status.error { color: var(--danger); }
+.status.ok { color: var(--ok); }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.steps > li { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: start; font-size: 14px; }
+.steps .mark { width: 18px; height: 18px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--accent-ink); }
+.steps li.active .mark { border-color: var(--accent); border-top-color: transparent; animation: spin .9s linear infinite; }
+.steps li.done .mark { background: var(--accent); border-color: var(--accent); }
+.steps li.error .mark { background: var(--danger); border-color: var(--danger); }
+.steps .sub { color: var(--muted); font-size: 12.5px; }
+.steps .time { font: 12px var(--app-mono); color: var(--muted); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ch-rows { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.ch-rows li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); min-width: 0; }
+.ch-rows li span.t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.ch-rows i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.ch-rows li.writing { color: var(--ink); }
+.ch-rows li.writing i { background: var(--accent); animation: blink 1s ease-in-out infinite; }
+.ch-rows li.done i { background: var(--ok); }
+.ch-rows li.error i { background: var(--danger); }
+@keyframes blink { 50% { opacity: .25; } }
+
+.shelf { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.shelf li { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 10px; border-radius: 9px; border: 1px solid transparent; }
+.shelf li.current { border-color: var(--accent); background: var(--accent-soft); }
+.shelf li .spine { flex: none; width: 8px; height: 34px; border-radius: 2px; }
+.shelf li button.open { flex: 1; min-width: 0; text-align: left; border: 0; background: transparent; padding: 0; cursor: pointer; }
+.shelf li button.open b { display: block; font: 600 15px/1.25 var(--app-display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shelf li button.open span { font-size: 12px; color: var(--muted); }
+.empty { font-size: 13px; color: var(--muted); }
+
+.stage { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+@media (max-width: 979px) { .stage { min-height: 88vh; border-top: 1px solid var(--line); } }
+.stage-bar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-block: 10px; padding-left: 16px; padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.stage-bar .where { font-size: 13px; color: var(--muted); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage-bar .where b { color: var(--ink); font-weight: 600; }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); margin-right: 6px; }
+.reader-host { flex: 1; min-height: 0; margin: 0 16px 16px; margin-right: max(16px, env(safe-area-inset-right, 0px)); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
+@media (max-width: 979px) { .reader-host { min-height: 80vh; } }
+@media (prefers-reduced-motion: reduce) { .steps li.active .mark, .ch-rows li.writing i { animation: none; } }
+</style>
+<style id="book-css">
+/* ---------- Unbound reader (also embedded in exported web books) ---------- */
+.ub {
+  --ub-bg: #FCFCFB; --ub-panel: #F3F5F4; --ub-ink: #1B201E; --ub-muted: #5E6865; --ub-line: #E2E7E4; --ub-ok: #1D7A46; --ub-bad: #B42F2F; --ub-ribbon: #C8323C;
+  --book: #0E6B5C; --book-ink: var(--book); --book-soft: color-mix(in oklab, var(--book) 12%, var(--ub-bg));
+  --ub-read: "Newsreader", Georgia, "Times New Roman", serif;
+  --ub-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --ub-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --ub-size: 19px;
+  height: 100%; display: grid; grid-template-rows: auto 1fr; background: var(--ub-bg); color: var(--ub-ink); font: 15px/1.5 var(--ub-ui); position: relative; overflow: hidden;
+}
+.ub[data-theme="sepia"] { --ub-bg: #F6F0E4; --ub-panel: #EEE6D6; --ub-ink: #33291F; --ub-muted: #776A5A; --ub-line: #E2D7C4; --book-ink: color-mix(in oklab, var(--book) 85%, #33291F); }
+.ub[data-theme="dark"] { --ub-bg: #121615; --ub-panel: #1A201E; --ub-ink: #E2E8E5; --ub-muted: #97A39E; --ub-line: #2A3330; --ub-ok: #5CC88D; --ub-bad: #FF8079; --ub-ribbon: #F0646D;
+  --book-ink: color-mix(in oklab, var(--book) 55%, #FFFFFF); --book-soft: color-mix(in oklab, var(--book) 22%, #121615); color-scheme: dark; }
+.ub * { box-sizing: border-box; }
+.ub [hidden] { display: none !important; }
+.ub button { font: inherit; color: inherit; }
+.ub :focus-visible { outline: 2px solid var(--book-ink); outline-offset: 2px; }
+
+.ub-bar { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--ub-line); background: var(--ub-bg); flex-wrap: wrap; }
+.ub-icon { height: 32px; min-width: 32px; padding: 0 8px; border: 1px solid var(--ub-line); border-radius: 7px; background: transparent; cursor: pointer; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+.ub-icon:hover { border-color: var(--book-ink); }
+.ub-btitle { font: 600 16px/1.2 var(--ub-read); min-width: 0; flex: 1 1 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ub-search { display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid var(--ub-line); border-radius: 7px; flex: 0 1 220px; min-width: 120px; color: var(--ub-muted); }
+.ub-search input { border: 0; background: transparent; outline: none; width: 100%; min-width: 0; font-size: 13px; color: var(--ub-ink); }
+.ub-tools { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ub-theme { display: flex; border: 1px solid var(--ub-line); border-radius: 7px; overflow: hidden; }
+.ub-theme button { border: 0; background: transparent; height: 30px; padding: 0 9px; font-size: 12px; cursor: pointer; color: var(--ub-muted); }
+.ub-theme button[aria-pressed="true"] { background: var(--book-soft); color: var(--ub-ink); font-weight: 600; }
+.ub .ub-askbtn { height: 32px; padding: 0 12px; border-radius: 7px; border: 1px solid var(--book); background: var(--book); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.ub[data-theme="dark"] .ub-askbtn { background: var(--book-ink); border-color: var(--book-ink); color: #0B0F0E; }
+.ub-prog { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; }
+.ub-prog i { display: block; height: 100%; width: 0; background: var(--book-ink); transition: width .4s ease; }
+
+.ub-body { min-height: 0; display: grid; grid-template-columns: 250px minmax(0, 1fr) auto; position: relative; }
+.ub-toc { min-height: 0; overflow: auto; border-right: 1px solid var(--ub-line); padding: 14px 10px 24px; background: var(--ub-panel); }
+.ub-toc h3 { margin: 14px 8px 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ub-muted); }
+.ub-toc h3:first-child { margin-top: 0; }
+.ub-toc button { display: grid; grid-template-columns: 22px 1fr 14px; gap: 6px; align-items: start; width: 100%; text-align: left; border: 0; background: transparent; padding: 7px 8px; border-radius: 7px; cursor: pointer; font-size: 13.5px; line-height: 1.35; color: var(--ub-ink); }
+.ub-toc button:hover { background: var(--book-soft); }
+.ub-toc button[aria-current="true"] { background: var(--book-soft); font-weight: 600; box-shadow: inset 3px 0 0 var(--book-ink); }
+.ub-toc .n { font: 500 11.5px/1.6 var(--ub-mono); color: var(--ub-muted); }
+.ub-toc .s { font-size: 11px; line-height: 1.6; text-align: right; color: var(--ub-muted); }
+.ub-toc .s.ok { color: var(--ub-ok); }
+.ub-toc button.pending { color: var(--ub-muted); }
+
+.ub-main { min-height: 0; overflow: auto; scroll-behavior: smooth; }
+.ub-page { max-width: 46rem; margin: 0 auto; padding: 44px 28px 80px; font: var(--ub-size)/1.65 var(--ub-read); }
+.ub-page p { margin: 0 0 1.05em; text-wrap: pretty; }
+.ub-eyebrow { font: 500 12px/1.4 var(--ub-mono); color: var(--ub-muted); letter-spacing: .02em; margin-bottom: 10px; }
+.ub-page h1 { font: 600 2.15em/1.08 var(--ub-read); letter-spacing: -0.02em; margin: 0 0 .35em; text-wrap: balance; }
+.ub-dek { font-size: 1.12em; color: var(--ub-muted); font-style: italic; }
+.ub-h2 { font: 600 1.32em/1.25 var(--ub-read); margin: 1.6em 0 .55em; letter-spacing: -0.01em; text-wrap: balance; }
+.ub-page section > h2, .ub-quiz h2, .ub-deck h2 { font: 600 12px/1.4 var(--ub-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--ub-muted); margin: 0 0 14px; }
+.ub-page ul, .ub-page ol { margin: 0 0 1.1em; padding-left: 1.3em; }
+.ub-page li { margin: .25em 0; }
+.ub-page strong { font-weight: 600; }
+.ub-pref { font: 500 .66em var(--ub-mono); color: var(--book-ink); background: var(--book-soft); padding: 1px 5px; border-radius: 4px; white-space: nowrap; vertical-align: .12em; }
+
+.ub-takeaways { border: 1px solid var(--ub-line); border-radius: 12px; padding: 18px 22px 8px; margin: 1.6em 0 2em; background: var(--ub-panel); }
+.ub-takeaways ul { list-style: none; padding: 0; font-size: .92em; }
+.ub-takeaways li { position: relative; padding-left: 22px; margin: 0 0 .6em; }
+.ub-takeaways li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 9px; height: 9px; border-radius: 2px; background: var(--book-ink); }
+
+.ub-term { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: help; border-bottom: 2px dotted var(--book-ink); text-decoration: none; }
+.ub-term:hover, .ub-term.on { background: var(--book-soft); }
+.ub-pop { position: fixed; z-index: 50; max-width: 320px; padding: 12px 14px; border-radius: 10px; background: var(--ub-ink); color: var(--ub-bg); font: 14px/1.45 var(--ub-ui); box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.ub-pop b { display: block; font: 600 15px var(--ub-read); margin-bottom: 3px; }
+
+.ub-callout { margin: 1.5em 0; padding: 16px 20px; border-radius: 10px; background: var(--book-soft); font-size: .95em; }
+.ub-callout p { margin: 0; }
+.ub-callout-k { font: 600 11px var(--ub-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--book-ink); margin-bottom: 6px; }
+.ub-callout.ub-warning { background: color-mix(in oklab, var(--ub-bad) 10%, var(--ub-bg)); }
+.ub-callout.ub-warning .ub-callout-k { color: var(--ub-bad); }
+.ub-quote { margin: 1.6em 0; padding: 0 0 0 22px; border-left: 3px solid var(--book-ink); font-style: italic; font-size: 1.08em; }
+.ub-quote cite { display: block; margin-top: 6px; font: normal 13px var(--ub-ui); color: var(--ub-muted); }
+.ub-tablewrap { overflow-x: auto; margin: 1.4em 0; border: 1px solid var(--ub-line); border-radius: 10px; }
+.ub-tablewrap table { border-collapse: collapse; width: 100%; font: 14px/1.45 var(--ub-ui); }
+.ub-tablewrap th, .ub-tablewrap td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--ub-line); vertical-align: top; }
+.ub-tablewrap th { background: var(--ub-panel); font-weight: 600; font-size: 12.5px; }
+.ub-tablewrap tr:last-child td { border-bottom: 0; }
+.ub-chart { margin: 1.6em 0; padding: 18px 18px 10px; border: 1px solid var(--ub-line); border-radius: 12px; }
+.ub-chart figcaption { font: 600 14px var(--ub-ui); margin-bottom: 10px; }
+.ub-chart figcaption span { font-weight: 400; color: var(--ub-muted); }
+.ub-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ub-chart .lbl { font: 13px var(--ub-ui); fill: var(--ub-ink); }
+.ub-chart .val { font: 500 12.5px var(--ub-mono); fill: var(--ub-muted); }
+.ub-chart .bar { fill: var(--book-ink); transform-box: fill-box; transform-origin: left center; animation: ub-grow .9s cubic-bezier(.2,.8,.2,1) both; }
+.ub-chart .track { fill: var(--ub-panel); }
+@keyframes ub-grow { from { transform: scaleX(0); } }
+.ub-steps { list-style: none; padding: 0 !important; margin: 1.4em 0; counter-reset: s; }
+.ub-steps li { counter-increment: s; position: relative; padding: 0 0 14px 44px; margin: 0; }
+.ub-steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--book-soft); color: var(--book-ink); font: 600 13px/28px var(--ub-ui); text-align: center; }
+.ub-steps li::after { content: ""; position: absolute; left: 13.5px; top: 32px; bottom: 4px; width: 1px; background: var(--ub-line); }
+.ub-steps li:last-child::after { display: none; }
+.ub-reveal { margin: 1.6em 0; padding: 18px 20px; border: 1.5px dashed color-mix(in oklab, var(--book-ink) 45%, var(--ub-line)); border-radius: 12px; }
+.ub-reveal-k { font: 600 11px var(--ub-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--book-ink); margin-bottom: 6px; }
+.ub-reveal p { margin: 0 0 .6em; }
+.ub-btn { height: 34px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--ub-line); background: var(--ub-bg); cursor: pointer; font: 600 13px var(--ub-ui); }
+.ub-btn:hover { border-color: var(--book-ink); }
+.ub-btn.solid { background: var(--book); border-color: var(--book); color: #fff; }
+.ub[data-theme="dark"] .ub-btn.solid { background: var(--book-ink); border-color: var(--book-ink); color: #0B0F0E; }
+.ub-reveal-a { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ub-line); }
+
+.ub-quiz, .ub-deck { margin: 3em 0 0; padding-top: 2em; border-top: 1px solid var(--ub-line); }
+.ub-quiz-score { font: 500 13px var(--ub-ui); color: var(--ub-muted); margin: -6px 0 18px !important; }
+.ub-q { margin: 0 0 26px; }
+.ub-q-t { font-weight: 600; font-size: 1em; margin: 0 0 10px !important; display: flex; gap: 10px; }
+.ub-q-t span { flex: none; font: 600 12px/1.9 var(--ub-mono); color: var(--book-ink); }
+.ub-opts { display: grid; gap: 8px; }
+.ub-opt { text-align: left; padding: 11px 14px; border-radius: 9px; border: 1px solid var(--ub-line); background: var(--ub-bg); cursor: pointer; font: 15px/1.4 var(--ub-ui); display: flex; gap: 10px; align-items: start; }
+.ub-opt:hover:not(:disabled) { border-color: var(--book-ink); background: var(--book-soft); }
+.ub-opt:disabled { cursor: default; }
+.ub-opt i { flex: none; font: normal 600 12px/1.6 var(--ub-mono); color: var(--ub-muted); }
+.ub-opt.right { border-color: var(--ub-ok); background: color-mix(in oklab, var(--ub-ok) 12%, var(--ub-bg)); }
+.ub-opt.wrong { border-color: var(--ub-bad); background: color-mix(in oklab, var(--ub-bad) 10%, var(--ub-bg)); }
+.ub-opt.dim { opacity: .55; }
+.ub-expl { margin: 10px 0 0 !important; font: 14px/1.5 var(--ub-ui); color: var(--ub-muted); }
+.ub-expl b { color: var(--ub-ok); }
+.ub-expl b.no { color: var(--ub-bad); }
+
+.ub-card { position: relative; height: 210px; perspective: 1200px; cursor: pointer; }
+.ub-card-in { position: absolute; inset: 0; transition: transform .55s cubic-bezier(.3,.7,.2,1); transform-style: preserve-3d; }
+.ub-card.flipped .ub-card-in { transform: rotateY(180deg); }
+.ub-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; padding: 22px 26px; display: grid; place-items: center; text-align: center; border: 1px solid var(--ub-line); background: var(--ub-panel); font-size: 1.05em; }
+.ub-face.back { transform: rotateY(180deg); background: var(--book-soft); font-size: .95em; }
+.ub-face small { position: absolute; top: 12px; left: 16px; font: 600 10.5px var(--ub-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--ub-muted); }
+.ub-deck-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font: 500 13px var(--ub-mono); color: var(--ub-muted); }
+
+.ub-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 3em; }
+.ub-pager button { text-align: left; padding: 14px 16px; border: 1px solid var(--ub-line); border-radius: 12px; background: var(--ub-bg); cursor: pointer; font: 15px/1.3 var(--ub-read); min-width: 0; }
+.ub-pager button:hover { border-color: var(--book-ink); }
+.ub-pager button span { display: block; font: 600 11px var(--ub-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--ub-muted); margin-bottom: 4px; }
+.ub-pager button.next { text-align: right; grid-column: 2; }
+
+.ub-cover { position: relative; padding-top: 18px; }
+.ub-ribbon { position: absolute; right: 6px; top: -44px; width: 26px; height: 92px; background: var(--ub-ribbon); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%); }
+.ub-cover h1 { font-size: 2.7em; }
+.ub-author { font: 500 14px var(--ub-ui); color: var(--ub-muted); margin: -.4em 0 1.4em !important; }
+.ub-summary { font-size: 1.04em; }
+.ub-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 1.8em 0; border: 1px solid var(--ub-line); border-radius: 12px; overflow: hidden; background: var(--ub-line); }
+.ub-stats div { background: var(--ub-bg); padding: 12px 14px; }
+.ub-stats dt { font: 600 10.5px var(--ub-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--ub-muted); }
+.ub-stats dd { margin: 2px 0 0; font: 600 1.25em var(--ub-read); font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .ub-stats { grid-template-columns: repeat(2, 1fr); } }
+.ub-chlist { list-style: none; padding: 0 !important; margin: 2em 0 0; display: grid; gap: 10px; }
+.ub-chlist li { margin: 0; }
+.ub-chlist button { width: 100%; display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; text-align: left; padding: 14px 16px; border: 1px solid var(--ub-line); border-radius: 12px; background: var(--ub-bg); cursor: pointer; }
+.ub-chlist button:hover { border-color: var(--book-ink); }
+.ub-chlist .n { font: 600 13px/1.7 var(--ub-mono); color: var(--book-ink); }
+.ub-chlist b { display: block; font: 600 1.02em/1.3 var(--ub-read); }
+.ub-chlist p { margin: 4px 0 0 !important; font: 14px/1.45 var(--ub-ui); color: var(--ub-muted); }
+.ub-chip { align-self: start; font: 500 11.5px var(--ub-ui); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--ub-line); color: var(--ub-muted); white-space: nowrap; }
+.ub-chip.ok { border-color: var(--ub-ok); color: var(--ub-ok); }
+.ub-chip.live { border-color: var(--book-ink); color: var(--book-ink); }
+.ub-start { margin-top: .4em; }
+
+.ub-skel { display: grid; gap: 14px; margin-top: 1.4em; }
+.ub-skel i { display: block; height: 14px; border-radius: 7px; background: linear-gradient(90deg, var(--ub-panel), var(--book-soft), var(--ub-panel)); background-size: 200% 100%; animation: ub-sh 1.4s linear infinite; }
+.ub-skel i:nth-child(3n) { width: 82%; } .ub-skel i:nth-child(4n) { width: 64%; }
+@keyframes ub-sh { to { background-position: -200% 0; } }
+.ub-note { font: 14px/1.5 var(--ub-ui); color: var(--ub-muted); }
+
+.ub-gloss dl { margin: 0; }
+.ub-gloss .letter { font: 600 1.4em var(--ub-read); color: var(--book-ink); margin: 1.2em 0 .3em; }
+.ub-gloss dt { font-weight: 600; margin-top: .9em; }
+.ub-gloss dd { margin: .15em 0 0; font-size: .92em; }
+.ub-gloss dd button { border: 0; background: none; padding: 0; cursor: pointer; font: 500 12px var(--ub-mono); color: var(--book-ink); }
+.ub-hits { list-style: none; padding: 0 !important; display: grid; gap: 8px; }
+.ub-hits button { width: 100%; text-align: left; padding: 12px 14px; border: 1px solid var(--ub-line); border-radius: 10px; background: var(--ub-bg); cursor: pointer; font: 15px/1.45 var(--ub-read); }
+.ub-hits button:hover { border-color: var(--book-ink); }
+.ub-hits small { display: block; font: 500 11.5px var(--ub-mono); color: var(--ub-muted); margin-bottom: 3px; }
+.ub-hits mark { background: var(--book-soft); color: inherit; padding: 0 2px; border-radius: 3px; }
+.ub-flash { animation: ub-flash 1.6s ease-out; }
+@keyframes ub-flash { 0%, 30% { background: var(--book-soft); } 100% { background: transparent; } }
+
+.ub-ask { width: 360px; min-height: 0; border-left: 1px solid var(--ub-line); display: grid; grid-template-rows: auto 1fr auto; background: var(--ub-bg); }
+.ub-ask-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--ub-line); }
+.ub-ask-head b { font: 600 16px var(--ub-read); }
+.ub-ask-log { overflow: auto; padding: 14px; display: grid; gap: 14px; align-content: start; }
+.ub-ask-hint { font-size: 13.5px; color: var(--ub-muted); }
+.ub-ask-hint button { display: block; width: 100%; text-align: left; margin-top: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--ub-line); background: var(--ub-bg); cursor: pointer; font-size: 13px; color: var(--ub-ink); }
+.ub-msg-q { justify-self: end; max-width: 88%; padding: 9px 12px; border-radius: 12px 12px 3px 12px; background: var(--book); color: #fff; font-size: 14px; }
+.ub[data-theme="dark"] .ub-msg-q { background: var(--book-ink); color: #0B0F0E; }
+.ub-msg-a { font: 15.5px/1.55 var(--ub-read); }
+.ub-msg-a p { margin: 0 0 .7em; }
+.ub-msg-a.err { font: 13.5px/1.5 var(--ub-ui); color: var(--ub-bad); }
+.ub-caret { display: inline-block; width: 7px; height: 15px; background: var(--book-ink); vertical-align: -2px; animation: blink 1s steps(2) infinite; }
+.ub-ask-form { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px; border-top: 1px solid var(--ub-line); }
+.ub-ask-form textarea { resize: none; border: 1px solid var(--ub-line); border-radius: 9px; padding: 8px 10px; background: var(--ub-panel); font: 14px/1.4 var(--ub-ui); color: var(--ub-ink); min-width: 0; }
+.ub-ask-form button { align-self: end; }
+.ub-foot { margin-top: 4em; font: 12px var(--ub-ui); color: var(--ub-muted); text-align: center; }
+.ub-foot a { color: inherit; }
+
+@media (max-width: 900px) {
+  .ub-body { grid-template-columns: minmax(0, 1fr); }
+  .ub-toc { position: absolute; z-index: 20; inset: 0 auto 0 0; width: min(300px, 86%); transform: translateX(-102%); transition: transform .25s ease; box-shadow: 0 0 40px rgba(0,0,0,.2); }
+  .ub.toc-open .ub-toc { transform: none; }
+  .ub-ask { position: absolute; z-index: 20; inset: 0 0 0 auto; width: min(380px, 100%); box-shadow: 0 0 40px rgba(0,0,0,.2); }
+  .ub-page { padding: 30px 18px 70px; }
+  .ub-search { flex-basis: 100%; order: 5; }
+}
+@media (min-width: 901px) { .ub-menu { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ub * { animation: none !important; transition: none !important; } .ub-main { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+      <path d="M4 7 C 9 5, 13 6, 15 8 L 15 25 C 13 23, 9 22.5, 4 24 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M26 7 C 21 5, 17 6, 15 8 L 15 25 C 17 23, 21 22.5, 26 24 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M20 5.5 L 20 14 L 21.8 12.4 L 23.6 14 L 23.6 5.2" fill="var(--ribbon)"/>
+    </svg>
+    <h1>Unbound</h1>
+    <small>PDF to interactive web book · Gemini 4 Argon</small>
+  </div>
+  <div class="top-right">
+    <label class="fi" for="model"><span>Model</span><select id="model"></select></label>
+    <button class="key-btn" id="keyBtn" type="button" aria-expanded="false" aria-controls="keyPanel"><span class="dot"></span><span id="keyLabel">Add API key</span></button>
+  </div>
+</header>
+
+<section class="key-panel" id="keyPanel" hidden>
+  <h2>Gemini API key</h2>
+  <p>Unbound sends your PDF and key straight from this page to Google's Gemini API. Nothing passes through another server. Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
+  <div class="key-row">
+    <input id="apiKey" type="password" placeholder="AIza…" autocomplete="off" spellcheck="false" aria-label="Gemini API key">
+    <button class="btn small" id="showKey" type="button">Show</button>
+    <button class="btn small primary" id="saveKey" type="button">Save key</button>
+  </div>
+  <div class="chips"><label for="rememberKey"><input type="checkbox" id="rememberKey" checked> Remember the key in this browser</label></div>
+  <div class="status" id="keyStatus"></div>
+</section>
+
+<div class="layout">
+  <aside class="studio">
+    <section class="card" id="sourceCard">
+      <h2>New web book</h2>
+      <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose a PDF">
+        <strong>Drop a PDF here</strong>
+        <p>Reports, papers, manuals, course notes, ebooks. Up to 50 MB.</p>
+        <span class="btn small" aria-hidden="true">Choose a PDF</span>
+      </div>
+      <div class="file-chip" id="fileChip" hidden>
+        <div class="pdf">PDF</div>
+        <div class="meta"><b id="fileName"></b><span id="fileMeta"></span></div>
+        <button class="x-btn" id="fileRemove" type="button">Remove</button>
+      </div>
+      <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
+
+      <div class="opt-row">
+        <span class="label">Reading level</span>
+        <div class="seg" role="group" aria-label="Reading level">
+          <button type="button" data-level="faithful" aria-pressed="true">Faithful</button>
+          <button type="button" data-level="simplified" aria-pressed="false">Simplified</button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="label">Chapter depth</span>
+        <div class="seg" role="group" aria-label="Chapter depth">
+          <button type="button" data-depth="concise" aria-pressed="true">Concise</button>
+          <button type="button" data-depth="detailed" aria-pressed="false">Detailed</button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="label">Interactive extras</span>
+        <div class="chips">
+          <label for="optQuiz"><input type="checkbox" id="optQuiz" checked> Quizzes</label>
+          <label for="optCards"><input type="checkbox" id="optCards" checked> Flashcards</label>
+          <label for="optTerms"><input type="checkbox" id="optTerms" checked> Key terms</label>
+          <label for="optReveal"><input type="checkbox" id="optReveal" checked> Think-it-through</label>
+        </div>
+      </div>
+      <div class="opt-row">
+        <label class="label" for="notes">Notes for Gemini</label>
+        <textarea class="notes" id="notes" placeholder="Optional. For example: written for first-year students, skip the appendices."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" id="buildBtn" type="button" disabled>Build web book</button>
+        <button class="btn" id="stopBtn" type="button" disabled>Stop</button>
+      </div>
+      <div class="status" id="status" role="status">Drop in a PDF to begin.</div>
+    </section>
+
+    <section class="card" id="buildCard" hidden>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+        <h2>Binding</h2><span class="label" id="buildTime"></span>
+      </div>
+      <ol class="steps" id="steps"></ol>
+    </section>
+
+    <section class="card">
+      <h2>Your shelf</h2>
+      <ul class="shelf" id="shelf"></ul>
+      <p class="empty" id="shelfNote">Books you build are kept in this browser.</p>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <div class="stage-bar">
+      <div class="where" id="where"></div>
+      <button class="btn small primary" id="exportBtn" type="button">Export web book</button>
+    </div>
+    <div class="reader-host" id="readerHost"></div>
+  </section>
+</div>
+
+<script id="book-js">
+window.UnboundReader = (function () {
+  'use strict';
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var reEsc = function (s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
+  var store = {
+    get: function (k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var KINDS = { key: 'Key idea', definition: 'Definition', warning: 'Watch out', example: 'Example' };
+  function hex(h) { return /^#[0-9a-f]{6}$/i.test(h || '') ? h : '#0E6B5C'; }
+  function isDone(c) { return !c.status || c.status === 'done'; }
+  function plain(s) { return String(s || '').replace(/\*\*|\*/g, ''); }
+
+  function mount(host, book, opts) {
+    opts = opts || {};
+    var B = book;
+    var prefs = Object.assign({ size: 19, theme: 'auto' }, store.get('ub.prefs') || {});
+    var view = { kind: 'cover' };
+    var prog = loadProg();
+    var decks = {};
+    var popFor = null;
+
+    var root = document.createElement('div');
+    root.className = 'ub';
+    host.innerHTML = '';
+    host.appendChild(root);
+    root.innerHTML =
+      '<div class="ub-bar">' +
+        '<button class="ub-icon ub-menu" type="button" data-act="toc" aria-label="Contents">&#9776;</button>' +
+        '<div class="ub-btitle"></div>' +
+        '<label class="ub-search"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5 L13 13" stroke="currentColor" stroke-width="1.5"/></svg><input type="search" placeholder="Search this book" aria-label="Search this book"></label>' +
+        '<div class="ub-tools">' +
+          '<button class="ub-icon" type="button" data-act="smaller" aria-label="Smaller text">A&minus;</button>' +
+          '<button class="ub-icon" type="button" data-act="bigger" aria-label="Larger text">A+</button>' +
+          '<div class="ub-theme" role="group" aria-label="Page colour"><button type="button" data-theme-set="light">Light</button><button type="button" data-theme-set="sepia">Sepia</button><button type="button" data-theme-set="dark">Dark</button></div>' +
+          '<button class="ub-askbtn" type="button" data-act="ask">Ask the book</button>' +
+        '</div>' +
+        '<div class="ub-prog"><i></i></div>' +
+      '</div>' +
+      '<div class="ub-body">' +
+        '<nav class="ub-toc" aria-label="Contents"></nav>' +
+        '<main class="ub-main"><article class="ub-page"></article></main>' +
+        '<aside class="ub-ask" hidden>' +
+          '<div class="ub-ask-head"><b>Ask the book</b><button class="ub-icon" type="button" data-act="closeask" aria-label="Close">&times;</button></div>' +
+          '<div class="ub-ask-log"></div>' +
+          '<form class="ub-ask-form"><textarea rows="2" placeholder="Ask anything about this PDF" aria-label="Your question"></textarea><button class="ub-btn solid" type="submit">Ask</button></form>' +
+        '</aside>' +
+      '</div>' +
+      '<div class="ub-pop" role="tooltip" hidden></div>';
+
+    var $ = function (s) { return root.querySelector(s); };
+    var main = $('.ub-main'), page = $('.ub-page'), toc = $('.ub-toc'), pop = $('.ub-pop'), askPane = $('.ub-ask'), askLog = $('.ub-ask-log');
+    var searchInput = $('.ub-search input');
+    if (!opts.ask) $('.ub-askbtn').hidden = true;
+
+    function progKey() { return 'ub.progress.' + (B.id || B.title); }
+    function loadProg() { var p = store.get('ub.progress.' + (book.id || book.title)) || {}; p.visited = p.visited || []; p.quiz = p.quiz || {}; return p; }
+    function saveProg() { store.set(progKey(), prog); }
+    function savePrefs() { store.set('ub.prefs', prefs); }
+
+    function theme() {
+      if (prefs.theme !== 'auto') return prefs.theme;
+      try { return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch (e) { return 'light'; }
+    }
+    function applyLook() {
+      root.dataset.theme = theme();
+      root.style.setProperty('--book', hex(B.accent));
+      root.style.setProperty('--ub-size', prefs.size + 'px');
+      root.querySelectorAll('[data-theme-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeSet === theme())); });
+    }
+
+    /* ---------- inline text ---------- */
+    function termCtx(ci) {
+      var c = B.chapters[ci] || {};
+      var terms = (c.terms || []).filter(function (t) { return t && t.term; }).map(function (t, i) {
+        return { i: i, term: t.term, def: t.definition, re: new RegExp('(^|[^\\w])(' + reEsc(esc(t.term)) + ')(?![\\w])', 'i') };
+      }).sort(function (a, b) { return b.term.length - a.term.length; });
+      return { ci: ci, terms: terms, used: {} };
+    }
+    function inl(text, ctx) {
+      var s = esc(text), slots = [];
+      if (ctx) ctx.terms.forEach(function (t) {
+        if (ctx.used[t.i]) return;
+        if (t.re.test(s)) {
+          ctx.used[t.i] = true;
+          s = s.replace(t.re, function (m, pre, word) {
+            slots.push('<button type="button" class="ub-term" data-term="' + ctx.ci + ':' + t.i + '">' + word + '</button>');
+            return pre + '\u0001' + (slots.length - 1) + '\u0002';
+          });
+        }
+      });
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      s = s.replace(/\u0001(\d+)\u0002/g, function (m, i) { return slots[+i]; });
+      s = s.replace(/\((pp?\.\s?[\d–\-, ]+)\)/g, '<span class="ub-pref">$1</span>');
+      return s;
+    }
+    function paras(text, ctx) {
+      return String(text || '').split(/\n{2,}/).map(function (p) { return p.trim() ? '<p>' + inl(p.trim(), ctx) + '</p>' : ''; }).join('');
+    }
+
+    /* ---------- blocks ---------- */
+    function chartSVG(b) {
+      var labels = b.labels || [], vals = (b.values || []).map(Number);
+      var n = Math.min(labels.length, vals.length);
+      if (!n) return '';
+      var max = Math.max.apply(null, vals.slice(0, n).concat([0])) || 1;
+      var W = 640, rowH = 38, lab = 170, area = W - lab - 90, H = n * rowH;
+      var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(b.title || 'Chart') + '">';
+      for (var i = 0; i < n; i++) {
+        var y = i * rowH, w = Math.max(2, vals[i] / max * area);
+        out += '<text class="lbl" x="' + (lab - 12) + '" y="' + (y + 22) + '" text-anchor="end">' + esc(labels[i]) + '</text>' +
+          '<rect class="track" x="' + lab + '" y="' + (y + 8) + '" width="' + area + '" height="20" rx="4"/>' +
+          '<rect class="bar" x="' + lab + '" y="' + (y + 8) + '" width="' + w.toFixed(1) + '" height="20" rx="4" style="animation-delay:' + (i * 0.08) + 's"/>' +
+          '<text class="val" x="' + (lab + w + 8).toFixed(1) + '" y="' + (y + 23) + '">' + esc(fmtNum(vals[i])) + (b.unit ? ' ' + esc(b.unit) : '') + '</text>';
+      }
+      return out + '</svg>';
+    }
+    function fmtNum(v) { return Math.abs(v) >= 1000 ? v.toLocaleString('en-US') : String(+v.toFixed(2)); }
+
+    function blockHTML(b, ci, bi, ctx) {
+      var id = ' id="ub-b-' + ci + '-' + bi + '"';
+      switch (b.type) {
+        case 'heading': return '<h2 class="ub-h2"' + id + '>' + inl(b.text) + '</h2>';
+        case 'paragraph': return '<div' + id + '>' + paras(b.text, ctx) + '</div>';
+        case 'list': {
+          var tag = b.ordered ? 'ol' : 'ul';
+          return '<' + tag + id + '>' + (b.items || []).map(function (it) { return '<li>' + inl(it, ctx) + '</li>'; }).join('') + '</' + tag + '>';
+        }
+        case 'steps': return '<ol class="ub-steps"' + id + '>' + (b.items || []).map(function (it) { return '<li>' + inl(it, ctx) + '</li>'; }).join('') + '</ol>';
+        case 'callout': {
+          var k = KINDS[b.kind] ? b.kind : 'key';
+          return '<aside class="ub-callout ub-' + k + '"' + id + '><div class="ub-callout-k">' + esc(b.title || KINDS[k]) + '</div>' + paras(b.text, ctx) + '</aside>';
+        }
+        case 'quote': return '<blockquote class="ub-quote"' + id + '>' + inl(b.text) + (b.attribution ? '<cite>' + esc(b.attribution) + '</cite>' : '') + '</blockquote>';
+        case 'table': {
+          var cols = b.columns || [], rows = b.rows || [];
+          return '<div class="ub-tablewrap"' + id + '><table><thead><tr>' + cols.map(function (c) { return '<th>' + inl(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+            rows.map(function (r) { return '<tr>' + (r || []).map(function (c) { return '<td>' + inl(c, ctx) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+        }
+        case 'chart': {
+          var svg = chartSVG(b);
+          return svg ? '<figure class="ub-chart"' + id + '><figcaption>' + esc(b.title || '') + (b.unit ? ' <span>(' + esc(b.unit) + ')</span>' : '') + '</figcaption>' + svg + (b.text ? '<p class="ub-note" style="margin:10px 0 0">' + inl(b.text) + '</p>' : '') + '</figure>' : '';
+        }
+        case 'reveal': return '<div class="ub-reveal"' + id + '><div class="ub-reveal-k">Think it through</div><p>' + inl(b.prompt || b.text, ctx) + '</p>' +
+          '<button class="ub-btn" type="button" data-reveal>Show answer</button><div class="ub-reveal-a" hidden>' + paras(b.answer, ctx) + '</div></div>';
+        default: return b.text ? '<div' + id + '>' + paras(b.text, ctx) + '</div>' : '';
+      }
+    }
+
+    /* ---------- views ---------- */
+    function stats() {
+      var mins = 0, terms = 0, qs = 0;
+      B.chapters.forEach(function (c) { mins += +c.minutes || 0; terms += (c.terms || []).length; qs += (c.quiz || []).length; });
+      return { mins: mins, terms: terms, qs: qs };
+    }
+    function chipFor(ci) {
+      var c = B.chapters[ci];
+      if (c.status === 'pending') return '<span class="ub-chip">Waiting</span>';
+      if (c.status === 'writing') return '<span class="ub-chip live">Writing&hellip;</span>';
+      if (c.status === 'error') return '<span class="ub-chip">Needs a retry</span>';
+      if (quizDone(ci)) return '<span class="ub-chip ok">Quiz done</span>';
+      if (prog.visited.indexOf(ci) >= 0) return '<span class="ub-chip ok">Read</span>';
+      return '<span class="ub-chip">' + (c.minutes ? c.minutes + ' min' : '') + '</span>';
+    }
+    function coverHTML() {
+      var s = stats();
+      var src = B.source || {};
+      return '<header class="ub-cover"><div class="ub-ribbon" aria-hidden="true"></div>' +
+        '<div class="ub-eyebrow">' + (B.example ? 'Example web book · ' : 'Web book · ') + 'from ' + esc(src.name || 'a PDF') + (src.pages ? ' (' + src.pages + ' pages)' : '') + '</div>' +
+        '<h1>' + esc(B.title) + '</h1>' +
+        (B.subtitle ? '<p class="ub-dek">' + esc(B.subtitle) + '</p>' : '') +
+        (B.author ? '<p class="ub-author">' + esc(B.author) + '</p>' : '') +
+        paras(B.summary) +
+        '<dl class="ub-stats"><div><dt>Chapters</dt><dd>' + B.chapters.length + '</dd></div><div><dt>Reading time</dt><dd>' + (s.mins ? s.mins + ' min' : '&mdash;') + '</dd></div>' +
+        '<div><dt>Key terms</dt><dd>' + s.terms + '</dd></div><div><dt>Quiz questions</dt><dd>' + s.qs + '</dd></div></dl>' +
+        '<button class="ub-btn solid ub-start" type="button" data-go="0">Start reading</button></header>' +
+        '<ol class="ub-chlist">' + B.chapters.map(function (c, i) {
+          return '<li><button type="button" data-go="' + i + '"><span class="n">' + String(i + 1).padStart(2, '0') + '</span><span><b>' + esc(c.title) + '</b><p>' + esc(plain(c.summary)) + '</p></span>' + chipFor(i) + '</button></li>';
+        }).join('') + '</ol>' + footHTML();
+    }
+    function footHTML() { return opts.standalone ? '<p class="ub-foot">Made with Unbound from a PDF using Gemini 4 Argon.</p>' : ''; }
+
+    function chapterHTML(ci) {
+      var c = B.chapters[ci];
+      var head = '<header><div class="ub-eyebrow">Chapter ' + (ci + 1) + (c.pages ? ' · PDF pp. ' + esc(c.pages) : '') + (c.minutes ? ' · ' + c.minutes + ' min read' : '') + '</div>' +
+        '<h1>' + esc(c.title) + '</h1>' + (c.summary ? '<p class="ub-dek">' + esc(plain(c.summary)) + '</p>' : '') + '</header>';
+      if (!isDone(c)) {
+        var msg = c.status === 'error'
+          ? '<p class="ub-note">This chapter didn\'t finish: ' + esc(c.error || 'Gemini returned an error.') + '</p>' + (opts.onRetry ? '<button class="ub-btn solid" type="button" data-retry="' + ci + '">Retry this chapter</button>' : '')
+          : '<p class="ub-note">' + (c.status === 'writing' ? 'Gemini 4 Argon is writing this chapter from the PDF&hellip;' : 'Waiting its turn. Chapters are written a few at a time.') + '</p><div class="ub-skel"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>';
+        return head + msg + pagerHTML(ci);
+      }
+      var ctx = termCtx(ci);
+      var take = (c.takeaways || []).length ? '<section class="ub-takeaways"><h2>Key takeaways</h2><ul>' + c.takeaways.map(function (t) { return '<li>' + inl(t) + '</li>'; }).join('') + '</ul></section>' : '';
+      var body = (c.blocks || []).map(function (b, bi) { return blockHTML(b, ci, bi, ctx); }).join('');
+      return head + take + body + quizHTML(ci) + deckHTML(ci) + pagerHTML(ci) + footHTML();
+    }
+    function pagerHTML(ci) {
+      var prev = ci > 0 ? '<button type="button" data-go="' + (ci - 1) + '"><span>Previous</span>' + esc(B.chapters[ci - 1].title) + '</button>' : '<button type="button" data-go="cover"><span>Back to</span>Cover</button>';
+      var next = ci < B.chapters.length - 1 ? '<button class="next" type="button" data-go="' + (ci + 1) + '"><span>Next</span>' + esc(B.chapters[ci + 1].title) + '</button>'
+        : '<button class="next" type="button" data-go="glossary"><span>Finish with</span>Key terms</button>';
+      return '<nav class="ub-pager">' + prev + next + '</nav>';
+    }
+
+    function quizDone(ci) { var q = (B.chapters[ci] || {}).quiz || [], a = prog.quiz[ci] || {}; return q.length > 0 && q.every(function (_, i) { return a[i] != null; }); }
+    function quizHTML(ci) {
+      var qs = B.chapters[ci].quiz || [];
+      if (!qs.length) return '';
+      var a = prog.quiz[ci] || {}, answered = 0, right = 0;
+      var html = qs.map(function (q, qi) {
+        var pick = a[qi], has = pick != null;
+        if (has) { answered++; if (pick === q.answer) right++; }
+        return '<div class="ub-q"><p class="ub-q-t"><span>' + (qi + 1) + '.</span>' + inl(q.question) + '</p><div class="ub-opts">' +
+          (q.options || []).map(function (o, oi) {
+            var cls = !has ? '' : oi === q.answer ? 'right' : oi === pick ? 'wrong' : 'dim';
+            return '<button class="ub-opt ' + cls + '" type="button" data-quiz="' + ci + ',' + qi + ',' + oi + '"' + (has ? ' disabled' : '') + '><i>' + 'ABCDEF'[oi] + '</i><span>' + inl(o) + '</span></button>';
+          }).join('') + '</div>' +
+          (has ? '<p class="ub-expl">' + (pick === q.answer ? '<b>Correct.</b> ' : '<b class="no">Not quite.</b> The answer is ' + 'ABCDEF'[q.answer] + '. ') + inl(q.explanation) + '</p>' : '') + '</div>';
+      }).join('');
+      var score = answered === qs.length
+        ? 'You got ' + right + ' of ' + qs.length + ' right. <button class="ub-btn" type="button" data-quiz-reset="' + ci + '" style="margin-left:8px;height:28px">Try again</button>'
+        : answered + ' of ' + qs.length + ' answered';
+      return '<section class="ub-quiz" id="ub-quiz-' + ci + '"><h2>Check your understanding</h2><p class="ub-quiz-score">' + score + '</p>' + html + '</section>';
+    }
+
+    function deckCards(scope) {
+      if (scope === 'all') { var all = []; B.chapters.forEach(function (c) { (c.cards || []).forEach(function (k) { all.push(k); }); }); return all; }
+      return (B.chapters[scope] || {}).cards || [];
+    }
+    function deckHTML(scope) {
+      var cards = deckCards(scope);
+      if (!cards.length) return scope === 'all' ? '<p class="ub-note">No flashcards in this book.</p>' : '';
+      var d = decks[scope] || (decks[scope] = { i: 0, flipped: false });
+      if (d.i >= cards.length) d.i = 0;
+      var k = cards[d.i];
+      return '<section class="ub-deck" data-deck="' + scope + '"' + (scope === 'all' ? ' style="border:0;margin:0;padding:0"' : '') + '><h2>Flashcards</h2>' +
+        '<div class="ub-card' + (d.flipped ? ' flipped' : '') + '" data-card-flip role="button" tabindex="0" aria-label="Flip card"><div class="ub-card-in">' +
+        '<div class="ub-face"><small>Question</small><div>' + inl(k.front) + '</div></div>' +
+        '<div class="ub-face back"><small>Answer</small><div>' + inl(k.back) + '</div></div></div></div>' +
+        '<div class="ub-deck-nav"><button class="ub-btn" type="button" data-card-step="-1">Previous</button><span>' + (d.i + 1) + ' / ' + cards.length + ' · tap to flip</span><button class="ub-btn" type="button" data-card-step="1">Next</button></div></section>';
+    }
+
+    function glossaryHTML() {
+      var all = [];
+      B.chapters.forEach(function (c, ci) { (c.terms || []).forEach(function (t) { if (t && t.term) all.push({ t: t, ci: ci }); }); });
+      all.sort(function (a, b) { return a.t.term.localeCompare(b.t.term); });
+      var html = '<header><div class="ub-eyebrow">Back matter</div><h1>Key terms</h1><p class="ub-dek">' + all.length + ' terms defined across the book.</p></header><div class="ub-gloss">';
+      var letter = '';
+      all.forEach(function (x) {
+        var L = x.t.term.charAt(0).toUpperCase();
+        if (L !== letter) { letter = L; html += '<div class="letter">' + esc(L) + '</div>'; }
+        html += '<dl><dt>' + esc(x.t.term) + '</dt><dd>' + inl(x.t.definition) + ' <button type="button" data-go="' + x.ci + '">Ch. ' + (x.ci + 1) + '</button></dd></dl>';
+      });
+      return html + '</div>' + footHTML();
+    }
+    function cardsHTML() {
+      return '<header><div class="ub-eyebrow">Back matter</div><h1>Flashcards</h1><p class="ub-dek">Every card from every chapter, in one deck.</p></header>' + deckHTML('all');
+    }
+
+    function blockText(b) {
+      return [b.text, b.title, b.prompt, b.answer].concat(b.items || [], b.columns || [], (b.rows || []).map(function (r) { return (r || []).join(' '); })).filter(Boolean).join(' ');
+    }
+    function searchHTML(q) {
+      var needle = q.toLowerCase(), hits = [];
+      B.chapters.forEach(function (c, ci) {
+        if (!isDone(c)) return;
+        (c.blocks || []).forEach(function (b, bi) {
+          var txt = plain(blockText(b)), pos = txt.toLowerCase().indexOf(needle);
+          if (pos >= 0 && hits.length < 40) hits.push({ ci: ci, bi: bi, txt: txt, pos: pos });
+        });
+      });
+      var re = new RegExp(reEsc(esc(q)), 'ig');
+      return '<header><div class="ub-eyebrow">Search</div><h1>&ldquo;' + esc(q) + '&rdquo;</h1><p class="ub-dek">' + (hits.length ? hits.length + (hits.length === 40 ? '+' : '') + ' matches' : 'No matches in this book.') + '</p></header>' +
+        '<ul class="ub-hits">' + hits.map(function (h) {
+          var a = Math.max(0, h.pos - 70), snip = (a ? '&hellip;' : '') + esc(h.txt.slice(a, h.pos + q.length + 110)) + '&hellip;';
+          return '<li><button type="button" data-hit="' + h.ci + ',' + h.bi + '"><small>Chapter ' + (h.ci + 1) + ' · ' + esc(B.chapters[h.ci].title) + '</small>' + snip.replace(re, function (m) { return '<mark>' + m + '</mark>'; }) + '</button></li>';
+        }).join('') + '</ul>';
+    }
+
+    function tocHTML() {
+      var cur = view.kind === 'chapter' ? view.i : view.kind;
+      var item = function (go, n, label, s, extra) {
+        return '<button type="button" data-go="' + go + '"' + (String(cur) === String(go) ? ' aria-current="true"' : '') + (extra ? ' class="' + extra + '"' : '') + '><span class="n">' + n + '</span><span>' + label + '</span><span class="s' + (s === '&#10003;' ? ' ok' : '') + '">' + (s || '') + '</span></button>';
+      };
+      var html = '<h3>Book</h3>' + item('cover', '&mdash;', 'Cover');
+      html += '<h3>Chapters</h3>' + B.chapters.map(function (c, i) {
+        var s = c.status === 'writing' ? '&hellip;' : c.status === 'pending' ? '' : c.status === 'error' ? '!' : quizDone(i) || prog.visited.indexOf(i) >= 0 ? '&#10003;' : '';
+        return item(i, String(i + 1).padStart(2, '0'), esc(c.title), s, isDone(c) ? '' : 'pending');
+      }).join('');
+      html += '<h3>Back matter</h3>' + item('glossary', 'Aa', 'Key terms') + item('cards', '&#9645;', 'Flashcards');
+      return html;
+    }
+
+    function render(keepScroll) {
+      applyLook();
+      $('.ub-btitle').textContent = B.title || 'Untitled';
+      var done = B.chapters.filter(function (c, i) { return prog.visited.indexOf(i) >= 0; }).length;
+      $('.ub-prog i').style.width = (B.chapters.length ? done / B.chapters.length * 100 : 0) + '%';
+      toc.innerHTML = tocHTML();
+      var st = main.scrollTop;
+      if (view.kind === 'chapter') page.innerHTML = chapterHTML(view.i);
+      else if (view.kind === 'glossary') page.innerHTML = glossaryHTML();
+      else if (view.kind === 'cards') page.innerHTML = cardsHTML();
+      else if (view.kind === 'search') page.innerHTML = searchHTML(view.q);
+      else page.innerHTML = coverHTML();
+      if (keepScroll) main.scrollTop = st;
+    }
+
+    function go(target) {
+      hidePop();
+      root.classList.remove('toc-open');
+      if (target === 'cover' || target === 'glossary' || target === 'cards') view = { kind: target };
+      else {
+        var i = +target;
+        if (!(i >= 0 && i < B.chapters.length)) return;
+        view = { kind: 'chapter', i: i };
+        if (isDone(B.chapters[i]) && prog.visited.indexOf(i) < 0) { prog.visited.push(i); saveProg(); }
+      }
+      main.style.scrollBehavior = 'auto';
+      main.scrollTop = 0;
+      main.style.scrollBehavior = '';
+      render();
+    }
+
+    /* ---------- popover ---------- */
+    function showPop(btn) {
+      var p = btn.dataset.term.split(':'), t = (B.chapters[+p[0]].terms || [])[+p[1]];
+      if (!t) return;
+      root.querySelectorAll('.ub-term.on').forEach(function (e) { e.classList.remove('on'); });
+      btn.classList.add('on');
+      pop.innerHTML = '<b>' + esc(t.term) + '</b>' + esc(plain(t.definition));
+      pop.hidden = false;
+      var r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+      var top = r.bottom + 8 + h > window.innerHeight - 8 ? r.top - h - 8 : r.bottom + 8;
+      pop.style.left = left + 'px'; pop.style.top = top + 'px';
+      popFor = btn;
+    }
+    function hidePop() { pop.hidden = true; if (popFor) popFor.classList.remove('on'); popFor = null; }
+    main.addEventListener('scroll', hidePop, { passive: true });
+
+    /* ---------- ask ---------- */
+    function openAsk() {
+      askPane.hidden = false;
+      if (!askLog.children.length) {
+        askLog.innerHTML = '<div class="ub-ask-hint">Answers come straight from the PDF, with page numbers so you can check them.' +
+          (B.chapters.slice(0, 3).map(function (c) { return '<button type="button" data-suggest>' + esc('What does the book say about ' + c.title.toLowerCase().replace(/[.?!]$/, '') + '?') + '</button>'; }).join('')) + '</div>';
+      }
+      setTimeout(function () { $('.ub-ask-form textarea').focus(); }, 30);
+    }
+    function pushQ(q) {
+      var hint = askLog.querySelector('.ub-ask-hint'); if (hint) hint.remove();
+      var qe = document.createElement('div'); qe.className = 'ub-msg-q'; qe.textContent = q;
+      var ae = document.createElement('div'); ae.className = 'ub-msg-a'; ae.innerHTML = '<span class="ub-caret"></span>';
+      askLog.appendChild(qe); askLog.appendChild(ae);
+      askLog.scrollTop = askLog.scrollHeight;
+      return {
+        update: function (t) { ae.innerHTML = paras(t) + '<span class="ub-caret"></span>'; askLog.scrollTop = askLog.scrollHeight; },
+        done: function (t) { ae.innerHTML = paras(t != null ? t : ae.textContent) || '<p></p>'; askLog.scrollTop = askLog.scrollHeight; },
+        error: function (m) { ae.className = 'ub-msg-a err'; ae.textContent = m; }
+      };
+    }
+    var asking = false;
+    function submitAsk(q) {
+      if (!q || asking || !opts.ask) return;
+      asking = true;
+      var m = pushQ(q), last = '';
+      Promise.resolve(opts.ask(q, function (t) { last = t; m.update(t); }, B))
+        .then(function (t) { m.done(t || last); })
+        .catch(function (e) { m.error(e && e.message ? e.message : 'Something went wrong.'); })
+        .then(function () { asking = false; });
+    }
+    $('.ub-ask-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ta = $('.ub-ask-form textarea'), q = ta.value.trim();
+      if (!q) return;
+      ta.value = '';
+      submitAsk(q);
+    });
+    $('.ub-ask-form textarea').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('.ub-ask-form').requestSubmit(); }
+    });
+
+    /* ---------- events ---------- */
+    root.addEventListener('click', function (e) {
+      var t = e.target.closest('button, [data-card-flip]');
+      if (!t || !root.contains(t)) { if (!e.target.closest('.ub-pop')) hidePop(); return; }
+      if (t.classList.contains('ub-term')) { if (popFor === t) hidePop(); else showPop(t); return; }
+      hidePop();
+      var d = t.dataset;
+      if (d.go != null) return go(d.go);
+      if (d.act === 'toc') return root.classList.toggle('toc-open');
+      if (d.act === 'smaller' || d.act === 'bigger') { prefs.size = Math.max(15, Math.min(25, prefs.size + (d.act === 'bigger' ? 1 : -1))); savePrefs(); return applyLook(); }
+      if (d.themeSet) { prefs.theme = d.themeSet; savePrefs(); return applyLook(); }
+      if (d.act === 'ask') { return askPane.hidden ? openAsk() : (askPane.hidden = true); }
+      if (d.act === 'closeask') { askPane.hidden = true; return; }
+      if (d.suggest != null) return submitAsk(t.textContent);
+      if (d.quiz) {
+        var p = d.quiz.split(',').map(Number);
+        prog.quiz[p[0]] = prog.quiz[p[0]] || {};
+        prog.quiz[p[0]][p[1]] = p[2];
+        saveProg();
+        var sec = root.querySelector('#ub-quiz-' + p[0]);
+        if (sec) { var tmp = document.createElement('div'); tmp.innerHTML = quizHTML(p[0]); sec.replaceWith(tmp.firstChild); }
+        toc.innerHTML = tocHTML();
+        return;
+      }
+      if (d.quizReset) { delete prog.quiz[+d.quizReset]; saveProg(); return render(true); }
+      if (d.cardFlip != null) {
+        var deckEl = t.closest('[data-deck]'), sc = deckEl.dataset.deck;
+        decks[sc] = decks[sc] || { i: 0, flipped: false };
+        decks[sc].flipped = !decks[sc].flipped;
+        t.classList.toggle('flipped', decks[sc].flipped);
+        return;
+      }
+      if (d.cardStep) {
+        var de = t.closest('[data-deck]'), scope = de.dataset.deck, n = deckCards(scope).length;
+        decks[scope] = decks[scope] || { i: 0, flipped: false };
+        decks[scope].i = (decks[scope].i + (+d.cardStep) + n) % n;
+        decks[scope].flipped = false;
+        var tmp2 = document.createElement('div'); tmp2.innerHTML = deckHTML(scope); de.replaceWith(tmp2.firstChild);
+        return;
+      }
+      if (d.reveal != null) {
+        var a = t.nextElementSibling; a.hidden = !a.hidden; t.textContent = a.hidden ? 'Show answer' : 'Hide answer'; return;
+      }
+      if (d.retry != null && opts.onRetry) return opts.onRetry(+d.retry);
+      if (d.hit) {
+        var h = d.hit.split(',').map(Number);
+        go(h[0]);
+        var el = root.querySelector('#ub-b-' + h[0] + '-' + h[1]);
+        if (el) { el.scrollIntoView({ block: 'center' }); el.classList.add('ub-flash'); }
+        return;
+      }
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.target.matches('[data-card-flip]') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.target.click(); }
+    });
+    var keyHandler = function (e) {
+      if (!root.isConnected) return document.removeEventListener('keydown', keyHandler);
+      if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+      if (e.key === 'Escape') { hidePop(); askPane.hidden = true; root.classList.remove('toc-open'); }
+      if (view.kind !== 'chapter') return;
+      if (e.key === 'ArrowRight' && view.i < B.chapters.length - 1) go(view.i + 1);
+      if (e.key === 'ArrowLeft') go(view.i > 0 ? view.i - 1 : 'cover');
+    };
+    document.addEventListener('keydown', keyHandler);
+    var searchTimer;
+    searchInput.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        var q = searchInput.value.trim();
+        if (q.length >= 2) { view = { kind: 'search', q: q }; main.scrollTop = 0; render(); }
+        else if (view.kind === 'search') go('cover');
+      }, 180);
+    });
+    try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyLook); } catch (e) {}
+
+    render();
+
+    return {
+      root: root,
+      setBook: function (nb) {
+        var same = nb === B || (nb.id && nb.id === B.id);
+        B = nb;
+        if (!same) { prog = loadProg(); decks = {}; view = { kind: 'cover' }; askLog.innerHTML = ''; askPane.hidden = true; searchInput.value = ''; }
+        if (view.kind === 'chapter' && !B.chapters[view.i]) view = { kind: 'cover' };
+        render(same);
+      },
+      go: go,
+      openAsk: openAsk,
+      pushQuestion: pushQ,
+      showTerm: function (btn) { showPop(btn); },
+      hideTerm: hidePop
+    };
+  }
+  return { mount: mount };
+})();
+</script>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  var API = 'https://generativelanguage.googleapis.com/v1beta';
+  var UPLOAD = 'https://generativelanguage.googleapis.com/upload/v1beta/files';
+  var FALLBACK_MODELS = ['gemini-4-argon', 'gemini-3.1-pro-preview', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-pro-latest', 'gemini-flash-latest'];
+  var PREFERRED = ['gemini-4-argon', 'gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-2.5-pro'];
+  var MAX_MB = 50, INLINE_MB = 19;
+
+  /* ---------------- example book ---------------- */
+  var EXAMPLE = {
+    id: 'example-batteries', example: true, accent: '#1F5F8B',
+    title: 'How Batteries Work', subtitle: 'From the chemistry inside a cell to making one last for years',
+    author: 'Example book', source: { name: 'battery-basics.pdf', pages: 22 },
+    summary: 'A short guide to what happens inside a battery, why lithium-ion took over, and what actually wears a battery out. Built from a 22-page PDF to show what Unbound makes: chapters with key terms you can tap, charts, quizzes and flashcards.',
+    chapters: [
+      {
+        title: 'What a battery actually is', pages: '1–6', minutes: 5,
+        summary: 'The four parts of every cell, where the voltage comes from, and how to read capacity and energy ratings.',
+        takeaways: [
+          'A battery is one or more electrochemical cells that turn stored chemical energy into electricity.',
+          'Every cell has an anode, a cathode, an electrolyte and a separator.',
+          'Voltage is set by the chemistry. Capacity says how long the cell can deliver current.',
+          'Energy in watt-hours is capacity in amp-hours multiplied by voltage.'
+        ],
+        blocks: [
+          { type: 'paragraph', text: 'A battery stores energy in chemical form and releases it as an electric current when a circuit is connected. Strictly, the unit that does this is a **cell**. A battery is one cell or several cells wired together, like the six cells inside a 12-volt car battery (p. 2).' },
+          { type: 'heading', text: 'Four parts, one job' },
+          { type: 'paragraph', text: 'Every cell has two electrodes. During discharge the anode gives up electrons and the cathode accepts them. Between them sits the electrolyte, a material that lets ions travel but not electrons. A thin porous separator keeps the electrodes from touching, which would short the cell (p. 3).' },
+          { type: 'paragraph', text: 'Because electrons cannot cross the electrolyte, they take the only other route: out through your device and back into the cathode. That flow through the outside circuit is the current you use. Inside the cell, ions move through the electrolyte to balance the charge.' },
+          { type: 'callout', kind: 'key', title: 'Key idea', text: 'Electrons travel through your device. Ions travel through the electrolyte. A battery only works while both paths are open.' },
+          { type: 'heading', text: 'Where the voltage comes from' },
+          { type: 'paragraph', text: 'The voltage of a cell depends on how strongly the two electrode materials want to trade electrons. That is a property of the chemistry, not the size, which is why a tiny AAA cell and a large D cell both deliver about 1.5 volts (p. 4).' },
+          { type: 'table', columns: ['Chemistry', 'Typical cell voltage', 'Common uses'], rows: [['Alkaline', '1.5 V', 'Remotes, toys, clocks'], ['Nickel-metal hydride (NiMH)', '1.2 V', 'Rechargeable AA and AAA'], ['Lead-acid', '2.0 V', 'Car starter batteries'], ['Lithium-ion', '3.6–3.7 V', 'Phones, laptops, EVs']] },
+          { type: 'heading', text: 'Reading the label' },
+          { type: 'paragraph', text: 'Capacity is measured in amp-hours (Ah) or milliamp-hours (mAh): how much current a cell can supply, and for how long. Multiply capacity by voltage and you get energy in watt-hours. A 3,000 mAh phone cell at 3.7 V holds about 11.1 Wh (p. 6).' },
+          { type: 'reveal', prompt: 'Two batteries are both rated 3,000 mAh. One is NiMH, the other lithium-ion. Do they store the same energy?', answer: 'No. Energy is capacity times voltage. At 1.2 V the NiMH cell holds about 3.6 Wh, while the 3.7 V lithium-ion cell holds about 11.1 Wh, roughly three times as much.' }
+        ],
+        terms: [
+          { term: 'cell', definition: 'The basic electrochemical unit of a battery: two electrodes, an electrolyte and a separator.' },
+          { term: 'anode', definition: 'The negative electrode during discharge. It releases electrons into the outside circuit.' },
+          { term: 'cathode', definition: 'The positive electrode during discharge. It accepts electrons from the outside circuit.' },
+          { term: 'electrolyte', definition: 'The material between the electrodes that lets ions move but blocks electrons.' },
+          { term: 'separator', definition: 'A thin porous layer that keeps the anode and cathode from touching while letting ions pass.' },
+          { term: 'watt-hours', definition: 'A unit of energy. Capacity in amp-hours multiplied by voltage.' }
+        ],
+        quiz: [
+          { question: 'What is the job of the electrolyte?', options: ['To store the electrons', 'To let ions move while blocking electrons', 'To raise the voltage of the cell', 'To keep the cell cool'], answer: 1, explanation: 'Because electrons can\'t cross the electrolyte, they are forced through the outside circuit, which is the current your device uses.' },
+          { question: 'Why do AAA and D alkaline cells have the same voltage?', options: ['They use the same chemistry', 'They hold the same capacity', 'They have the same number of cells inside', 'Manufacturers regulate it'], answer: 0, explanation: 'Voltage comes from the electrode chemistry. Size changes capacity, not voltage.' },
+          { question: 'About how much energy does a 3,000 mAh, 3.7 V cell hold?', options: ['3.0 Wh', '3.7 Wh', '11.1 Wh', '30 Wh'], answer: 2, explanation: '3.0 Ah × 3.7 V = 11.1 Wh.' }
+        ],
+        cards: [
+          { front: 'What are the four parts of a cell?', back: 'Anode, cathode, electrolyte and separator.' },
+          { front: 'Which way do electrons flow during discharge?', back: 'From the anode, through the outside circuit, to the cathode.' },
+          { front: 'How do you turn amp-hours into watt-hours?', back: 'Multiply by the cell voltage.' },
+          { front: 'How many cells are in a 12 V lead-acid car battery?', back: 'Six, at about 2 V each.' }
+        ]
+      },
+      {
+        title: 'Inside the lithium-ion cell', pages: '7–14', minutes: 6,
+        summary: 'How lithium ions shuttle between graphite and metal oxide, why chemistries differ, and what thermal runaway is.',
+        takeaways: [
+          'Lithium-ion cells work by moving lithium ions between a graphite anode and a metal-oxide cathode.',
+          'Cathode chemistry sets the trade-off between energy, lifespan, cost and safety.',
+          'Lithium-ion stores several times more energy per kilogram than lead-acid.',
+          'Damaged or overheated cells can enter thermal runaway.'
+        ],
+        blocks: [
+          { type: 'paragraph', text: 'In a lithium-ion cell, lithium ions move back and forth between two host materials without the electrodes themselves being consumed. When you charge, ions leave the cathode and slot between the layers of a graphite anode. When you use the battery, they travel back (p. 8).' },
+          { type: 'paragraph', text: 'This slotting-in is called **intercalation**. Because the electrode structures stay largely intact, a good lithium-ion cell can be charged and discharged hundreds or thousands of times.' },
+          { type: 'callout', kind: 'definition', title: 'The SEI layer', text: 'During the first charges, a thin film called the solid electrolyte interphase forms on the graphite. It uses up a little lithium, but then protects the anode from further reactions with the electrolyte (p. 9).' },
+          { type: 'heading', text: 'Not one chemistry, but several' },
+          { type: 'paragraph', text: '"Lithium-ion" is a family. The cathode material makes the biggest difference to how a cell behaves (p. 10).' },
+          { type: 'table', columns: ['Cathode', 'Strength', 'Trade-off', 'Typical use'], rows: [['LCO (lithium cobalt oxide)', 'High energy in a small space', 'Shorter life, less thermally stable', 'Phones, cameras'], ['NMC (nickel manganese cobalt)', 'High energy, good power', 'Uses nickel and cobalt', 'Most EVs, power tools'], ['LFP (lithium iron phosphate)', 'Very long cycle life, stable, cheaper', 'Less energy per kilogram', 'Buses, home storage, many newer EVs']] },
+          { type: 'chart', title: 'Energy per kilogram, by chemistry', unit: 'Wh/kg', labels: ['Lead-acid', 'NiMH', 'LFP lithium-ion', 'NMC lithium-ion'], values: [35, 90, 160, 250], text: 'Approximate cell-level figures. Real products vary by design (p. 11).' },
+          { type: 'reveal', prompt: 'Why can an LFP cell last many more cycles than an LCO cell?', answer: 'Its phosphate crystal structure barely changes shape as lithium moves in and out, so the material suffers less mechanical stress. It also runs at a lower voltage, which is gentler on the electrolyte.' },
+          { type: 'callout', kind: 'warning', title: 'Thermal runaway', text: 'If a cell is crushed, punctured, overcharged or overheated, it can enter thermal runaway: internal reactions release heat faster than it escapes. The heat speeds up more reactions, and the cell can vent, catch fire or spread the failure to neighbouring cells. Battery management systems exist largely to prevent this (p. 13).' }
+        ],
+        terms: [
+          { term: 'intercalation', definition: 'Ions slotting between the layers of a host material without destroying its structure.' },
+          { term: 'solid electrolyte interphase', definition: 'A thin protective film that forms on the anode during the first charge cycles.' },
+          { term: 'LFP', definition: 'Lithium iron phosphate: a cathode chemistry with long life and good stability but lower energy density.' },
+          { term: 'thermal runaway', definition: 'A self-reinforcing loop in which heat triggers reactions that release more heat.' }
+        ],
+        quiz: [
+          { question: 'Where do lithium ions go when you charge a lithium-ion cell?', options: ['Into the electrolyte, where they are stored', 'Between the layers of the graphite anode', 'Out through the charging cable', 'Into the separator'], answer: 1, explanation: 'Charging pushes ions out of the cathode and into the graphite anode, where they are stored by intercalation.' },
+          { question: 'Which chemistry is known for the longest cycle life?', options: ['LCO', 'NMC', 'LFP', 'Lead-acid'], answer: 2, explanation: 'LFP\'s stable phosphate structure lets it survive many more charge cycles.' },
+          { question: 'Roughly how much more energy per kilogram does an NMC cell store than lead-acid?', options: ['About the same', 'About twice as much', 'About seven times as much', 'About fifty times as much'], answer: 2, explanation: 'Around 250 Wh/kg against about 35 Wh/kg.' }
+        ],
+        cards: [
+          { front: 'What is intercalation?', back: 'Ions slotting between layers of a host material, like lithium into graphite.' },
+          { front: 'What does the SEI layer do?', back: 'Protects the anode from further reactions with the electrolyte.' },
+          { front: 'Name a strength and a weakness of LFP.', back: 'Very long life and stability, but less energy per kilogram.' },
+          { front: 'What is thermal runaway?', back: 'Heat triggering reactions that release more heat, in a loop.' }
+        ]
+      },
+      {
+        title: 'Why batteries wear out', pages: '15–22', minutes: 5,
+        summary: 'Calendar ageing, cycle ageing, and the habits that make a battery last years longer.',
+        takeaways: [
+          'Batteries age with time (calendar ageing) and with use (cycle ageing).',
+          'Heat and long periods at full charge are the biggest causes of wear.',
+          'Shallow cycles are easier on a cell than full 0 to 100% swings.',
+          'Charging lithium-ion below freezing can plate metallic lithium on the anode.'
+        ],
+        blocks: [
+          { type: 'paragraph', text: 'Every battery loses capacity over its life. The losses come from two sources that add together: **calendar ageing**, which happens even when a battery sits unused, and **cycle ageing**, which comes from charging and discharging (p. 15).' },
+          { type: 'heading', text: 'What speeds up ageing' },
+          { type: 'list', items: ['**Heat.** Side reactions in the cell roughly double in speed for every 10 °C rise.', '**Sitting at full charge.** A cell held at 100% ages faster than one held at 50%.', '**Deep cycles.** Running from full to empty stresses electrodes more than shorter top-ups.', '**Fast charging in the cold.** Below about 0 °C, lithium can deposit as metal on the anode instead of slotting in.'] },
+          { type: 'callout', kind: 'example', title: 'Example', text: 'A phone left on a sunny car dashboard at full charge ages much faster than the same phone kept at room temperature with its charge between 20% and 80% (p. 17).' },
+          { type: 'heading', text: 'Storing a battery for months' },
+          { type: 'steps', items: ['Charge or discharge it to roughly 40–60%.', 'Switch the device fully off.', 'Keep it somewhere cool and dry, away from direct sun.', 'Check it every few months and top it back up to around half.'] },
+          { type: 'quote', text: 'The kindest thing you can do for a lithium-ion battery is keep it cool and keep it away from the extremes of full and empty.', attribution: 'battery-basics.pdf, p. 21' }
+        ],
+        terms: [
+          { term: 'calendar ageing', definition: 'Capacity lost over time, even when the battery is not being used.' },
+          { term: 'cycle ageing', definition: 'Capacity lost through charging and discharging.' },
+          { term: 'lithium can deposit as metal', definition: 'Lithium plating: metallic lithium forming on the anode, usually from charging in the cold. It reduces capacity and can be a safety risk.' }
+        ],
+        quiz: [
+          { question: 'Which habit ages a lithium-ion battery fastest?', options: ['Keeping it at 50% in a cool room', 'Leaving it fully charged in a hot car', 'Topping it up from 40% to 70%', 'Storing it switched off'], answer: 1, explanation: 'Heat and a high state of charge are the two biggest drivers of ageing, and this combines both.' },
+          { question: 'What is a good charge level for long-term storage?', options: ['0%', 'Around 40–60%', '100%', 'It doesn\'t matter'], answer: 1, explanation: 'A middle state of charge minimises calendar ageing.' }
+        ],
+        cards: [
+          { front: 'Calendar vs cycle ageing?', back: 'Calendar: wear over time. Cycle: wear from charging and discharging.' },
+          { front: 'Why avoid charging lithium-ion below freezing?', back: 'Lithium can plate as metal on the anode.' },
+          { front: 'Best storage charge level?', back: 'Roughly 40–60%, somewhere cool.' }
+        ]
+      }
+    ]
+  };
+
+  /* ---------------- state ---------------- */
+  var state = {
+    key: store.get('unbound.key') || '',
+    pdf: null,
+    level: 'faithful', depth: 'concise',
+    building: false, controller: null,
+    book: null,
+    shelf: [],
+    build: null,
+    parts: {},
+    tokenLimits: {}
+  };
+  try { state.shelf = JSON.parse(store.get('unbound.shelf') || '[]') || []; } catch (e) { state.shelf = []; }
+
+  var reader = UnboundReader.mount($('#readerHost'), EXAMPLE, { ask: askBook, onRetry: retryChapter });
+  state.book = EXAMPLE;
+
+  /* ---------------- helpers ---------------- */
+  function setStatus(msg, kind) { var s = $('#status'); s.textContent = msg; s.className = 'status' + (kind ? ' ' + kind : ''); }
+  function fmtBytes(n) { return n < 1048576 ? (n / 1024).toFixed(0) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; }
+  function uid() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function sleep(ms, signal) { return new Promise(function (res, rej) { var t = setTimeout(res, ms); if (signal) signal.addEventListener('abort', function () { clearTimeout(t); rej(new DOMException('Aborted', 'AbortError')); }, { once: true }); }); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function slug(s) { return String(s || 'web-book').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'web-book'; }
+
+  /* ---------------- API key + models ---------------- */
+  var keyPanel = $('#keyPanel'), keyBtn = $('#keyBtn');
+  function renderKey() { keyBtn.classList.toggle('has-key', !!state.key); $('#keyLabel').textContent = state.key ? 'API key set' : 'Add API key'; $('#apiKey').value = state.key; updateButtons(); }
+  function toggleKey(open) { keyPanel.hidden = !open; keyBtn.setAttribute('aria-expanded', String(open)); if (open) $('#apiKey').focus(); }
+  keyBtn.addEventListener('click', function () { toggleKey(keyPanel.hidden); });
+  $('#showKey').addEventListener('click', function (e) { var i = $('#apiKey'); i.type = i.type === 'password' ? 'text' : 'password'; e.currentTarget.textContent = i.type === 'password' ? 'Show' : 'Hide'; });
+  $('#saveKey').addEventListener('click', saveKey);
+  $('#apiKey').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveKey(); });
+  function saveKey() {
+    var k = $('#apiKey').value.trim(), ks = $('#keyStatus');
+    state.key = k;
+    if (k && $('#rememberKey').checked) store.set('unbound.key', k); else store.del('unbound.key');
+    renderKey();
+    if (!k) { ks.className = 'status'; ks.textContent = 'Key cleared.'; return; }
+    ks.className = 'status'; ks.textContent = 'Checking the key…';
+    loadModels().then(function (ok) {
+      if (ok) { ks.className = 'status ok'; ks.textContent = 'Key works. Models loaded.'; setTimeout(function () { toggleKey(false); }, 700); }
+      else { ks.className = 'status error'; ks.textContent = 'Gemini rejected this key. Check that you copied all of it.'; }
+    });
+  }
+  var modelSel = $('#model');
+  function fillModels(ids) {
+    var saved = store.get('unbound.model');
+    modelSel.innerHTML = ids.map(function (id) { return '<option value="' + esc(id) + '">' + esc(id) + '</option>'; }).join('');
+    var pick = saved && ids.indexOf(saved) >= 0 ? saved : (PREFERRED.filter(function (p) { return ids.indexOf(p) >= 0; })[0] || ids[0]);
+    if (pick) modelSel.value = pick;
+  }
+  modelSel.addEventListener('change', function () { store.set('unbound.model', modelSel.value); });
+  function loadModels() {
+    if (!state.key) return Promise.resolve(false);
+    return fetch(API + '/models?pageSize=1000', { headers: { 'x-goog-api-key': state.key } }).then(function (r) {
+      if (!r.ok) return false;
+      return r.json().then(function (d) {
+        var skip = /tts|image|live|embed|transcri|robotic|audio|translate|aqa|veo|lyria|imagen|research|antigravity|nano/i;
+        var list = (d.models || []).filter(function (m) { return (m.supportedGenerationMethods || []).indexOf('generateContent') >= 0; })
+          .map(function (m) { return { id: m.name.replace(/^models\//, ''), limit: m.outputTokenLimit }; })
+          .filter(function (m) { return m.id.indexOf('gemini') === 0 && !skip.test(m.id); });
+        if (!list.length) return true;
+        list.forEach(function (m) { state.tokenLimits[m.id] = m.limit; });
+        var rank = function (id) { var i = PREFERRED.indexOf(id); return i < 0 ? 99 : i; };
+        fillModels(list.map(function (m) { return m.id; }).sort(function (a, b) { return rank(a) - rank(b) || b.localeCompare(a, undefined, { numeric: true }); }));
+        return true;
+      });
+    }).catch(function () { return false; });
+  }
+
+  /* ---------------- PDF input ---------------- */
+  var drop = $('#drop'), fileInput = $('#fileInput');
+  drop.addEventListener('click', function () { fileInput.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  fileInput.addEventListener('change', function () { if (fileInput.files[0]) loadPdf(fileInput.files[0]); fileInput.value = ''; });
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('dragging'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('dragging'); }); });
+  drop.addEventListener('drop', function (e) { var f = e.dataTransfer.files[0]; if (f) loadPdf(f); });
+  document.addEventListener('dragover', function (e) { e.preventDefault(); });
+  document.addEventListener('drop', function (e) { e.preventDefault(); var f = e.dataTransfer && e.dataTransfer.files[0]; if (f && !drop.contains(e.target)) loadPdf(f); });
+  $('#fileRemove').addEventListener('click', function () { state.pdf = null; renderPdf(); setStatus('Drop in a PDF to begin.'); });
+
+  function loadPdf(file) {
+    var isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
+    if (!isPdf) { setStatus("That isn't a PDF. Unbound reads PDF files only.", 'error'); return; }
+    if (file.size > MAX_MB * 1048576) { setStatus('That PDF is ' + fmtBytes(file.size) + '. The limit is ' + MAX_MB + ' MB, so split it into parts first.', 'error'); return; }
+    state.pdf = { file: file, name: file.name || 'document.pdf', size: file.size };
+    renderPdf();
+    if (!state.key) { setStatus('Add your Gemini API key, then press Build.'); toggleKey(true); }
+    else setStatus('Ready. Press Build web book.');
+  }
+  function renderPdf() {
+    var p = state.pdf;
+    drop.hidden = !!p; $('#fileChip').hidden = !p;
+    if (p) { $('#fileName').textContent = p.name; $('#fileMeta').textContent = fmtBytes(p.size) + ' · PDF'; }
+    updateButtons();
+  }
+
+  /* ---------------- options ---------------- */
+  document.querySelectorAll('[data-level]').forEach(function (b) { b.addEventListener('click', function () { state.level = b.dataset.level; document.querySelectorAll('[data-level]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); }); });
+  document.querySelectorAll('[data-depth]').forEach(function (b) { b.addEventListener('click', function () { state.depth = b.dataset.depth; document.querySelectorAll('[data-depth]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); }); });
+  function extras() { return { quiz: $('#optQuiz').checked, cards: $('#optCards').checked, terms: $('#optTerms').checked, reveal: $('#optReveal').checked }; }
+
+  /* ---------------- Gemini calls ---------------- */
+  function apiError(res, model) {
+    return res.json().catch(function () { return {}; }).then(function (j) {
+      var msg = (j.error && j.error.message) || ('Gemini returned an error (' + res.status + ').');
+      if (/api key/i.test(msg)) msg = 'Gemini rejected the API key. Open the key settings and check it.';
+      else if (res.status === 429) msg = "You've reached your Gemini rate limit or quota. Wait a minute, or switch models.";
+      else if (res.status === 404) msg = 'The model ' + model + " isn't available to this key. Choose another model.";
+      var err = new Error(msg); err.status = res.status; throw err;
+    });
+  }
+  function textOf(d) {
+    var c = d.candidates && d.candidates[0];
+    if (d.promptFeedback && d.promptFeedback.blockReason) throw new Error('Gemini declined this PDF (' + d.promptFeedback.blockReason + ').');
+    var t = ((c && c.content && c.content.parts) || []).filter(function (p) { return p.text && !p.thought; }).map(function (p) { return p.text; }).join('');
+    if (!t && c && c.finishReason) throw new Error('Gemini stopped early (' + c.finishReason + ').');
+    return { text: t, finish: c && c.finishReason };
+  }
+  function geminiJSON(parts, schema, signal) {
+    var model = modelSel.value;
+    var body = { contents: [{ role: 'user', parts: parts }], generationConfig: { responseMimeType: 'application/json', responseSchema: schema, maxOutputTokens: Math.min(state.tokenLimits[model] || 65536, 65536) } };
+    return fetch(API + '/models/' + encodeURIComponent(model) + ':generateContent', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': state.key }, body: JSON.stringify(body), signal: signal
+    }).then(function (res) {
+      if (!res.ok) return apiError(res, model);
+      return res.json().then(function (d) {
+        var r = textOf(d), t = r.text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+        try { return JSON.parse(t); }
+        catch (e) { throw new Error(r.finish === 'MAX_TOKENS' ? 'The reply hit the output limit. Try Concise depth.' : "Gemini's reply wasn't valid JSON. Try again."); }
+      });
+    });
+  }
+  function geminiStream(parts, onText, signal) {
+    var model = modelSel.value;
+    return fetch(API + '/models/' + encodeURIComponent(model) + ':streamGenerateContent?alt=sse', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': state.key },
+      body: JSON.stringify({ contents: [{ role: 'user', parts: parts }], generationConfig: { maxOutputTokens: 4096 } }), signal: signal
+    }).then(function (res) {
+      if (!res.ok) return apiError(res, model);
+      var reader = res.body.getReader(), dec = new TextDecoder(), buf = '', full = '';
+      function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) return full;
+          buf += dec.decode(r.value, { stream: true });
+          var idx;
+          while ((idx = buf.indexOf('\n')) >= 0) {
+            var line = buf.slice(0, idx).trim(); buf = buf.slice(idx + 1);
+            if (line.indexOf('data:') !== 0) continue;
+            var d; try { d = JSON.parse(line.slice(5)); } catch (e) { continue; }
+            if (d.error) throw new Error(d.error.message || 'Gemini stopped with an error.');
+            var c = d.candidates && d.candidates[0];
+            ((c && c.content && c.content.parts) || []).forEach(function (p) { if (p.text && !p.thought) { full += p.text; onText(full); } });
+          }
+          return pump();
+        });
+      }
+      return pump();
+    });
+  }
+  function withRetry(fn, signal) {
+    var attempt = 0;
+    function run() {
+      return fn().catch(function (e) {
+        if (e.name === 'AbortError' || attempt >= 2 || !(e.status === 429 || e.status >= 500)) throw e;
+        attempt++;
+        return sleep(2000 * Math.pow(2, attempt), signal).then(run);
+      });
+    }
+    return run();
+  }
+
+  /* upload once to the Files API so every chapter call reuses the same PDF */
+  function uploadPdf(file, signal) {
+    return fetch(UPLOAD, {
+      method: 'POST', signal: signal,
+      headers: { 'x-goog-api-key': state.key, 'X-Goog-Upload-Protocol': 'resumable', 'X-Goog-Upload-Command': 'start', 'X-Goog-Upload-Header-Content-Length': String(file.size), 'X-Goog-Upload-Header-Content-Type': 'application/pdf', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ file: { display_name: file.name } })
+    }).then(function (start) {
+      if (!start.ok) return apiError(start, 'files');
+      var url = start.headers.get('x-goog-upload-url');
+      if (!url) throw new Error('Upload URL missing');
+      return fetch(url, { method: 'POST', signal: signal, headers: { 'X-Goog-Upload-Offset': '0', 'X-Goog-Upload-Command': 'upload, finalize' }, body: file });
+    }).then(function (up) {
+      if (!up.ok) return apiError(up, 'files');
+      return up.json();
+    }).then(function (j) {
+      var f = j.file;
+      function poll(n) {
+        if (f.state !== 'PROCESSING') {
+          if (f.state === 'FAILED') throw new Error('Gemini could not process this PDF.');
+          return { fileData: { mimeType: 'application/pdf', fileUri: f.uri } };
+        }
+        if (n > 60) throw new Error('Gemini is taking too long to process this PDF.');
+        return sleep(2000, signal).then(function () { return fetch(API + '/' + f.name, { headers: { 'x-goog-api-key': state.key }, signal: signal }); })
+          .then(function (r) { return r.json(); }).then(function (nf) { f = nf; return poll(n + 1); });
+      }
+      return poll(0);
+    });
+  }
+  function inlinePart(file) {
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () { res({ inlineData: { mimeType: 'application/pdf', data: String(r.result).split(',')[1] } }); };
+      r.onerror = function () { rej(new Error("Couldn't read the PDF.")); };
+      r.readAsDataURL(file);
+    });
+  }
+  function sourcePart(file, signal) {
+    return uploadPdf(file, signal).catch(function (e) {
+      if (e.name === 'AbortError') throw e;
+      if (e.status === 400 || e.status === 403 && /key/i.test(e.message)) throw e;
+      if (file.size <= INLINE_MB * 1048576) return inlinePart(file);
+      throw new Error("Couldn't upload the PDF to Gemini (" + e.message + '). PDFs under ' + INLINE_MB + ' MB can be sent directly; try a smaller file.');
+    });
+  }
+
+  /* ---------------- schemas + prompts ---------------- */
+  var S = function (t, extra) { return Object.assign({ type: t }, extra || {}); };
+  var OUTLINE_SCHEMA = S('OBJECT', {
+    properties: {
+      title: S('STRING'), subtitle: S('STRING'), author: S('STRING'), summary: S('STRING'), accent: S('STRING'), pageCount: S('INTEGER'),
+      chapters: S('ARRAY', { items: S('OBJECT', { properties: { title: S('STRING'), pages: S('STRING'), summary: S('STRING') }, required: ['title', 'pages', 'summary'] }) })
+    },
+    required: ['title', 'summary', 'accent', 'chapters']
+  });
+  var BLOCK = S('OBJECT', {
+    properties: {
+      type: S('STRING', { enum: ['heading', 'paragraph', 'list', 'steps', 'callout', 'quote', 'table', 'chart', 'reveal'] }),
+      text: S('STRING'), title: S('STRING'), kind: S('STRING', { enum: ['key', 'definition', 'warning', 'example'] }),
+      items: S('ARRAY', { items: S('STRING') }), ordered: S('BOOLEAN'),
+      columns: S('ARRAY', { items: S('STRING') }), rows: S('ARRAY', { items: S('ARRAY', { items: S('STRING') }) }),
+      labels: S('ARRAY', { items: S('STRING') }), values: S('ARRAY', { items: S('NUMBER') }), unit: S('STRING'),
+      attribution: S('STRING'), prompt: S('STRING'), answer: S('STRING')
+    },
+    required: ['type']
+  });
+  var CHAPTER_SCHEMA = S('OBJECT', {
+    properties: {
+      minutes: S('INTEGER'),
+      takeaways: S('ARRAY', { items: S('STRING') }),
+      blocks: S('ARRAY', { items: BLOCK }),
+      terms: S('ARRAY', { items: S('OBJECT', { properties: { term: S('STRING'), definition: S('STRING') }, required: ['term', 'definition'] }) }),
+      quiz: S('ARRAY', { items: S('OBJECT', { properties: { question: S('STRING'), options: S('ARRAY', { items: S('STRING') }), answer: S('INTEGER'), explanation: S('STRING') }, required: ['question', 'options', 'answer', 'explanation'] }) }),
+      cards: S('ARRAY', { items: S('OBJECT', { properties: { front: S('STRING'), back: S('STRING') }, required: ['front', 'back'] }) })
+    },
+    required: ['minutes', 'takeaways', 'blocks', 'terms', 'quiz', 'cards']
+  });
+
+  function notesLine() { var n = $('#notes').value.trim(); return n ? '\n\nInstructions from the person creating this book:\n' + n : ''; }
+  function outlinePrompt() {
+    return 'You are planning an interactive web book that will be generated from the attached PDF.\n\n' +
+      'Read the whole document, then return its plan as JSON.\n' +
+      '- title: the document\'s own title. subtitle: a short line that says what the reader will get from it. author: the author or organisation if the PDF states one, otherwise an empty string.\n' +
+      '- summary: 2–3 sentences describing what the document covers and who it is for.\n' +
+      '- accent: a hex colour (#RRGGBB) that suits the subject, dark enough that white text on it is readable.\n' +
+      '- pageCount: the number of pages in the PDF.\n' +
+      '- chapters: split the document into 3–12 chapters that follow its own structure (its chapters, sections or natural topic breaks). Each chapter covers a contiguous page range written like "4–11", counting the first page of the file as 1. Skip covers, tables of contents, blank pages and indexes. Give each chapter a clear title and a one-sentence summary.\n' +
+      '- Write everything in the same language as the PDF.' + notesLine();
+  }
+  function chapterPrompt(book, i) {
+    var c = book.chapters[i], x = book.options;
+    var words = book.options.depth === 'detailed' ? '900–1,500' : '450–750';
+    var outline = book.chapters.map(function (ch, j) { return (j + 1) + '. ' + ch.title + ' (pp. ' + ch.pages + ')'; }).join('\n');
+    return 'You are writing one chapter of an interactive web book generated from the attached PDF.\n\n' +
+      'Book: ' + book.title + '\nFull outline:\n' + outline + '\n\n' +
+      'Write chapter ' + (i + 1) + ': "' + c.title + '", covering PDF pages ' + c.pages + '. Chapter summary: ' + c.summary + '\n\n' +
+      'Faithfulness\n' +
+      '- Use only what the PDF says on these pages (and earlier pages where needed for context). Never invent facts, numbers, names, quotes or sources.\n' +
+      '- Keep the document\'s key arguments, figures, examples and terminology. After important claims, cite the page like (p. 12).\n' +
+      (book.options.level === 'simplified'
+        ? '- Reading level: explain everything in plain language for a curious non-expert. Define jargon the first time it appears.\n'
+        : '- Reading level: keep the original\'s depth and precision, but write it as clear, readable prose rather than copying the PDF\'s layout.\n') +
+      '\nStructure (the "blocks" array, about ' + words + ' words in total)\n' +
+      '- Use paragraph blocks for prose (paragraphs separated by a blank line; **bold** and *italic* allowed), heading blocks to break the chapter into sections, list or steps blocks for genuine lists and procedures.\n' +
+      '- Use callout blocks (kind: key, definition, warning or example) for the ideas a reader must not miss. Use a quote block only for memorable sentences that appear verbatim in the PDF, with attribution.\n' +
+      '- Use a table block when the PDF compares things across attributes. Use a chart block only when the PDF gives numbers that compare a few items (labels, values, unit, title); never make up numbers.\n' +
+      (x.reveal ? '- Include 1–2 reveal blocks: a "think it through" prompt that makes the reader predict or apply an idea, with the answer.\n' : '- Do not use reveal blocks.\n') +
+      '- takeaways: 3–5 one-sentence key takeaways. minutes: estimated reading time.\n' +
+      (x.terms ? '- terms: 3–8 key terms with one-sentence definitions. Each term must appear word for word in this chapter\'s paragraph or list text.\n' : '- terms: return an empty array.\n') +
+      (x.quiz ? '- quiz: 3–4 multiple-choice questions that test understanding rather than recall of trivia. 4 options each, answer is the 0-based index of the correct option, explanation in one or two sentences.\n' : '- quiz: return an empty array.\n') +
+      (x.cards ? '- cards: 3–6 flashcards (front: a short question, back: a short answer).\n' : '- cards: return an empty array.\n') +
+      '- Write in the same language as the PDF.' + notesLine();
+  }
+
+  function cleanChapter(d) {
+    var arr = function (v) { return Array.isArray(v) ? v : []; };
+    var types = ['heading', 'paragraph', 'list', 'steps', 'callout', 'quote', 'table', 'chart', 'reveal'];
+    return {
+      minutes: Math.max(1, Math.round(+d.minutes || 4)),
+      takeaways: arr(d.takeaways).filter(Boolean).slice(0, 6),
+      blocks: arr(d.blocks).filter(function (b) { return b && types.indexOf(b.type) >= 0; }),
+      terms: arr(d.terms).filter(function (t) { return t && t.term && t.definition; }),
+      quiz: arr(d.quiz).filter(function (q) { return q && q.question && arr(q.options).length >= 2 && q.answer >= 0 && q.answer < q.options.length; }),
+      cards: arr(d.cards).filter(function (c) { return c && c.front && c.back; })
+    };
+  }
+
+  /* ---------------- build ---------------- */
+  var tick = null;
+  function updateButtons() {
+    $('#buildBtn').disabled = !state.pdf || state.building;
+    $('#stopBtn').disabled = !state.building;
+    var b = state.book, ready = b && b.chapters.every(function (c) { return !c.status || c.status === 'done'; });
+    $('#exportBtn').disabled = !ready;
+    $('#exportBtn').title = ready ? 'Download this book as a single HTML page' : 'Available once every chapter is written';
+  }
+  function renderWhere() {
+    var b = state.book;
+    $('#where').innerHTML = b.example ? '<span class="tag">Example</span><b>' + esc(b.title) + '</b> · build your own from any PDF' : '<b>' + esc(b.title) + '</b> · ' + b.chapters.length + ' chapters';
+  }
+  function renderBuild() {
+    var b = state.build;
+    $('#buildCard').hidden = !b;
+    if (!b) return;
+    var stages = ['upload', 'outline', 'chapters', 'done'], at = stages.indexOf(b.stage);
+    var cls = function (i) { return b.error && i === at ? 'error' : i < at || b.stage === 'done' ? 'done' : i === at ? 'active' : ''; };
+    var rows = b.chapters || [];
+    var written = rows.filter(function (c) { return c.status === 'done'; }).length;
+    var steps = [
+      ['Send the PDF to Gemini', b.source || ''],
+      ['Map the chapters', rows.length ? 'Found ' + rows.length + ' chapters' + (b.pages ? ' in ' + b.pages + ' pages' : '') : 'Reading the whole document'],
+      ['Write the chapters', rows.length ? written + ' of ' + rows.length + ' written' : 'A few at a time, in parallel']
+    ];
+    $('#steps').innerHTML = steps.map(function (s, i) {
+      var extra = i === 2 && rows.length ? '<ul class="ch-rows">' + rows.map(function (c, j) { return '<li class="' + (c.status || 'done') + '"><i></i><span class="t">' + (j + 1) + '. ' + esc(c.title) + '</span></li>'; }).join('') + '</ul>' : '';
+      return '<li class="' + cls(i) + '"><span class="mark">' + (cls(i) === 'done' ? '&#10003;' : '') + '</span><div><div>' + s[0] + '</div><div class="sub">' + esc(s[1]) + '</div>' + extra + '</div><span></span></li>';
+    }).join('');
+    var secs = b.elapsed != null ? b.elapsed : Math.round(((b.end || Date.now()) - b.t0) / 1000);
+    $('#buildTime').textContent = Math.floor(secs / 60) + ':' + String(secs % 60).padStart(2, '0');
+  }
+  function refresh() { reader.setBook(state.book); renderBuild(); renderWhere(); updateButtons(); }
+
+  function pool(tasks, n) {
+    var i = 0;
+    function worker() { if (i >= tasks.length) return Promise.resolve(); var t = tasks[i++]; return t().then(worker); }
+    var ws = []; for (var k = 0; k < Math.min(n, tasks.length); k++) ws.push(worker());
+    return Promise.all(ws);
+  }
+
+  function writeChapter(book, i, part, signal) {
+    var c = book.chapters[i];
+    c.status = 'writing'; delete c.error; refresh();
+    return withRetry(function () { return geminiJSON([part, { text: chapterPrompt(book, i) }], CHAPTER_SCHEMA, signal); }, signal)
+      .then(function (d) { Object.assign(c, cleanChapter(d)); c.status = 'done'; })
+      .catch(function (e) { if (e.name === 'AbortError') { c.status = 'error'; c.error = 'Stopped.'; throw e; } c.status = 'error'; c.error = e.message; })
+      .then(function () { refresh(); });
+  }
+
+  function build() {
+    if (state.building || !state.pdf) return;
+    if (!state.key) { toggleKey(true); setStatus('Add your Gemini API key first.', 'error'); return; }
+    var pdf = state.pdf, ctrl = new AbortController(), signal = ctrl.signal;
+    state.controller = ctrl; state.building = true;
+    state.build = { stage: 'upload', t0: Date.now(), source: pdf.name + ' · ' + fmtBytes(pdf.size), chapters: [] };
+    tick = setInterval(renderBuild, 1000);
+    renderBuild(); updateButtons();
+    try { $('#buildCard').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+    setStatus('Sending ' + pdf.name + ' to ' + modelSel.value + '…');
+    var book, part;
+    sourcePart(pdf.file, signal).then(function (p) {
+      part = p;
+      state.build.stage = 'outline'; renderBuild();
+      setStatus('Reading the whole PDF and mapping its chapters…');
+      return withRetry(function () { return geminiJSON([part, { text: outlinePrompt() }], OUTLINE_SCHEMA, signal); }, signal);
+    }).then(function (o) {
+      var chapters = (o.chapters || []).filter(function (c) { return c && c.title; });
+      if (!chapters.length) throw new Error("Gemini couldn't find any chapters in this PDF.");
+      book = {
+        id: uid(), title: o.title || pdf.name.replace(/\.pdf$/i, ''), subtitle: o.subtitle || '', author: o.author || '', summary: o.summary || '',
+        accent: /^#[0-9a-f]{6}$/i.test(o.accent || '') ? o.accent : '#0E6B5C',
+        source: { name: pdf.name, size: pdf.size, pages: o.pageCount || null }, created: Date.now(), model: modelSel.value,
+        options: { level: state.level, depth: state.depth, quiz: extras().quiz, cards: extras().cards, terms: extras().terms, reveal: extras().reveal },
+        chapters: chapters.map(function (c) { return { title: c.title, pages: c.pages || '', summary: c.summary || '', status: 'pending' }; })
+      };
+      if (part.fileData) { book.fileUri = part.fileData.fileUri; book.fileExpires = Date.now() + 47 * 3600 * 1000; }
+      state.parts[book.id] = part;
+      state.book = book;
+      state.build.stage = 'chapters'; state.build.chapters = book.chapters; state.build.pages = book.source.pages;
+      refresh();
+      setStatus('Writing ' + book.chapters.length + ' chapters with ' + modelSel.value + '. Open any finished chapter while the rest are written.');
+      return pool(book.chapters.map(function (_, i) { return function () { return writeChapter(book, i, part, signal); }; }), 3);
+    }).then(function () {
+      state.build.stage = 'done'; state.build.end = Date.now();
+      var failed = book.chapters.filter(function (c) { return c.status === 'error'; }).length;
+      saveToShelf(book);
+      setStatus(failed ? failed + ' chapter' + (failed > 1 ? 's' : '') + " didn't finish. Open it and press Retry." : 'Your web book is ready. Read it here or export it as a single HTML page.', failed ? 'error' : 'ok');
+    }).catch(function (e) {
+      if (state.build) { state.build.error = true; state.build.end = Date.now(); }
+      if (e.name === 'AbortError') setStatus('Stopped. Finished chapters are kept.');
+      else setStatus(e.message || 'Something went wrong talking to Gemini.', 'error');
+      if (book) saveToShelf(book);
+    }).then(function () {
+      clearInterval(tick); state.building = false; state.controller = null; refresh();
+    });
+  }
+  $('#buildBtn').addEventListener('click', build);
+  $('#stopBtn').addEventListener('click', function () { if (state.controller) state.controller.abort(); });
+
+  function partFor(book) {
+    if (state.parts[book.id]) return state.parts[book.id];
+    if (book.fileUri && book.fileExpires > Date.now()) return { fileData: { mimeType: 'application/pdf', fileUri: book.fileUri } };
+    return null;
+  }
+  function retryChapter(i) {
+    var book = state.book, part = partFor(book);
+    if (state.building) { setStatus('Wait for the current build to finish, then retry.'); return; }
+    if (!part) { setStatus('The source PDF has expired on Gemini (files are kept for 48 hours). Build the book again from the PDF.', 'error'); return; }
+    if (!state.key) { toggleKey(true); return; }
+    var ctrl = new AbortController(); state.controller = ctrl; state.building = true; updateButtons();
+    setStatus('Retrying chapter ' + (i + 1) + '…');
+    writeChapter(book, i, part, ctrl.signal).catch(function () {}).then(function () {
+      state.building = false; state.controller = null; saveToShelf(book); refresh();
+      setStatus(book.chapters[i].status === 'done' ? 'Chapter ' + (i + 1) + ' is done.' : book.chapters[i].error, book.chapters[i].status === 'done' ? 'ok' : 'error');
+    });
+  }
+
+  function askBook(q, onText, book) {
+    if (book.example) return Promise.reject(new Error("This is an example book, so there's no PDF behind it to ask. Build a book from your own PDF, then ask it anything."));
+    if (!state.key) { toggleKey(true); return Promise.reject(new Error('Add your Gemini API key to ask questions.')); }
+    var part = partFor(book);
+    if (!part) return Promise.reject(new Error('The source PDF is no longer on Gemini (files are kept for 48 hours). Build the book again to ask questions.'));
+    var prompt = 'Answer the question using only the attached PDF ("' + book.title + '"). Cite the page for each claim like (p. 12). ' +
+      'If the PDF does not answer it, say so plainly. Keep the answer under 160 words, in plain prose, in the language of the question.\n\nQuestion: ' + q;
+    return geminiStream([part, { text: prompt }], onText);
+  }
+
+  /* ---------------- shelf ---------------- */
+  function saveShelf() {
+    var list = state.shelf.slice(0, 12);
+    while (list.length && !store.set('unbound.shelf', JSON.stringify(list))) list.pop();
+    state.shelf = list;
+  }
+  function saveToShelf(book) {
+    var copy = JSON.parse(JSON.stringify(book));
+    state.shelf = [copy].concat(state.shelf.filter(function (b) { return b.id !== book.id; }));
+    saveShelf(); renderShelf();
+  }
+  function renderShelf() {
+    var items = [EXAMPLE].concat(state.shelf);
+    $('#shelf').innerHTML = items.map(function (b) {
+      var date = b.created ? new Date(b.created).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Example';
+      return '<li class="' + (state.book && state.book.id === b.id ? 'current' : '') + '"><span class="spine" style="background:' + esc(b.accent || '#0E6B5C') + '"></span>' +
+        '<button class="open" type="button" data-open="' + esc(b.id) + '"><b>' + esc(b.title) + '</b><span>' + b.chapters.length + ' chapters · ' + date + '</span></button>' +
+        (b.example ? '' : '<button class="x-btn" type="button" data-del="' + esc(b.id) + '">Delete</button>') + '</li>';
+    }).join('');
+    $('#shelfNote').hidden = state.shelf.length > 0;
+  }
+  $('#shelf').addEventListener('click', function (e) {
+    var o = e.target.closest('[data-open]'), d = e.target.closest('[data-del]');
+    if (o) {
+      if (state.building) { setStatus('Wait for the current build to finish before switching books.'); return; }
+      var id = o.dataset.open;
+      state.book = id === EXAMPLE.id ? EXAMPLE : state.shelf.filter(function (b) { return b.id === id; })[0];
+      if (state.build && state.build.stage === 'done') state.build = null;
+      refresh(); renderShelf();
+    }
+    if (d) {
+      if (d.dataset.armed) {
+        state.shelf = state.shelf.filter(function (b) { return b.id !== d.dataset.del; });
+        saveShelf();
+        if (state.book.id === d.dataset.del) { state.book = EXAMPLE; refresh(); }
+        renderShelf();
+      } else {
+        d.dataset.armed = '1'; d.textContent = 'Confirm';
+        setTimeout(function () { if (d.isConnected) { delete d.dataset.armed; d.textContent = 'Delete'; } }, 3000);
+      }
+    }
+  });
+
+  /* ---------------- export ---------------- */
+  function exportHTML(book) {
+    var data = JSON.parse(JSON.stringify(book));
+    delete data.fileUri; delete data.fileExpires;
+    data.chapters.forEach(function (c) { delete c.status; delete c.error; });
+    var json = JSON.stringify(data).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+    var css = document.getElementById('book-css').textContent;
+    var js = document.getElementById('book-js').textContent;
+    var fonts = document.querySelector('link[rel="stylesheet"]').href;
+    var S1 = '<scr' + 'ipt>', S2 = '</scr' + 'ipt>';
+    return '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+      '<title>' + esc(book.title) + '</title>\n<meta name="description" content="' + esc(book.summary) + '">\n' +
+      '<link rel="stylesheet" href="' + esc(fonts) + '">\n<style>html,body{margin:0;height:100%}body{background:#FCFCFB}</style>\n<style>' + css + '</style>\n</head>\n<body>\n' +
+      '<div id="ub-root" style="height:100%"></div>\n' + S1 + 'window.UB_BOOK=' + json + ';' + S2 + '\n' + S1 + js + S2 + '\n' +
+      S1 + 'UnboundReader.mount(document.getElementById("ub-root"), window.UB_BOOK, { standalone: true });' + S2 + '\n</body>\n</html>\n';
+  }
+  $('#exportBtn').addEventListener('click', function () {
+    var book = state.book, name = slug(book.title) + '.html';
+    var url = URL.createObjectURL(new Blob([exportHTML(book)], { type: 'text/html' }));
+    var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+    setStatus('Saved ' + name + '. It works offline and can be hosted anywhere.', 'ok');
+  });
+
+  /* ---------------- boot ---------------- */
+  fillModels(FALLBACK_MODELS);
+  renderKey(); renderPdf(); renderShelf(); renderWhere(); updateButtons();
+  if (state.key) loadModels();
+
+  window.Unbound = { state: state, reader: reader, refresh: refresh, renderBuild: renderBuild, loadPdf: loadPdf, renderShelf: renderShelf, setStatus: setStatus, exportHTML: exportHTML, EXAMPLE: EXAMPLE };
+})();
+</script>
+</body>
+</html>
