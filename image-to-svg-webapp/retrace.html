@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Retrace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a vector-editor workspace. Two artboards (raster in, vector out) with a slim inspector rail on the right. */
+:root {
+  --paper: #F4F5F8;
+  --surface: #FFFFFF;
+  --ink: #14161B;
+  --muted: #5D6371;
+  --line: #DCDFE6;
+  --accent: #2B5CFF;          /* selection-outline blue, as in vector editors */
+  --accent-soft: #E6ECFF;
+  --accent-ink: #FFFFFF;
+  --check-a: #EBEDF2;
+  --check-b: #FFFFFF;
+  --danger: #C2352A;
+  --ok: #1D8A57;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1014; --surface: #161920; --ink: #E7E9EF; --muted: #939AA9; --line: #2A2E38;
+    --accent: #7E9CFF; --accent-soft: #1D2540; --accent-ink: #0B1022;
+    --check-a: #1B1F27; --check-b: #222631; --danger: #FF7B6F; --ok: #4DC48B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1014; --surface: #161920; --ink: #E7E9EF; --muted: #939AA9; --line: #2A2E38;
+  --accent: #7E9CFF; --accent-soft: #1D2540; --accent-ink: #0B1022;
+  --check-a: #1B1F27; --check-b: #222631; --danger: #FF7B6F; --ok: #4DC48B;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.5 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1320px; margin: 0 auto; }
+
+/* Top bar */
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding-block: 18px 16px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 {
+  margin: 0; font: 700 24px/1 var(--font-display); letter-spacing: -0.02em;
+}
+.brand small { color: var(--muted); font-size: 13px; }
+.bar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.field-inline {
+  display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 4px 0 12px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+}
+.field-inline span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.field-inline select {
+  border: 0; background: transparent; height: 34px; padding: 0 6px; font-family: var(--font-mono); font-size: 13px;
+  max-width: 220px; cursor: pointer;
+}
+.key-btn {
+  display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-weight: 500;
+}
+.key-btn:hover { border-color: var(--accent); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
+.key-btn.has-key .dot { background: var(--ok); }
+
+/* Key panel */
+.key-panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px; margin-bottom: 16px; display: grid; gap: 12px;
+}
+.key-panel h2 { margin: 0; font: 600 17px/1.2 var(--font-display); }
+.key-panel p { margin: 0; color: var(--muted); font-size: 14px; max-width: 68ch; }
+.key-panel a { color: var(--accent); }
+.key-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.key-row input[type="password"], .key-row input[type="text"] {
+  flex: 1 1 320px; min-width: 0; height: 40px; padding: 0 12px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--paper); font-family: var(--font-mono); font-size: 13px;
+}
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+
+/* Workspace */
+.workspace { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1040px) { .workspace { grid-template-columns: minmax(0, 1fr) 300px; align-items: start; } }
+
+.stage-col { display: grid; gap: 12px; min-width: 0; }
+.stage-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.seg {
+  display: inline-flex; padding: 3px; gap: 2px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 9px;
+}
+.seg button {
+  border: 0; background: transparent; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+}
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); }
+.seg button:disabled { opacity: 0.45; cursor: not-allowed; }
+.hint { font-size: 13px; color: var(--muted); }
+kbd { font-family: var(--font-mono); font-size: 11px; padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+
+.panes { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .panes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.pane { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; min-width: 0; display: flex; flex-direction: column; }
+.pane-label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  padding: 10px 14px; border-bottom: 1px solid var(--line);
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600;
+}
+.pane-label .meta { font: 400 12px var(--font-mono); text-transform: none; letter-spacing: 0; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board {
+  position: relative; flex: 1; min-height: 380px; display: grid; place-items: center; padding: 28px;
+  background: repeating-conic-gradient(var(--check-a) 0 25%, var(--check-b) 0 50%) 0 0 / 16px 16px;
+}
+.board img { display: block; max-width: 100%; max-height: 56vh; object-fit: contain; }
+
+/* Bounding box with anchor handles, the vector editor's selection frame */
+.bbox { position: relative; display: inline-block; max-width: 100%; line-height: 0; }
+.bbox::after { content: ""; position: absolute; inset: -1px; border: 1px solid var(--accent); pointer-events: none; }
+.bbox i { position: absolute; width: 8px; height: 8px; background: var(--surface); border: 1px solid var(--accent); pointer-events: none; }
+.bbox i:nth-of-type(1) { top: -4px; left: -4px; }
+.bbox i:nth-of-type(2) { top: -4px; right: -4px; }
+.bbox i:nth-of-type(3) { bottom: -4px; left: -4px; }
+.bbox i:nth-of-type(4) { bottom: -4px; right: -4px; }
+.bbox.quiet::after, .bbox.quiet i { opacity: 0; transition: opacity .15s; }
+.pane:hover .bbox.quiet::after, .pane:hover .bbox.quiet i { opacity: 1; }
+
+/* Drop zone */
+.drop {
+  position: relative; width: 100%; max-width: 380px; padding: 36px 24px; text-align: center;
+  background: var(--surface); border: 1px dashed var(--line); border-radius: 4px; display: grid; gap: 10px; justify-items: center;
+}
+.drop i { position: absolute; width: 8px; height: 8px; background: var(--surface); border: 1px solid var(--muted); }
+.drop i:nth-of-type(1) { top: -4px; left: -4px; } .drop i:nth-of-type(2) { top: -4px; right: -4px; }
+.drop i:nth-of-type(3) { bottom: -4px; left: -4px; } .drop i:nth-of-type(4) { bottom: -4px; right: -4px; }
+.drop strong { font: 600 18px/1.25 var(--font-display); text-wrap: balance; }
+.drop p { margin: 0; color: var(--muted); font-size: 14px; }
+.board.dragging { outline: 2px solid var(--accent); outline-offset: -2px; }
+.board.dragging .drop { border-color: var(--accent); }
+.replace-btn {
+  position: absolute; top: 10px; right: 10px; height: 30px; padding: 0 10px; font-size: 12px; font-weight: 500;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--surface); cursor: pointer;
+}
+.placeholder { max-width: 300px; text-align: center; color: var(--muted); font-size: 14px; display: grid; gap: 10px; justify-items: center; }
+.placeholder svg { opacity: .7; }
+
+/* Drawing indicator */
+.drawing {
+  position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line);
+  font: 12px var(--font-mono); color: var(--muted);
+}
+.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* Compare views */
+.compare-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.compare-board { min-height: 380px; padding: 28px; display: grid; place-items: center;
+  background: repeating-conic-gradient(var(--check-a) 0 25%, var(--check-b) 0 50%) 0 0 / 16px 16px; }
+.compare { position: relative; width: 100%; max-height: 64vh; max-width: 100%; isolation: isolate; }
+.compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block; }
+.compare .over { clip-path: inset(0 0 0 var(--cut, 50%)); }
+.compare .seam { position: absolute; top: 0; bottom: 0; left: var(--cut, 50%); width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
+.compare .seam::after { content: ""; position: absolute; top: 50%; left: -5px; width: 10px; height: 10px; margin-top: -5px; background: var(--surface); border: 2px solid var(--accent); }
+.compare.diff { background: #FFFFFF; }
+.compare.diff .base { background: #FFFFFF; }
+.compare.diff .over { clip-path: none; mix-blend-mode: difference; }
+.compare-foot { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.compare-foot input[type="range"] { flex: 1 1 200px; accent-color: var(--accent); }
+
+/* Inspector */
+.inspector { display: grid; gap: 12px; min-width: 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; color: var(--muted); }
+.seg.full { display: flex; }
+.seg.full button { flex: 1; }
+.opt-desc { font-size: 13px; color: var(--muted); margin: -4px 0 0; }
+textarea.notes {
+  width: 100%; min-height: 76px; resize: vertical; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--paper); font-size: 14px; line-height: 1.45;
+}
+.btn {
+  height: 42px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+  font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.06); }
+.btn.small { height: 34px; font-size: 13px; padding: 0 12px; font-weight: 500; }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-row .btn { width: 100%; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.5em; }
+.status.error { color: var(--danger); }
+.status.ok { color: var(--ok); }
+
+.stats { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.stats div { background: var(--surface); padding: 10px 12px; display: grid; gap: 2px; }
+.stats dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.stats dd { margin: 0; font: 500 15px var(--font-mono); font-variant-numeric: tabular-nums; }
+.versions { display: flex; flex-wrap: wrap; gap: 6px; }
+.versions button {
+  font: 500 12px var(--font-mono); height: 28px; padding: 0 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--paper);
+}
+.versions button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+/* Code */
+.code-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.code-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.code-head .label { color: var(--ink); }
+.code-actions { display: flex; gap: 8px; }
+textarea.code {
+  display: block; width: 100%; min-height: 220px; height: 280px; resize: vertical; border: 0; padding: 14px;
+  background: var(--surface); font: 12.5px/1.55 var(--font-mono); white-space: pre; overflow: auto; tab-size: 2;
+}
+textarea.code:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; } * { transition: none !important; } }
+@media (max-width: 520px) {
+  .board, .compare-board { min-height: 280px; padding: 18px; }
+  .field-inline select { max-width: 150px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="bar">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M5 23 C 9 6, 21 6, 25 23" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="5" y1="23" x2="9" y2="8" stroke="var(--accent)" stroke-width="1"/>
+        <line x1="25" y1="23" x2="21" y2="8" stroke="var(--accent)" stroke-width="1"/>
+        <circle cx="9" cy="8" r="2" fill="var(--accent)"/><circle cx="21" cy="8" r="2" fill="var(--accent)"/>
+        <rect x="2.5" y="20.5" width="5" height="5" fill="var(--surface)" stroke="var(--accent)"/>
+        <rect x="22.5" y="20.5" width="5" height="5" fill="var(--surface)" stroke="var(--accent)"/>
+      </svg>
+      <h1>Retrace</h1>
+      <small>Raster to SVG with Gemini 4 Argon</small>
+    </div>
+    <div class="bar-right">
+      <label class="field-inline" for="model">
+        <span>Model</span>
+        <select id="model"></select>
+      </label>
+      <button class="key-btn" id="keyBtn" type="button" aria-expanded="false" aria-controls="keyPanel">
+        <span class="dot"></span><span id="keyLabel">Add API key</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="key-panel" id="keyPanel" hidden>
+    <h2>Gemini API key</h2>
+    <p>Your key goes straight from this page to Google's Gemini API. Get one free at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
+    <div class="key-row">
+      <input id="apiKey" type="password" placeholder="AIza…" autocomplete="off" spellcheck="false">
+      <button class="btn small" id="showKey" type="button">Show</button>
+      <button class="btn small primary" id="saveKey" type="button">Save key</button>
+    </div>
+    <label class="check" for="rememberKey"><input type="checkbox" id="rememberKey" checked> Remember the key in this browser</label>
+    <div class="status" id="keyStatus"></div>
+  </section>
+
+  <main class="workspace">
+    <div class="stage-col">
+      <div class="stage-head">
+        <div class="seg" role="group" aria-label="View">
+          <button type="button" data-view="split" aria-pressed="true">Side by side</button>
+          <button type="button" data-view="swipe" aria-pressed="false" disabled>Swipe</button>
+          <button type="button" data-view="diff" aria-pressed="false" disabled>Difference</button>
+        </div>
+        <span class="hint">Paste with <kbd>Ctrl</kbd>+<kbd>V</kbd> · Convert with <kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
+      </div>
+
+      <div class="panes" id="panes">
+        <section class="pane">
+          <div class="pane-label">Original <span class="meta" id="srcMeta">No image</span></div>
+          <div class="board" id="srcBoard">
+            <div class="drop" id="dropZone">
+              <i></i><i></i><i></i><i></i>
+              <strong>Drop an image to vectorize</strong>
+              <p>PNG, JPG, WEBP or GIF. Logos, icons and flat illustrations trace best.</p>
+              <button class="btn small" type="button" id="browseBtn">Choose a file</button>
+            </div>
+            <div class="bbox quiet" id="srcBox" hidden><img id="srcImg" alt="Original image"><i></i><i></i><i></i><i></i></div>
+            <button class="replace-btn" type="button" id="replaceBtn" hidden>Replace</button>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+          </div>
+        </section>
+
+        <section class="pane">
+          <div class="pane-label">SVG <span class="meta" id="outMeta">Not generated</span></div>
+          <div class="board" id="outBoard">
+            <div class="placeholder" id="outPlaceholder">
+              <svg width="56" height="40" viewBox="0 0 56 40" aria-hidden="true">
+                <path d="M6 32 C 14 4, 42 4, 50 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4"/>
+                <rect x="3" y="29" width="6" height="6" fill="none" stroke="currentColor"/>
+                <rect x="47" y="29" width="6" height="6" fill="none" stroke="currentColor"/>
+              </svg>
+              <span id="outPlaceholderText">The vector version appears here, drawn live as Gemini writes it.</span>
+            </div>
+            <div class="bbox" id="outBox" hidden><img id="outImg" alt="Generated SVG"><i></i><i></i><i></i><i></i></div>
+            <div class="drawing" id="drawing" hidden><span class="pulse"></span><span id="drawingText">Drawing…</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="compare-wrap" id="compareWrap" hidden>
+        <div class="compare-board">
+          <div class="compare" id="compare">
+            <img class="base" id="cmpBase" alt="Original image">
+            <img class="over" id="cmpOver" alt="Generated SVG">
+            <span class="seam" id="seam"></span>
+          </div>
+        </div>
+        <div class="compare-foot">
+          <span id="compareHint">Left of the line: original. Right: SVG.</span>
+          <input type="range" id="cut" min="0" max="100" value="50" aria-label="Swipe position">
+        </div>
+      </div>
+
+      <div class="code-card">
+        <div class="code-head">
+          <span class="label">SVG code</span>
+          <div class="code-actions">
+            <button class="btn small" type="button" id="copyBtn" disabled>Copy</button>
+            <button class="btn small primary" type="button" id="downloadBtn" disabled>Download .svg</button>
+          </div>
+        </div>
+        <textarea class="code" id="code" spellcheck="false" readonly aria-label="SVG code" placeholder="Edits you make here update the preview."></textarea>
+      </div>
+    </div>
+
+    <aside class="inspector">
+      <div class="card">
+        <span class="label">Fidelity</span>
+        <div class="seg full" role="group" aria-label="Fidelity">
+          <button type="button" data-fid="exact" aria-pressed="true">Exact</button>
+          <button type="button" data-fid="clean" aria-pressed="false">Clean</button>
+        </div>
+        <p class="opt-desc" id="fidDesc">Traces every shape, shadow and highlight. Larger files, slower.</p>
+        <label class="label" for="notes">Notes for Gemini</label>
+        <textarea class="notes" id="notes" placeholder="Optional. For example: the text is set in Futura Bold, keep the background transparent."></textarea>
+        <button class="btn primary" type="button" id="convertBtn" disabled>Convert to SVG</button>
+        <div class="btn-row">
+          <button class="btn" type="button" id="refineBtn" disabled title="Gemini compares its render with the original and fixes the differences">Refine pass</button>
+          <button class="btn" type="button" id="stopBtn" disabled>Stop</button>
+        </div>
+        <div class="status" id="status" role="status">Add an image to begin.</div>
+      </div>
+
+      <div class="card">
+        <span class="label">Result</span>
+        <dl class="stats">
+          <div><dt>File size</dt><dd id="stSize">—</dd></div>
+          <div><dt>Shapes</dt><dd id="stShapes">—</dd></div>
+          <div><dt>Colours</dt><dd id="stColors">—</dd></div>
+          <div><dt>Gradients</dt><dd id="stGrads">—</dd></div>
+        </dl>
+        <span class="label">Versions</span>
+        <div class="versions" id="versions"><span class="hint">Each convert or refine pass is kept here.</span></div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+
+  const FALLBACK_MODELS = [
+    'gemini-4-argon', 'gemini-3.1-pro-preview', 'gemini-3.8-flash', 'gemini-3.6-flash',
+    'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-pro-latest',
+  ];
+  const PREFERRED = ['gemini-4-argon', 'gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-2.5-pro'];
+  const API = 'https://generativelanguage.googleapis.com/v1beta';
+
+  const state = {
+    key: store.get('retrace.key') || '',
+    image: null,        // { dataUrl, b64, mime, w, h, name, size }
+    versions: [],       // [{ svg, label }]
+    current: -1,
+    busy: false,
+    controller: null,
+    fidelity: 'exact',
+    view: 'split',
+    tokenLimits: {},
+    outUrl: null,
+  };
+
+  /* ---------- API key ---------- */
+  const keyPanel = $('#keyPanel'), keyBtn = $('#keyBtn');
+  function renderKeyState() {
+    keyBtn.classList.toggle('has-key', !!state.key);
+    $('#keyLabel').textContent = state.key ? 'API key set' : 'Add API key';
+    $('#apiKey').value = state.key;
+    updateButtons();
+  }
+  function toggleKeyPanel(open) {
+    keyPanel.hidden = !open;
+    keyBtn.setAttribute('aria-expanded', String(open));
+    if (open) $('#apiKey').focus();
+  }
+  keyBtn.addEventListener('click', () => toggleKeyPanel(keyPanel.hidden));
+  $('#showKey').addEventListener('click', (e) => {
+    const inp = $('#apiKey');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    e.currentTarget.textContent = inp.type === 'password' ? 'Show' : 'Hide';
+  });
+  $('#saveKey').addEventListener('click', saveKey);
+  $('#apiKey').addEventListener('keydown', (e) => { if (e.key === 'Enter') saveKey(); });
+  async function saveKey() {
+    const k = $('#apiKey').value.trim();
+    state.key = k;
+    if (k && $('#rememberKey').checked) store.set('retrace.key', k); else store.del('retrace.key');
+    renderKeyState();
+    const ks = $('#keyStatus');
+    if (!k) { ks.className = 'status'; ks.textContent = 'Key cleared.'; return; }
+    ks.className = 'status'; ks.textContent = 'Checking the key…';
+    const ok = await loadModels();
+    if (ok) {
+      ks.className = 'status ok'; ks.textContent = 'Key works. Models loaded.';
+      setTimeout(() => toggleKeyPanel(false), 700);
+      if (state.image) setStatus('Ready. Press Convert to SVG.');
+    } else {
+      ks.className = 'status error'; ks.textContent = 'Gemini rejected this key. Check that you copied all of it.';
+    }
+  }
+
+  /* ---------- Models ---------- */
+  const modelSel = $('#model');
+  function fillModels(ids) {
+    const saved = store.get('retrace.model');
+    modelSel.innerHTML = '';
+    ids.forEach((id) => {
+      const o = document.createElement('option');
+      o.value = id; o.textContent = id;
+      modelSel.appendChild(o);
+    });
+    const pick = (saved && ids.includes(saved)) ? saved : (PREFERRED.find((p) => ids.includes(p)) || ids[0]);
+    if (pick) modelSel.value = pick;
+  }
+  modelSel.addEventListener('change', () => store.set('retrace.model', modelSel.value));
+  async function loadModels() {
+    if (!state.key) return false;
+    try {
+      const res = await fetch(`${API}/models?pageSize=1000`, { headers: { 'x-goog-api-key': state.key } });
+      if (!res.ok) return false;
+      const data = await res.json();
+      const skip = /tts|image|live|embed|transcri|robotic|audio|translate|aqa|veo|lyria|imagen|research|antigravity|nano/i;
+      const list = (data.models || [])
+        .filter((m) => (m.supportedGenerationMethods || []).includes('generateContent'))
+        .map((m) => ({ id: m.name.replace(/^models\//, ''), limit: m.outputTokenLimit }))
+        .filter((m) => m.id.startsWith('gemini') && !skip.test(m.id));
+      if (!list.length) return true;
+      list.forEach((m) => { state.tokenLimits[m.id] = m.limit; });
+      const ids = list.map((m) => m.id).sort((a, b) => rank(a) - rank(b) || b.localeCompare(a, undefined, { numeric: true }));
+      fillModels(ids);
+      return true;
+    } catch { return false; }
+  }
+  function rank(id) { const i = PREFERRED.indexOf(id); return i < 0 ? 99 : i; }
+
+  /* ---------- Image input ---------- */
+  const fileInput = $('#fileInput');
+  $('#browseBtn').addEventListener('click', () => fileInput.click());
+  $('#replaceBtn').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); fileInput.value = ''; });
+  const srcBoard = $('#srcBoard');
+  ['dragenter', 'dragover'].forEach((ev) => srcBoard.addEventListener(ev, (e) => { e.preventDefault(); srcBoard.classList.add('dragging'); }));
+  ['dragleave', 'drop'].forEach((ev) => srcBoard.addEventListener(ev, (e) => { e.preventDefault(); srcBoard.classList.remove('dragging'); }));
+  srcBoard.addEventListener('drop', (e) => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => { e.preventDefault(); if (!srcBoard.contains(e.target) && e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+  document.addEventListener('paste', (e) => {
+    if (e.target === $('#code') || e.target === $('#notes') || e.target === $('#apiKey')) return;
+    const item = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith('image/'));
+    if (item) { e.preventDefault(); loadFile(item.getAsFile()); }
+  });
+
+  const readAsDataURL = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+  const loadImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+
+  async function loadFile(file) {
+    if (!file || !file.type.startsWith('image/')) { setStatus("That file isn't an image. Use PNG, JPG, WEBP or GIF.", 'error'); return; }
+    if (state.busy) stop();
+    try {
+      const dataUrl = await readAsDataURL(file);
+      const img = await loadImg(dataUrl);
+      const w = img.naturalWidth || 512, h = img.naturalHeight || 512;
+      let sendUrl = dataUrl, mime = file.type;
+      const MAX = 2048;
+      if (Math.max(w, h) > MAX || !['image/png', 'image/jpeg', 'image/webp'].includes(mime)) {
+        const s = Math.min(1, MAX / Math.max(w, h));
+        const c = document.createElement('canvas');
+        c.width = Math.round(w * s); c.height = Math.round(h * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        sendUrl = c.toDataURL('image/png'); mime = 'image/png';
+      }
+      state.image = { dataUrl, b64: sendUrl.split(',')[1], mime, w, h, name: file.name || 'pasted-image.png', size: file.size };
+      state.versions = []; state.current = -1;
+      renderSource(); renderOutput(); renderVersions();
+      setStatus(state.key ? 'Ready. Press Convert to SVG.' : 'Add your Gemini API key to convert.');
+      if (!state.key) toggleKeyPanel(true);
+    } catch {
+      setStatus("Couldn't read that image. Try saving it as PNG first.", 'error');
+    }
+  }
+
+  function renderSource() {
+    const im = state.image;
+    $('#dropZone').hidden = !!im;
+    $('#srcBox').hidden = !im;
+    $('#replaceBtn').hidden = !im;
+    if (im) {
+      $('#srcImg').src = im.dataUrl;
+      $('#cmpBase').src = im.dataUrl;
+      $('#srcMeta').textContent = `${im.w} × ${im.h} px · ${fmtBytes(im.size)}`;
+      $('#srcMeta').title = im.name;
+      $('#compare').style.aspectRatio = `${im.w} / ${im.h}`;
+      $('#compare').style.maxWidth = `min(100%, ${im.w}px, calc(64vh * ${im.w / im.h}))`;
+    } else {
+      $('#srcMeta').textContent = 'No image';
+    }
+    updateButtons();
+  }
+
+  /* ---------- Prompts ---------- */
+  function buildPrompt() {
+    const { w, h } = state.image;
+    const notes = $('#notes').value.trim();
+    const detail = state.fidelity === 'exact'
+      ? 'Reproduce every visible detail: small shapes, outlines, inner shadows, highlights, texture-like patterns and anti-aliased edges. Fidelity matters more than file size.'
+      : 'Prefer clean, minimal geometry: merge near-identical colours, drop noise and compression artefacts, and use as few nodes as possible while keeping the image recognisably identical.';
+    return `You are an expert vector illustrator. Convert the attached raster image into an SVG that is visually identical to it.
+
+Canvas
+- Root element: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">.
+- Work in the image's own pixel coordinates. Every shape must sit exactly where it sits in the image, at the same size and proportions.
+- If the image has a solid background, draw it as the first shape. If it is transparent, leave it transparent.
+
+Fidelity
+- Match colours exactly. Sample them from the image as hex values and reuse them consistently.
+- Recreate gradients with <linearGradient> or <radialGradient> with correctly placed stops. Use filters for blur or soft shadows only where the image really has them.
+- Trace curved outlines with cubic Bézier commands (C, S) rather than polygon approximations. Keep corners sharp where the image has sharp corners.
+- Match stroke widths, line caps and joins exactly.
+- Paint back to front: background, large shapes, then details and highlights.
+- Reproduce text as <text> elements with a matching font-family, font-weight, font-size, letter-spacing and exact position. If the lettering is stylised, hand-drawn or part of a logo, trace it as paths instead.
+- ${detail}
+
+Output rules
+- Never embed the raster image. Do not use <image>, <foreignObject>, <script>, external URLs or CSS @import.
+- Group related shapes with <g> and give main groups short descriptive id attributes.
+- Round coordinates to at most 2 decimal places.
+- Reply with the SVG code only, starting with <svg and ending with </svg>. No markdown fences and no explanation.${notes ? `\n\nAdditional instructions from the user:\n${notes}` : ''}`;
+  }
+
+  function buildRefinePrompt() {
+    const { w, h } = state.image;
+    const notes = $('#notes').value.trim();
+    return `You are an expert vector illustrator refining your own SVG trace.
+
+Image 1 is the original raster image. Image 2 is a render of your current SVG at the same size. The current SVG code follows the images.
+
+Compare the two images region by region and fix every visible difference: wrong or missing shapes, misplaced or mis-sized elements, inaccurate curves, colour mismatches, gradient direction and stops, stroke widths, text font, size and position, and missing small details.
+
+Keep the root as <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">. Never embed the raster image or use <image>, <foreignObject>, <script> or external URLs.
+
+Reply with the complete corrected SVG only, starting with <svg and ending with </svg>. No markdown fences and no explanation.${notes ? `\n\nAdditional instructions from the user:\n${notes}` : ''}`;
+  }
+
+  /* ---------- Gemini streaming ---------- */
+  async function streamGemini(parts, onText, signal) {
+    const model = modelSel.value;
+    const limit = state.tokenLimits[model] || 32768;
+    const body = {
+      contents: [{ role: 'user', parts }],
+      generationConfig: { maxOutputTokens: Math.min(limit, 65536) },
+    };
+    const res = await fetch(`${API}/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': state.key },
+      body: JSON.stringify(body),
+      signal,
+    });
+    if (!res.ok) {
+      let msg = `Gemini returned an error (${res.status}).`;
+      try { const j = await res.json(); if (j.error?.message) msg = j.error.message; } catch {}
+      if (/api key/i.test(msg)) msg = 'Gemini rejected the API key. Open the key settings and check it.';
+      else if (res.status === 429) msg = "You've reached your Gemini rate limit or quota. Wait a minute, or switch to a Flash model.";
+      else if (res.status === 404) msg = `The model ${model} isn't available to this key. Choose another model.`;
+      throw new Error(msg);
+    }
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '', full = '', finish = '';
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let idx;
+      while ((idx = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, idx).trim();
+        buf = buf.slice(idx + 1);
+        if (!line.startsWith('data:')) continue;
+        const payload = line.slice(5).trim();
+        if (!payload) continue;
+        let d; try { d = JSON.parse(payload); } catch { continue; }
+        if (d.error) throw new Error(d.error.message || 'Gemini stopped with an error.');
+        if (d.promptFeedback?.blockReason) throw new Error(`Gemini declined this image (${d.promptFeedback.blockReason}).`);
+        const c = d.candidates?.[0];
+        for (const p of c?.content?.parts || []) {
+          if (p.text && !p.thought) { full += p.text; onText(full); }
+        }
+        if (c?.finishReason) finish = c.finishReason;
+      }
+    }
+    return { text: full, finish };
+  }
+
+  /* ---------- SVG handling ---------- */
+  function extractSvg(text) {
+    const start = text.search(/<svg[\s>]/i);
+    if (start < 0) return null;
+    const end = text.toLowerCase().lastIndexOf('</svg>');
+    return end > start ? text.slice(start, end + 6) : text.slice(start);
+  }
+
+  // Parses leniently (so half-written SVG still renders), strips anything active, and re-serialises as valid XML.
+  function normalizeSvg(raw) {
+    if (!raw) return null;
+    const doc = new DOMParser().parseFromString(`<!doctype html><html><body>${raw}</body></html>`, 'text/html');
+    const svg = doc.querySelector('svg');
+    if (!svg) return null;
+    svg.querySelectorAll('script, foreignObject, image, iframe').forEach((n) => n.remove());
+    svg.querySelectorAll('*').forEach((el) => {
+      for (const a of [...el.attributes]) {
+        const n = a.name.toLowerCase();
+        if (n.startsWith('on')) el.removeAttribute(a.name);
+        else if ((n === 'href' || n === 'xlink:href') && !a.value.trim().startsWith('#')) el.removeAttribute(a.name);
+      }
+    });
+    [svg, ...svg.querySelectorAll('*')].forEach((el) => { for (const a of [...el.attributes]) if (/^on/i.test(a.name)) el.removeAttribute(a.name); });
+    const im = state.image;
+    if (im) {
+      if (!svg.getAttribute('viewBox')) svg.setAttribute('viewBox', `0 0 ${im.w} ${im.h}`);
+      if (!svg.getAttribute('width')) svg.setAttribute('width', String(im.w));
+      if (!svg.getAttribute('height')) svg.setAttribute('height', String(im.h));
+    }
+    return new XMLSerializer().serializeToString(svg);
+  }
+
+  function showSvg(svg) {
+    const outImg = $('#outImg');
+    if (!svg) return;
+    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    const prev = state.outUrl;
+    state.outUrl = url;
+    outImg.onload = () => { if (prev) URL.revokeObjectURL(prev); };
+    outImg.onerror = () => { if (prev && state.outUrl === url) { /* keep last good frame */ } };
+    outImg.src = url;
+    $('#cmpOver').src = url;
+    $('#outBox').hidden = false;
+    $('#outPlaceholder').hidden = true;
+  }
+
+  function stats(svg) {
+    const doc = new DOMParser().parseFromString(svg, 'image/svg+xml');
+    const shapes = doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline, line, text').length;
+    const grads = doc.querySelectorAll('linearGradient, radialGradient').length;
+    const colors = new Set((svg.match(/#[0-9a-f]{6}\b|#[0-9a-f]{3}\b|rgba?\([^)]*\)/gi) || []).map((c) => c.toLowerCase()));
+    return { size: new Blob([svg]).size, shapes, grads, colors: colors.size };
+  }
+
+  function renderOutput() {
+    const v = state.versions[state.current];
+    const has = !!v;
+    if (has) {
+      showSvg(v.svg);
+      const s = stats(v.svg);
+      $('#stSize').textContent = fmtBytes(s.size);
+      $('#stShapes').textContent = s.shapes.toLocaleString();
+      $('#stColors').textContent = s.colors.toLocaleString();
+      $('#stGrads').textContent = s.grads.toLocaleString();
+      $('#outMeta').textContent = `${v.label} · ${fmtBytes(s.size)}`;
+      if (!state.busy) $('#code').value = v.svg;
+    } else if (!state.busy) {
+      $('#outBox').hidden = true;
+      $('#outPlaceholder').hidden = false;
+      $('#outMeta').textContent = 'Not generated';
+      ['#stSize', '#stShapes', '#stColors', '#stGrads'].forEach((s) => { $(s).textContent = '—'; });
+      $('#code').value = '';
+    }
+    updateButtons();
+  }
+
+  function renderVersions() {
+    const box = $('#versions');
+    box.innerHTML = '';
+    if (!state.versions.length) {
+      const s = document.createElement('span');
+      s.className = 'hint'; s.textContent = 'Each convert or refine pass is kept here.';
+      box.appendChild(s); return;
+    }
+    state.versions.forEach((v, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = v.label;
+      b.title = v.model;
+      b.setAttribute('aria-pressed', String(i === state.current));
+      b.addEventListener('click', () => { if (state.busy) return; state.current = i; renderOutput(); renderVersions(); });
+      box.appendChild(b);
+    });
+  }
+
+  async function rasterize(svg, w, h) {
+    const s = Math.min(1, 1536 / Math.max(w, h));
+    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    try {
+      const img = await loadImg(url);
+      const c = document.createElement('canvas');
+      c.width = Math.round(w * s); c.height = Math.round(h * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      return c.toDataURL('image/png').split(',')[1];
+    } finally { URL.revokeObjectURL(url); }
+  }
+
+  /* ---------- Run ---------- */
+  async function run(mode) {
+    if (state.busy || !state.image) return;
+    if (!state.key) { toggleKeyPanel(true); setStatus('Add your Gemini API key first.', 'error'); return; }
+    const im = state.image;
+    const base = mode === 'refine' ? state.versions[state.current] : null;
+    let parts;
+    try {
+      if (base) {
+        const render = await rasterize(base.svg, im.w, im.h);
+        parts = [
+          { text: buildRefinePrompt() },
+          { text: 'Image 1 (original):' }, { inlineData: { mimeType: im.mime, data: im.b64 } },
+          { text: 'Image 2 (render of current SVG):' }, { inlineData: { mimeType: 'image/png', data: render } },
+          { text: `Current SVG code:\n${base.svg}` },
+        ];
+      } else {
+        parts = [{ inlineData: { mimeType: im.mime, data: im.b64 } }, { text: buildPrompt() }];
+      }
+    } catch {
+      setStatus("Couldn't render the current SVG for comparison. Try converting again.", 'error');
+      return;
+    }
+
+    state.busy = true;
+    state.controller = new AbortController();
+    updateButtons();
+    $('#code').readOnly = true;
+    $('#drawing').hidden = false;
+    const t0 = performance.now();
+    let lastPaint = 0, chars = 0;
+    const tick = setInterval(() => {
+      const secs = ((performance.now() - t0) / 1000).toFixed(0);
+      $('#drawingText').textContent = `${mode === 'refine' ? 'Refining' : 'Drawing'} · ${secs}s · ${chars.toLocaleString()} chars`;
+    }, 250);
+    setStatus(mode === 'refine' ? 'Comparing the render with the original…' : `Sending the image to ${modelSel.value}…`);
+
+    try {
+      const { text, finish } = await streamGemini(parts, (full) => {
+        chars = full.length;
+        $('#code').value = full;
+        const now = performance.now();
+        if (now - lastPaint > 350) {
+          lastPaint = now;
+          const partial = normalizeSvg(extractSvg(full));
+          if (partial) showSvg(partial);
+        }
+        if (state.busy) setStatus('Gemini is writing the SVG…');
+      }, state.controller.signal);
+
+      const svg = normalizeSvg(extractSvg(text));
+      if (!svg) throw new Error("Gemini's reply didn't contain an SVG. Try again, or switch models.");
+      const n = state.versions.length + 1;
+      state.versions.push({ svg, label: `v${n}${mode === 'refine' ? ' refined' : ''}`, model: modelSel.value });
+      state.current = state.versions.length - 1;
+      const secs = ((performance.now() - t0) / 1000).toFixed(1);
+      if (finish === 'MAX_TOKENS') setStatus(`The SVG hit the model's output limit after ${secs}s, so the end may be missing. Try Clean fidelity.`, 'error');
+      else setStatus(`Done in ${secs}s with ${modelSel.value}. Use Refine pass to close remaining gaps.`, 'ok');
+    } catch (err) {
+      if (err.name === 'AbortError') setStatus('Stopped. The last finished version is still shown.');
+      else setStatus(err.message || 'Something went wrong talking to Gemini.', 'error');
+    } finally {
+      clearInterval(tick);
+      state.busy = false;
+      state.controller = null;
+      $('#drawing').hidden = true;
+      $('#code').readOnly = false;
+      renderOutput();
+      renderVersions();
+    }
+  }
+  function stop() { state.controller?.abort(); }
+
+  $('#convertBtn').addEventListener('click', () => run('convert'));
+  $('#refineBtn').addEventListener('click', () => run('refine'));
+  $('#stopBtn').addEventListener('click', stop);
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); run('convert'); }
+  });
+
+  /* ---------- Manual edits ---------- */
+  let editTimer;
+  $('#code').addEventListener('input', () => {
+    if (state.busy || state.current < 0) return;
+    clearTimeout(editTimer);
+    editTimer = setTimeout(() => {
+      const svg = normalizeSvg(extractSvg($('#code').value));
+      if (!svg) { setStatus("The code isn't valid SVG yet.", 'error'); return; }
+      const v = state.versions[state.current];
+      v.svg = svg;
+      if (!/edited/.test(v.label)) v.label += ' edited';
+      showSvg(svg);
+      const s = stats(svg);
+      $('#stSize').textContent = fmtBytes(s.size);
+      $('#stShapes').textContent = s.shapes.toLocaleString();
+      $('#stColors').textContent = s.colors.toLocaleString();
+      $('#stGrads').textContent = s.grads.toLocaleString();
+      $('#outMeta').textContent = `${v.label} · ${fmtBytes(s.size)}`;
+      renderVersions();
+      setStatus('Preview updated from your edit.');
+    }, 400);
+  });
+
+  /* ---------- Export ---------- */
+  $('#copyBtn').addEventListener('click', async () => {
+    const v = state.versions[state.current]; if (!v) return;
+    try { await navigator.clipboard.writeText(v.svg); setStatus('SVG code copied.', 'ok'); }
+    catch { const t = $('#code'); t.focus(); t.select(); setStatus('Press Ctrl+C to copy the selected code.'); }
+  });
+  $('#downloadBtn').addEventListener('click', () => {
+    const v = state.versions[state.current]; if (!v) return;
+    const name = (state.image?.name || 'image').replace(/\.[^.]+$/, '') + '.svg';
+    const url = URL.createObjectURL(new Blob([v.svg], { type: 'image/svg+xml' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    setStatus(`Saved ${name}.`, 'ok');
+  });
+
+  /* ---------- Views ---------- */
+  document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+  function setView(v) {
+    state.view = v;
+    document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    const compareMode = v !== 'split';
+    $('#panes').hidden = compareMode;
+    $('#compareWrap').hidden = !compareMode;
+    const cmp = $('#compare');
+    cmp.classList.toggle('diff', v === 'diff');
+    $('#seam').hidden = v === 'diff';
+    $('#cut').hidden = v === 'diff';
+    $('#compareHint').textContent = v === 'diff'
+      ? 'Matching areas turn black. Anything bright is a difference.'
+      : 'Left of the line: original. Right: SVG.';
+  }
+  $('#cut').addEventListener('input', (e) => $('#compare').style.setProperty('--cut', `${e.target.value}%`));
+
+  /* ---------- Fidelity ---------- */
+  document.querySelectorAll('[data-fid]').forEach((b) => b.addEventListener('click', () => {
+    state.fidelity = b.dataset.fid;
+    store.set('retrace.fid', state.fidelity);
+    renderFid();
+  }));
+  function renderFid() {
+    document.querySelectorAll('[data-fid]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fid === state.fidelity)));
+    $('#fidDesc').textContent = state.fidelity === 'exact'
+      ? 'Traces every shape, shadow and highlight. Larger files, slower.'
+      : 'Fewer nodes and merged colours. Smaller files that are easier to edit.';
+  }
+
+  /* ---------- Helpers ---------- */
+  function setStatus(msg, kind) { const s = $('#status'); s.textContent = msg; s.className = 'status' + (kind ? ' ' + kind : ''); }
+  function fmtBytes(n) { if (!n && n !== 0) return '—'; if (n < 1024) return `${n} B`; if (n < 1048576) return `${(n / 1024).toFixed(1)} KB`; return `${(n / 1048576).toFixed(2)} MB`; }
+  function updateButtons() {
+    const hasImg = !!state.image, hasSvg = state.current >= 0;
+    $('#convertBtn').disabled = !hasImg || state.busy;
+    $('#convertBtn').textContent = hasSvg ? 'Convert again' : 'Convert to SVG';
+    $('#refineBtn').disabled = !hasSvg || state.busy;
+    $('#stopBtn').disabled = !state.busy;
+    $('#copyBtn').disabled = !hasSvg;
+    $('#downloadBtn').disabled = !hasSvg;
+    document.querySelectorAll('[data-view="swipe"], [data-view="diff"]').forEach((b) => { b.disabled = !hasSvg; });
+    if (!hasSvg && state.view !== 'split') setView('split');
+  }
+
+  /* ---------- Boot ---------- */
+  state.fidelity = store.get('retrace.fid') || 'exact';
+  renderFid();
+  fillModels(FALLBACK_MODELS);
+  renderKeyState();
+  if (state.key) loadModels(); else setStatus('Add your Gemini API key, then drop in an image.');
+})();
+</script>
+</body>
+</html>
