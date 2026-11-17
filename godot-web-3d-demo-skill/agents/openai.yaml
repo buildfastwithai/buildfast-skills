@@ -1,0 +1,4 @@
+interface:
+  display_name: "Godot Web 3D Demo"
+  short_description: "Build cinematic Godot 4 browser demos"
+  default_prompt: "Use $godot-web-3d-demo-skill to turn my idea into a short, polished 3D Godot demo that runs in the browser."
